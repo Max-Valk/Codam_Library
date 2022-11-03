@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   Libft.h                                            :+:    :+:            */
+/*   libft.h                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 17:29:00 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/10/28 17:08:05 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/03 12:51:22 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,7 @@ typedef struct s_list
 }					t_list;
 
 /*BONUS*/
-/**
- * Create new list with content as parameter
- * returns list
-*/
+
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_front(t_list **lst, t_list *new);
 void	ft_lstadd_back(t_list **lst, t_list *new);
@@ -39,7 +36,7 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *));
 
 /*integer and array conversion*/
 
-int		ft_atoi(char *str);
+int		ft_atoi(const char *str);
 char	*ft_itoa(int n);
 
 /*character checks (ctype.h)*/
@@ -64,10 +61,6 @@ void	ft_bzero(void *s, size_t n);
 /*string functions (string.h)*/
 
 char	*ft_strchr(const char *s, int c);
-/**
- * segfault on NULL
- * returns int
-*/
 size_t	ft_strlen(const char *str);
 int		ft_strncmp(const char *s1, const char *s2, size_t n);
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len);
@@ -76,6 +69,7 @@ size_t	ft_strlcat(char *dst, const char *src, size_t dstsize);
 size_t	ft_strlcpy(char *destination, const char *source, size_t size);
 
 /*Malloc functions*/
+
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strdup(const char *s1);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
@@ -83,6 +77,7 @@ char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strtrim(char const *s1, char const *set);
 
 /*write functions*/
+
 void	ft_putchar_fd(char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);

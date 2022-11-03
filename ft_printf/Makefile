@@ -6,28 +6,30 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/28 17:23:55 by mvalk         #+#    #+#                  #
-#    Updated: 2022/10/28 17:24:21 by mvalk         ########   odam.nl          #
+#    Updated: 2022/11/03 16:37:24 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-NAME := 
+NAME := libftprintf.a
+LIBRARY = libft
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-HEADERFILES = .h
-SRCFILES = 
+HEADERFILES = ft_printf.h libft/libft.h
+SRCFILES = ft_print_write_utils.c \
+			ft_printf.c \
 
-		
-SRC_BONUS = 
+# SRC_BONUS = 
 
 		
 OBJFILES = $(SRCFILES:%.c=obj/%.o)
 
-OBJ_BONUS = $(SRC_BONUS:%.c=obj/%.o)
+# OBJ_BONUS = $(SRC_BONUS:%.c=obj/%.o)
 		
 all: $(NAME)
 
 $(NAME): $(OBJFILES)
 	ar -crs $(NAME) $(OBJFILES)
+	cd $(LIBRARY) && make
 
 obj/%.o: %.c $(HEADERFILES)
 	@mkdir -p $(dir $@)
@@ -38,6 +40,7 @@ bonus: $(OBJ_BONUS)
 
 clean:
 	rm -f $(OBJFILES) $(OBJ_BONUS)
+	cd $(LIBRARY) && make clean
 
 fclean: clean
 	rm -f $(NAME)

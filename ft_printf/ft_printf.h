@@ -1,36 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_atoi.c                                          :+:    :+:            */
+/*   ft_printf.h                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/28 16:43:55 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/01 13:52:08 by mvalk         ########   odam.nl         */
+/*   Created: 2022/11/02 18:43:33 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/11/03 16:30:55 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-int	ft_atoi(const char *str)
-{
-	int		neg;
-	long	number;
+#ifndef FT_PRINTF_H
+# define FT_PRINTF_H
 
-	neg = 0;
-	number = 0;
-	while ((*str >= 9 && *str <= 13) || *str == 32)
-		str++;
-	if (*str == '-' || *str == '+')
-	{
-		if (*str == '-')
-			neg--;
-		str++;
-	}
-	while (*str >= '0' && *str <= '9')
-	{
-		number = 10 * number + (*str - 48);
-		str++;
-	}
-	if (neg < 0)
-		return (neg * number);
-	return (number);
-}
+# include <unistd.h>
+# include <stdlib.h>
+# include <stdarg.h>
+
+int	ft_printstr(const char *str);
+int	ft_printnbr(int nbr);
+int	ft_printunsigned(unsigned int nbr);
+int	ft_printhex_lower(unsigned int hex);
+int	ft_printhex(unsigned int hex, int hex_case);
+
+#endif
