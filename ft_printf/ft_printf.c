@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/28 17:32:15 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/03 16:31:27 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/04 14:33:56 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,41 +17,36 @@
 
 int	ft_conversions(va_list args, const char convert)
 {
-	int	arg_print_len;
-
-	arg_print_len = 0;
 	if (convert == 'c')
 	{
 		ft_putchar_fd(va_arg(args, int), 1);
-		arg_print_len++;
+		return (1);
 	}
 	else if (convert == 's')
-		arg_print_len += ft_printstr(va_arg(args, const char *));
+		return (ft_printstr(va_arg(args, const char *)));
 	else if (convert == 'p')
-		
+		return (ft_print_ptr(va_arg(args, unsigned long)));
 	else if (convert == 'd')
-		arg_print_len += ft_printnbr(va_arg(args, int));
+		return (ft_printnbr(va_arg(args, int)));
 	else if (convert == 'i')
-		arg_print_len += ft_printnbr(va_arg(args, int));
+		return (ft_printnbr(va_arg(args, int)));
 	else if (convert == 'u')
-		arg_print_len += ft_printunsigned(va_arg(args, unsigned int));
-	else if (convert == 'x')
-		arg_print_len += ft_printhex(va_arg(args, unsigned int), 0);
-	else if (convert == 'X')
-		arg_print_len += ft_printhex(va_arg(args, unsigned int), 1);
-	else
+		return (ft_printunsigned(va_arg(args, unsigned int)));
+	else if (convert == 'x' || convert == 'X')
+		return (ft_printhex(va_arg(args, unsigned int), convert));
+	else if (convert == '%')
 	{
 		ft_putchar_fd('%', 1);
-		arg_print_len++;
+		return (1);
 	}
-	return (arg_print_len);
+	return (0);
 }
 
 int	ft_printf(const char *format_str, ...)
 {
 	va_list	args;
-	int	i;
-	int	print_len;
+	int		i;
+	int		print_len;
 
 	i = 0;
 	print_len = 0;
@@ -60,9 +55,8 @@ int	ft_printf(const char *format_str, ...)
 	{
 		if (format_str[i] == '%' && format_str[i + 1] != '\0')
 		{
-			i++;
-			print_len += ft_conversions(args, format_str[i]);
-			i++;
+			print_len += ft_conversions(args, format_str[i + 1]);
+			i += 2;
 		}
 		else
 		{
@@ -75,11 +69,10 @@ int	ft_printf(const char *format_str, ...)
 	return (print_len);
 }
 
-int main(void)
-{
-	int a = 37;
-	int car = 97;
-	
-	ft_printf("Hello World, the answer is");
-	return (0);
-}
+// int main(void)
+// {
+// 	int a[2] = {1};
+// 	ft_printf("%%%");
+// 	// printf("Hello World, the answer is %p\n", a);
+// 	return (0);
+// }
