@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_memmove.c                                       :+:    :+:            */
+/*   ft_memcmp.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/06 14:38:39 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:16:21 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/11 11:48:06 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 17:58:07 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	unsigned char	*mod_dst;
-	unsigned char	*mod_src;
 	size_t			i;
+	unsigned char	*mods1;
+	unsigned char	*mods2;
 
-	mod_dst = (unsigned char *)dst;
-	mod_src = (unsigned char *)src;
 	i = 0;
-	if (dst == 0 && src == 0)
-		return (NULL);
-	if (mod_dst > mod_src)
+	mods1 = (unsigned char *)s1;
+	mods2 = (unsigned char *)s2;
+	while (i < n)
 	{
-		while (len > 0)
-		{
-			len--;
-			mod_dst[len] = mod_src[len];
-		}
-	}
-	while (i < len)
-	{
-		mod_dst[i] = mod_src[i];
+		if (mods1[i] != mods2[i])
+			return (mods1[i] - mods2[i]);
 		i++;
 	}
-	return (dst);
+	return (0);
 }

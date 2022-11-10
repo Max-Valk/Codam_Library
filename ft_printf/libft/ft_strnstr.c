@@ -1,32 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strlcpy.c                                       :+:    :+:            */
+/*   ft_strnstr.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/04 12:40:35 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:18:26 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/11 12:00:16 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 18:01:03 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlcpy(char *dst, const char *source, size_t dstsize)
+char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	size_t	pos;
-	size_t	src_len;
+	size_t	inee;
+	size_t	ihay;
 
-	src_len = ft_strlen(source);
-	pos = 0;
-	if (dstsize == 0)
-		return (src_len);
-	while (pos < dstsize - 1 && source[pos] != '\0')
+	inee = 0;
+	ihay = 0;
+	if (needle[inee] == 0 || needle == haystack)
+		return ((char *)haystack);
+	while (ihay < len && haystack[ihay] != '\0')
 	{
-		dst[pos] = source[pos];
-		pos++;
+		inee = 0;
+		while (haystack[ihay + inee] == needle[inee] && ihay + inee < len)
+		{
+			inee++;
+			if (inee == ft_strlen(needle))
+				return ((char *)haystack + ihay);
+		}
+		ihay++;
 	}
-	if (pos < dstsize)
-		dst[pos] = '\0';
-	return (src_len);
+	return (0);
 }

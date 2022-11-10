@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/06 14:38:39 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:16:21 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/10/31 17:58:17 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,26 @@
 
 void	*ft_memmove(void *dst, const void *src, size_t len)
 {
-	unsigned char	*mod_dst;
-	unsigned char	*mod_src;
+	unsigned char	*moddst;
+	unsigned char	*modsrc;
 	size_t			i;
 
-	mod_dst = (unsigned char *)dst;
-	mod_src = (unsigned char *)src;
+	moddst = (unsigned char *)dst;
+	modsrc = (unsigned char *)src;
 	i = 0;
 	if (dst == 0 && src == 0)
 		return (NULL);
-	if (mod_dst > mod_src)
+	if (moddst > modsrc)
 	{
 		while (len > 0)
 		{
 			len--;
-			mod_dst[len] = mod_src[len];
+			moddst[len] = modsrc[len];
 		}
 	}
 	while (i < len)
 	{
-		mod_dst[i] = mod_src[i];
+		moddst[i] = modsrc[i];
 		i++;
 	}
 	return (dst);

@@ -1,40 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_memmove.c                                       :+:    :+:            */
+/*   ft_strncmp.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/06 14:38:39 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:16:21 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/11 10:57:47 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 17:59:22 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
-	unsigned char	*mod_dst;
-	unsigned char	*mod_src;
-	size_t			i;
+	size_t	i;
 
-	mod_dst = (unsigned char *)dst;
-	mod_src = (unsigned char *)src;
 	i = 0;
-	if (dst == 0 && src == 0)
-		return (NULL);
-	if (mod_dst > mod_src)
+	if (n == 0 || (s1 == 0 && s2 == 0))
+		return (0);
+	while (s1[i] != '\0' && s2[i] == s1[i])
 	{
-		while (len > 0)
-		{
-			len--;
-			mod_dst[len] = mod_src[len];
-		}
+		if (i < n - 1)
+			i++;
+		else
+			return (0);
 	}
-	while (i < len)
-	{
-		mod_dst[i] = mod_src[i];
-		i++;
-	}
-	return (dst);
+	return ((unsigned char) s1[i] - (unsigned char)s2[i]);
 }

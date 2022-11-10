@@ -1,29 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strtrim.c                                       :+:    :+:            */
+/*   ft_substr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/17 16:12:30 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:19:42 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/14 15:18:22 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 18:01:20 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*ptr_str;
-	size_t	s1_end;
+	char	*ptr;
+	size_t	cpy_len;
 
-	if (s1 == NULL || set == NULL)
+	cpy_len = 0;
+	if (s == NULL)
 		return (0);
-	while (*s1 && ft_strchr(set, *s1))
-			s1++;
-	s1_end = ft_strlen(s1);
-	while (s1_end > 0 && ft_strchr(set, s1[s1_end]))
-		s1_end--;
-	ptr_str = ft_substr((char *)s1, 0, s1_end + 1);
-	return (ptr_str);
+	if (start >= ft_strlen(s))
+		return (ft_strdup("\0"));
+	if (ft_strlen(s) - start < len)
+		cpy_len = ft_strlen(s) - start + 1;
+	else
+		cpy_len = len + 1;
+	ptr = (char *)malloc(cpy_len);
+	if (!ptr)
+		return (0);
+	ft_strlcpy(ptr, &s[start], cpy_len);
+	return (ptr);
 }

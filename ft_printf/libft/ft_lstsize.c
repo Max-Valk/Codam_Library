@@ -1,29 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strtrim.c                                       :+:    :+:            */
+/*   ft_lstsize.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/17 16:12:30 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:19:42 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/25 16:06:52 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 17:57:31 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-char	*ft_strtrim(char const *s1, char const *set)
+int	ft_lstsize(t_list *lst)
 {
-	char	*ptr_str;
-	size_t	s1_end;
+	int		lst_count;
+	t_list	*ptr;
 
-	if (s1 == NULL || set == NULL)
-		return (0);
-	while (*s1 && ft_strchr(set, *s1))
-			s1++;
-	s1_end = ft_strlen(s1);
-	while (s1_end > 0 && ft_strchr(set, s1[s1_end]))
-		s1_end--;
-	ptr_str = ft_substr((char *)s1, 0, s1_end + 1);
-	return (ptr_str);
+	lst_count = 0;
+	ptr = lst;
+	while (ptr)
+	{
+		lst_count++;
+		ptr = ptr->next;
+	}
+	return (lst_count);
 }

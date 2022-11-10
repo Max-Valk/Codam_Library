@@ -1,40 +1,36 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_memmove.c                                       :+:    :+:            */
+/*   ft_atoi.c                                          :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/06 14:38:39 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:16:21 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/28 16:43:55 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/11/01 13:52:08 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
-
-void	*ft_memmove(void *dst, const void *src, size_t len)
+int	ft_atoi(const char *str)
 {
-	unsigned char	*mod_dst;
-	unsigned char	*mod_src;
-	size_t			i;
+	int		neg;
+	long	number;
 
-	mod_dst = (unsigned char *)dst;
-	mod_src = (unsigned char *)src;
-	i = 0;
-	if (dst == 0 && src == 0)
-		return (NULL);
-	if (mod_dst > mod_src)
+	neg = 0;
+	number = 0;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '-' || *str == '+')
 	{
-		while (len > 0)
-		{
-			len--;
-			mod_dst[len] = mod_src[len];
-		}
+		if (*str == '-')
+			neg--;
+		str++;
 	}
-	while (i < len)
+	while (*str >= '0' && *str <= '9')
 	{
-		mod_dst[i] = mod_src[i];
-		i++;
+		number = 10 * number + (*str - 48);
+		str++;
 	}
-	return (dst);
+	if (neg < 0)
+		return (neg * number);
+	return (number);
 }

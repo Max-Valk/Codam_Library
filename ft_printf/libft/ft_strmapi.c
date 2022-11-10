@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strtrim.c                                       :+:    :+:            */
+/*   ft_strmapi.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/17 16:12:30 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:19:42 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/19 16:23:32 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 17:59:17 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char	*ptr_str;
-	size_t	s1_end;
+	char			*f_string;
+	unsigned int	index;
 
-	if (s1 == NULL || set == NULL)
+	index = 0;
+	f_string = (char *)malloc(ft_strlen(s) + 1);
+	if (!f_string)
 		return (0);
-	while (*s1 && ft_strchr(set, *s1))
-			s1++;
-	s1_end = ft_strlen(s1);
-	while (s1_end > 0 && ft_strchr(set, s1[s1_end]))
-		s1_end--;
-	ptr_str = ft_substr((char *)s1, 0, s1_end + 1);
-	return (ptr_str);
+	while (s[index] != '\0')
+	{
+		f_string[index] = f(index, s[index]);
+		index++;
+	}
+	f_string[index] = '\0';
+	return (f_string);
 }

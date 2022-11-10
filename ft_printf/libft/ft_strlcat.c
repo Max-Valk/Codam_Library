@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/14 18:38:24 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:18:14 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/10/31 17:58:59 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,21 +14,21 @@
 
 size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	size_t	dst_len;
-	size_t	src_len;
+	size_t	dstlen;
+	size_t	srclen;
 	size_t	return_size;
 
 	if (dstsize == 0 && dst == 0)
 		return (0);
-	src_len = ft_strlen(src);
-	dst_len = ft_strlen(dst);
-	if (dstsize > dst_len)
-		return_size = src_len + dst_len;
+	srclen = ft_strlen(src);
+	dstlen = ft_strlen(dst);
+	if (dstsize > dstlen)
+		return_size = srclen + dstlen;
 	else
-		return_size = src_len + dstsize;
-	if (dstsize >= dst_len)
-		ft_strlcpy(dst + dst_len, src, dstsize - dst_len);
-	if (*src != '\0' && src_len + dst_len < dstsize + 1)
-		ft_strlcpy(dst + dst_len, src, dstsize - dst_len);
+		return_size = srclen + dstsize;
+	if (dstsize >= dstlen)
+		ft_strlcpy(dst + dstlen, src, dstsize - dstlen);
+	if (*src != '\0' && srclen + dstlen < dstsize + 1)
+		ft_strlcpy(dst + dstlen, src, dstsize - dstlen);
 	return (return_size);
 }

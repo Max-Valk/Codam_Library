@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/03 17:31:16 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/02 19:11:34 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/10 10:33:05 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 
 size_t	ft_strlen(const char *str)
 {
-	size_t	length;
+	size_t	len;
 
-	length = 0;
-	while (str[length] != '\0')
-		length++;
-	return (length);
+	len = 0;
+	while (str[len] != '\0')
+		len++;
+	return (len);
 }

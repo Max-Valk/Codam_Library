@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/27 15:30:39 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/10 15:20:29 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/10/31 16:04:27 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,6 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 		tmp_lst = ft_lstnew(f(lst->content));
 		if (tmp_lst == NULL)
 		{
-			ft_lstdelone(tmp_lst, del);
 			ft_lstclear(&new_lst, del);
 			return (NULL);
 		}

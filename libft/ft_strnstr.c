@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/11 12:00:16 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/10/31 18:01:03 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/09 15:19:20 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,23 +14,23 @@
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	size_t	inee;
-	size_t	ihay;
+	size_t	i_nee;
+	size_t	i_hay;
 
-	inee = 0;
-	ihay = 0;
-	if (needle[inee] == 0 || needle == haystack)
+	i_nee = 0;
+	i_hay = 0;
+	if (needle[i_nee] == 0 || needle == haystack)
 		return ((char *)haystack);
-	while (ihay < len && haystack[ihay] != '\0')
+	while (i_hay < len && haystack[i_hay] != '\0')
 	{
-		inee = 0;
-		while (haystack[ihay + inee] == needle[inee] && ihay + inee < len)
+		i_nee = 0;
+		while (haystack[i_hay + i_nee] == needle[i_nee] && i_hay + i_nee < len)
 		{
-			inee++;
-			if (inee == ft_strlen(needle))
-				return ((char *)haystack + ihay);
+			i_nee++;
+			if (i_nee == ft_strlen(needle))
+				return ((char *)haystack + i_hay);
 		}
-		ihay++;
+		i_hay++;
 	}
 	return (0);
 }

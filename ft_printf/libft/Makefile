@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/10 17:16:34 by mvalk         #+#    #+#                  #
-#    Updated: 2022/11/08 15:28:44 by mvalk         ########   odam.nl          #
+#    Updated: 2022/11/04 17:28:53 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,7 @@ NAME := libft.a
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 HEADERFILES = libft.h
-OBJ_DIR = obj
-SRCFILES := ft_atoi.c \
+SRCFILES = ft_atoi.c \
 		ft_bzero.c \
 		ft_isalnum.c \
 		ft_isalpha.c \
@@ -51,7 +50,7 @@ SRCFILES := ft_atoi.c \
 		ft_split.c \
 
 		
-SRC_BONUS := ft_lstnew.c \
+SRC_BONUS = ft_lstnew.c \
 		ft_lstadd_front.c \
 		ft_lstsize.c \
 		ft_lstlast.c \
@@ -63,26 +62,26 @@ SRC_BONUS := ft_lstnew.c \
 
 OBJFILES = $(SRCFILES:%.c=obj/%.o)
 
-OBJ_BONUS := $(SRC_BONUS:%.c=obj/%.o)
+OBJ_BONUS = $(SRC_BONUS:%.c=obj/%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJFILES)
-	ar -crs $(NAME) $(OBJFILES)
+	@ar -crs $(NAME) $(OBJFILES)
 
 obj/%.o: %.c $(HEADERFILES)
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) -c $< -o $@
 
-bonus: $(OBJ_BONUS)
-	ar -crs $(NAME) $(OBJ_BONUS)
+bonus: $(OBJ_BONUS) $(OBJFILES)
+	@ar -crs $(NAME) $(OBJ_BONUS) $(OBJFILES)
 
 clean:
-	rm -f $(OBJFILES) $(OBJ_BONUS)
-# rm -r $(OBJ_DIR)
+	@rm -f $(OBJFILES) $(OBJ_BONUS)
+	@rm -r -f obj
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
 
 re: fclean all
 

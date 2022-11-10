@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strtrim.c                                       :+:    :+:            */
+/*   ft_strlcpy.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/17 16:12:30 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:19:42 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/04 12:40:35 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 17:59:05 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+size_t	ft_strlcpy(char *dst, const char *source, size_t dstsize)
 {
-	char	*ptr_str;
-	size_t	s1_end;
+	size_t	pos;
+	size_t	srclen;
 
-	if (s1 == NULL || set == NULL)
-		return (0);
-	while (*s1 && ft_strchr(set, *s1))
-			s1++;
-	s1_end = ft_strlen(s1);
-	while (s1_end > 0 && ft_strchr(set, s1[s1_end]))
-		s1_end--;
-	ptr_str = ft_substr((char *)s1, 0, s1_end + 1);
-	return (ptr_str);
+	srclen = ft_strlen(source);
+	pos = 0;
+	if (dstsize == 0)
+		return (srclen);
+	while (pos < dstsize - 1 && source[pos] != '\0')
+	{
+		dst[pos] = source[pos];
+		pos++;
+	}
+	if (pos < dstsize)
+		dst[pos] = '\0';
+	return (srclen);
 }

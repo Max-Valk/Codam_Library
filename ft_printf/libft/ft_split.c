@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/18 15:29:40 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:17:05 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/01 12:36:12 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,31 +14,31 @@
 
 static	size_t	ft_substrlen(char const *s, char delimiter)
 {
-	size_t	substr_len;
+	size_t	substrlen;
 
-	substr_len = 0;
-	while (s[substr_len] != '\0' && s[substr_len] != delimiter)
-		substr_len++;
-	return (substr_len);
+	substrlen = 0;
+	while (s[substrlen] != '\0' && s[substrlen] != delimiter)
+		substrlen++;
+	return (substrlen);
 }
 
 static	size_t	ft_strcounter(char const *s, char delimiter)
 {
-	size_t	str_count;
+	size_t	strcount;
 	size_t	index;
 
-	str_count = 0;
+	strcount = 0;
 	index = 0;
 	while (index < ft_strlen(s))
 	{
 		if (s[index] != delimiter)
 		{
 			index = index + ft_substrlen(&s[index], delimiter);
-			str_count++;
+			strcount++;
 		}
 		index++;
 	}
-	return (str_count + 1);
+	return (strcount + 1);
 }
 
 static	int	ft_free_split_str(char **split_str, ssize_t array_i)

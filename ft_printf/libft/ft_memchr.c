@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_memmove.c                                       :+:    :+:            */
+/*   ft_memchr.c                                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/06 14:38:39 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:16:21 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/11 11:39:26 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 17:58:02 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	*ft_memchr(const void *s, int c, size_t n)
 {
-	unsigned char	*mod_dst;
-	unsigned char	*mod_src;
+	unsigned char	*a;
 	size_t			i;
 
-	mod_dst = (unsigned char *)dst;
-	mod_src = (unsigned char *)src;
+	a = (unsigned char *)s;
 	i = 0;
-	if (dst == 0 && src == 0)
+	if (n == 0)
 		return (NULL);
-	if (mod_dst > mod_src)
+	while (i < n)
 	{
-		while (len > 0)
-		{
-			len--;
-			mod_dst[len] = mod_src[len];
-		}
-	}
-	while (i < len)
-	{
-		mod_dst[i] = mod_src[i];
+		if (a[i] == (unsigned char)c)
+			return ((void *)s + i);
 		i++;
 	}
-	return (dst);
+	return (0);
 }

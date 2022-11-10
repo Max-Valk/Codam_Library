@@ -1,40 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_memmove.c                                       :+:    :+:            */
+/*   ft_striteri.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/06 14:38:39 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:16:21 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/19 16:54:06 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/25 13:31:31 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stddef.h>
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 {
-	unsigned char	*mod_dst;
-	unsigned char	*mod_src;
-	size_t			i;
+	int	i;
 
-	mod_dst = (unsigned char *)dst;
-	mod_src = (unsigned char *)src;
 	i = 0;
-	if (dst == 0 && src == 0)
-		return (NULL);
-	if (mod_dst > mod_src)
+	if (s == NULL)
+		return ;
+	while (s[i] != '\0')
 	{
-		while (len > 0)
-		{
-			len--;
-			mod_dst[len] = mod_src[len];
-		}
-	}
-	while (i < len)
-	{
-		mod_dst[i] = mod_src[i];
+		f(i, &s[i]);
 		i++;
 	}
-	return (dst);
 }

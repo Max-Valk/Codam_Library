@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/28 17:32:15 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/04 14:33:56 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/04 17:33:15 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,10 +69,10 @@ int	ft_printf(const char *format_str, ...)
 	return (print_len);
 }
 
-// int main(void)
-// {
-// 	int a[2] = {1};
-// 	ft_printf("%%%");
-// 	// printf("Hello World, the answer is %p\n", a);
-// 	return (0);
-// }
+int main(void)
+{
+	// int a[2] = {1};
+	// ft_printf("%%%");
+	ft_printf("Hello World, the answer is %p\n", "");
+	return (0);
+}

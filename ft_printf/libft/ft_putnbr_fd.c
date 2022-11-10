@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_memmove.c                                       :+:    :+:            */
+/*   ft_putnbr_fd.c                                     :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/06 14:38:39 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:16:21 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/19 16:01:00 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 17:58:33 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stddef.h>
+#include "libft.h"
 
-void	*ft_memmove(void *dst, const void *src, size_t len)
+void	ft_putnbr_fd(int n, int fd)
 {
-	unsigned char	*mod_dst;
-	unsigned char	*mod_src;
-	size_t			i;
-
-	mod_dst = (unsigned char *)dst;
-	mod_src = (unsigned char *)src;
-	i = 0;
-	if (dst == 0 && src == 0)
-		return (NULL);
-	if (mod_dst > mod_src)
+	if (n == -2147483648)
 	{
-		while (len > 0)
-		{
-			len--;
-			mod_dst[len] = mod_src[len];
-		}
+		ft_putstr_fd("-2147483648", fd);
+		return ;
 	}
-	while (i < len)
+	if (n < 0)
 	{
-		mod_dst[i] = mod_src[i];
-		i++;
+		n *= -1;
+		ft_putchar_fd('-', fd);
 	}
-	return (dst);
+	if (n > 9)
+	{
+		ft_putnbr_fd(n / 10, fd);
+		n %= 10;
+	}
+	if (n < 10)
+		ft_putchar_fd(n + 48, fd);
 }

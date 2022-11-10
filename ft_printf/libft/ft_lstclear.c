@@ -1,29 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_strtrim.c                                       :+:    :+:            */
+/*   ft_lstclear.c                                      :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/17 16:12:30 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/09 15:19:42 by mvalk         ########   odam.nl         */
+/*   Created: 2022/10/27 13:17:20 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/10/31 14:52:20 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	char	*ptr_str;
-	size_t	s1_end;
+	t_list	*del_lst;
+	t_list	*tmp_lst;
 
-	if (s1 == NULL || set == NULL)
-		return (0);
-	while (*s1 && ft_strchr(set, *s1))
-			s1++;
-	s1_end = ft_strlen(s1);
-	while (s1_end > 0 && ft_strchr(set, s1[s1_end]))
-		s1_end--;
-	ptr_str = ft_substr((char *)s1, 0, s1_end + 1);
-	return (ptr_str);
+	del_lst = *lst;
+	while (del_lst)
+	{
+		tmp_lst = del_lst->next;
+		ft_lstdelone(del_lst, del);
+		del_lst = tmp_lst;
+	}
+	*lst = NULL;
 }
