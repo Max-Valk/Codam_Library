@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/11 11:52:53 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/11 12:56:18 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/11 18:00:27 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,24 +15,24 @@
 char	*ft_read_line(int fd, char *saved_str)
 {
 	char		buffer[BUFFER_SIZE + 1];
-	static char	*temp;
+	char		*temp;
 	int			read_bytes;
 
 	read_bytes = 1;
+	
+	temp = saved_str;
 	while (read_bytes)
 	{
-		if (ft_strchr(saved_str, '\n'))
-			break ;
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		buffer[read_bytes] = '\0';
-		temp = ft_strjoin(saved_str, buffer);
-		saved_str = temp;
+		temp = ft_strjoin(temp, buffer);
 		free (temp);
 		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
+	saved_str = ft_strdup(temp);
 	printf("joined_str: |%s|\n", saved_str);
-	return (temp);
+	return (saved_str);
 }
 
 char	*ft_trim_saved_str(char	*saved_str)
@@ -62,9 +62,13 @@ char	*get_next_line(int fd)
 	// 	return (line);
 	// }
 	saved_str = ft_read_line(fd, saved_str);
-	line = ft_strdup(saved_str);
-	// printf("line: |%s|\n", line);
+	// printf("line: |%s|\n", saved_str);
+	line = saved_str;
+	// printf("saved_str: |%s|\n", saved_str);
+	
+	/*remove below for full file*/
 	saved_str = ft_trim_saved_str(saved_str);
+	/*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*/
 	return (line);
 }
 
@@ -76,7 +80,7 @@ int	main(void)
 	while (i <= 6)
 	{
 		char *line = get_next_line(fd);
-		printf("line %i: |%s|\n ---------------- \n", i, line);
+		printf("line: |%s|\n ---------------- \n", line);
 		free (line);
 		i++;
 	}

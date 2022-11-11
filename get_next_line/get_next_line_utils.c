@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/07 13:46:18 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/11 12:54:36 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/11 17:55:18 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,12 +61,12 @@ char	*ft_strdup(const char *s1)
 		return (0);
 	while (s1[i] != '\0')
 	{
-		if (s1[i] == '\n')
-		{
-			ptr[i] = '\n';
-			ptr[i + 1] = '\0';
-			return (ptr);
-		}
+		// if (s1[i] == '\n')
+		// {
+		// 	ptr[i] = '\n';
+		// 	ptr[i + 1] = '\0';
+		// 	return (ptr);
+		// }
 		ptr[i] = s1[i];
 		i++;
 	}
