@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/10 17:16:34 by mvalk         #+#    #+#                  #
-#    Updated: 2022/11/08 15:28:44 by mvalk         ########   odam.nl          #
+#    Updated: 2022/11/10 18:31:03 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,14 +72,14 @@ $(NAME): $(OBJFILES)
 
 obj/%.o: %.c $(HEADERFILES)
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 bonus: $(OBJ_BONUS)
-	ar -crs $(NAME) $(OBJ_BONUS)
+	@ar -crs $(NAME) $(OBJ_BONUS) $(OBJFILES)
 
 clean:
-	rm -f $(OBJFILES) $(OBJ_BONUS)
-# rm -r $(OBJ_DIR)
+	@rm -f $(OBJFILES) $(OBJ_BONUS)
+	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME)

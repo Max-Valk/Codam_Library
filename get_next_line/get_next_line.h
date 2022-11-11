@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/07 13:56:08 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/10 15:36:58 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/11 12:02:38 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@
 int		ft_strlen(char const *line);
 char	*ft_strjoin(char const *s1, char const *s2);
 int		ft_nl_check(char *buffer);
-
+char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
 
 #endif

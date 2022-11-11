@@ -2,7 +2,7 @@
 2: the way this function handles it is whats important
 3: and because of this
 4:
-5: there are some empty new lines here b
+5: there are some empty new lines here
 6: that are supposed to be handled just fine
 7: 
 8: the end

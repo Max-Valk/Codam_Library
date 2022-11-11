@@ -6,12 +6,12 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/09 17:39:49 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/10 16:58:51 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/11 11:54:05 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
+/*
 char	*ft_strchr(const char *s, int c)
 {
 	while (*s)
@@ -80,7 +80,7 @@ char	*get_next_line(int fd)
 	
 	if (!saved_str)
 		saved_str = ft_strdup("");
-	savft_read_line(fd, buffer);
+	ft_read_line(fd, buffer);
 	// printf("saved_str_start: |%s|\n", saved_str);
 	// saved_str = ft_strjoin(saved_str, buffer);
 	nl_pos = ft_nl_check(buffer);
