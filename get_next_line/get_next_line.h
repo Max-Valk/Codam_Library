@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/07 13:56:08 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/11 12:02:38 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/15 17:13:42 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,29 +16,20 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <stddef.h>
-# include <stdio.h>
+// # include <stdio.h>
 # include <unistd.h>
 
-#ifndef BUFFER_SIZE
-
-#define BUFFER_SIZE = 40;
-
-#endif
-
-// typedef struct s_list
-// {
-// 	char			*line;
-// 	char			*buffer;
-// 	int				nl_check;
-// 	size_t			buffer_size;
-// 	int				fd;
-// 	struct s_list	*next;
-// }					gnl_list;
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE = 10;
+# endif
 
 int		ft_strlen(char const *line);
-char	*ft_strjoin(char const *s1, char const *s2);
-int		ft_nl_check(char *buffer);
+char	*ft_strjoin(char *s1, char const *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strdup(const char *s1);
+char	*ft_trim_saved_str(char	*saved_str);
+char	*ft_read_line(int fd, char *saved_str);
+
+char	*get_next_line(int fd);
 
 #endif

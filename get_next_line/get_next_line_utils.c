@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/07 13:46:18 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/11 17:55:18 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/15 16:35:01 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	ft_strlen(char const *line)
 	return (len);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char *s1, char const *s2)
 {
 	char	*ptr;
 	size_t	s1len;
 	size_t	s2len;
 	size_t	i;
-	
+
 	s1len = ft_strlen(s1);
 	s2len = ft_strlen(s2);
 	i = 0;
@@ -41,12 +41,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		i++;
 	}
 	i = 0;
-	while(s2[i] != '\0')
+	while (s2[i] != '\0')
 	{
 		ptr[s1len + i] = s2[i];
 		i++;
 	}
 	ptr[s1len + s2len] = '\0';
+	free (s1);
 	return (ptr);
 }
 
@@ -57,16 +58,10 @@ char	*ft_strdup(const char *s1)
 
 	i = 0;
 	ptr = (char *)malloc(ft_strlen(s1) + 1);
-	if (!(ptr))
-		return (0);
+	if (!ptr)
+		return (NULL);
 	while (s1[i] != '\0')
 	{
-		// if (s1[i] == '\n')
-		// {
-		// 	ptr[i] = '\n';
-		// 	ptr[i + 1] = '\0';
-		// 	return (ptr);
-		// }
 		ptr[i] = s1[i];
 		i++;
 	}
