@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_next_line_utils.c                              :+:    :+:            */
+/*   get_next_line_utils_bonus.c                        :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/07 13:46:18 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/17 13:35:47 by mvalk         ########   odam.nl         */
+/*   Created: 2022/11/17 13:43:07 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/11/17 14:36:44 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 int	ft_strlen(char const *line)
 {
