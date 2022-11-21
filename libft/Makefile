@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/10 17:16:34 by mvalk         #+#    #+#                  #
-#    Updated: 2022/11/10 18:31:03 by mvalk         ########   odam.nl          #
+#    Updated: 2022/11/18 13:39:15 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,19 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 HEADERFILES = libft.h
 OBJ_DIR = obj
+
+# Colors
+
+RED = \033[0;91m
+GREEN = \033[0;92m
+YELLOW = \033[0;93m
+BLUE = \033[0;94m
+MAGENTA = \033[0;95m
+CYAN = \033[0;96m
+COLOR_END = \033[0m
+
+# Sources
+
 SRCFILES := ft_atoi.c \
 		ft_bzero.c \
 		ft_isalnum.c \
@@ -61,29 +74,34 @@ SRC_BONUS := ft_lstnew.c \
 		ft_lstiter.c \
 		ft_lstmap.c \
 
-OBJFILES = $(SRCFILES:%.c=obj/%.o)
+OBJFILES = $(SRCFILES:%.c=$(OBJ_DIR)/%.o)
 
-OBJ_BONUS := $(SRC_BONUS:%.c=obj/%.o)
+OBJ_BONUS := $(SRC_BONUS:%.c=$(OBJ_DIR)/%.o)
 
 all: $(NAME)
 
 $(NAME): $(OBJFILES)
-	ar -crs $(NAME) $(OBJFILES)
+	@ar -crs $(NAME) $(OBJFILES)
+	@echo "$(GREEN)compilation complete!$(COLOR_END)"
 
-obj/%.o: %.c $(HEADERFILES)
+$(OBJ_DIR)/%.o: %.c $(HEADERFILES)
 	@mkdir -p $(OBJ_DIR)
-	$(CC) $(CFLAGS) -c $< -o $@
+	@$(CC) $(CFLAGS) -c $< -o $@
+	@echo "$(BLUE)compiling $< $(COLOR_END)"
 
 bonus: $(OBJ_BONUS)
 	@ar -crs $(NAME) $(OBJ_BONUS) $(OBJFILES)
 
 clean:
 	@rm -f $(OBJFILES) $(OBJ_BONUS)
-	rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJ_DIR)
+	@echo "$(CYAN)clean complete!$(COLOR_END)"
 
 fclean: clean
-	rm -f $(NAME)
+	@rm -f $(NAME)
+	@echo "$(MAGENTA)fclean complete!$(COLOR_END)"
 
 re: fclean all
+	@echo "$(RED)fclean and recompile complete!$(COLOR_END)"
 
 .PHONY: clean all fclean re bonus

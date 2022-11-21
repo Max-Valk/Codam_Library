@@ -6,12 +6,12 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/02 18:42:51 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/04 14:34:38 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/18 13:45:51 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "../libft/libft.h"
+#include "./libft/libft.h"
 #include <stdio.h>
 #include <limits.h>
 

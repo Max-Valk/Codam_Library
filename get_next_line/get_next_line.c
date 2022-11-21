@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 16:45:56 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/17 13:37:50 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/21 17:20:15 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ char	*ft_read_line(int fd, char *saved_str)
 	read_bytes = 1;
 	if (!saved_str)
 		saved_str = ft_strdup("");
+	if (!saved_str)
+		return (NULL);
+	buffer[0] = '\0';
 	while (read_bytes && !ft_strchr(buffer, '\n'))
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
@@ -30,6 +33,8 @@ char	*ft_read_line(int fd, char *saved_str)
 		}
 		buffer[read_bytes] = '\0';
 		saved_str = ft_strjoin(saved_str, buffer);
+		if (!saved_str)
+			return (NULL);
 	}
 	if (!saved_str[0])
 	{
@@ -61,6 +66,26 @@ char	*ft_trim_saved_str(char	*saved_str)
 	return (NULL);
 }
 
+char	*ft_trim_line(char *line)
+{
+	char	*tmp;
+	int 	i;
+	
+	i = 0;
+	while (line[i] != '\0')
+	{
+		if (line[i] == '\n')
+		{
+			line[i + 1] = '\0';
+			tmp = ft_strdup(line);
+			free (line);
+			return (tmp);
+		}
+		i++;
+	}
+	return (line);
+}
+
 char	*get_next_line(int fd)
 {
 	static char	*saved_str;
@@ -74,13 +99,10 @@ char	*get_next_line(int fd)
 	if (!saved_str)
 		return (NULL);
 	line = ft_strdup(saved_str);
+	if (!line)
+		return (NULL);
 	saved_str = ft_trim_saved_str(saved_str);
-	while (line[line_i])
-	{
-		if (line[line_i] == '\n')
-			line[line_i + 1] = '\0';
-		line_i++;
-	}
+	line = ft_trim_line(line);
 	return (line);
 }
 

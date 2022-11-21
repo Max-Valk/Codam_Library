@@ -6,11 +6,11 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/28 17:32:15 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/04 17:33:15 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/18 13:45:41 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../libft/libft.h"
+#include "./libft/libft.h"
 #include "ft_printf.h"
 #include <stdio.h>
 #include <stdarg.h>
@@ -67,12 +67,4 @@ int	ft_printf(const char *format_str, ...)
 	}
 	va_end(args);
 	return (print_len);
-}
-
-int main(void)
-{
-	// int a[2] = {1};
-	// ft_printf("%%%");
-	ft_printf("Hello World, the answer is %p\n", "");
-	return (0);
 }

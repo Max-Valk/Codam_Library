@@ -6,12 +6,12 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 13:57:32 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/04 13:58:27 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/18 13:45:47 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "../libft/libft.h"
+#include "./libft/libft.h"
 
 int	ft_print_ptr(unsigned long ptr)
 {

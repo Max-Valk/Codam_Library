@@ -6,35 +6,47 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/28 17:23:55 by mvalk         #+#    #+#                  #
-#    Updated: 2022/11/04 17:28:28 by mvalk         ########   odam.nl          #
+#    Updated: 2022/11/18 13:49:12 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
+
+# Variable definitions
 
 NAME := libftprintf.a
 CC = gcc
 MAKE = make
 CFLAGS = -Wall -Werror -Wextra
 HEADERFILES = ft_printf.h
+OBJ_DIR = obj
 SRCFILES = ft_printf_pxX.c \
 		ft_printf_siu.c \
 		ft_printf.c \
 		
-OBJFILES = $(SRCFILES:%.c=obj/%.o)
-		
+OBJFILES = $(SRCFILES:%.c=$(OBJ_DIR)/%.o)
+
+# Color definitions
+
+GREEN = \033[0;92m
+CYAN = \033[0;96m
+COLOR_END = \033[0m
+
 all: $(NAME)
 
 $(NAME): $(OBJFILES) $(HEADERFILES)
 	ar -crs $(NAME) $(OBJFILES)
 	@cd libft && $(MAKE) bonus
 	@cp libft/libft.a $(NAME)
+	@echo "$(GREEN)compilation complete!$(COLOR_END)"
 	
-obj/%.o: %.c $(HEADERFILES)
-	@mkdir -p $(dir $@)
+$(OBJ_DIR)/%.o: %.c $(HEADERFILES)
+	@mkdir -p $(OBJ_DIR)
 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@rm -f $(OBJFILES) $(OBJ_BONUS)
+	@rm -rf $(OBJ_DIR)
 	@$(MAKE) clean -C ./libft
+	@echo "$(CYAN)clean complete!$(COLOR_END)"
 
 fclean: clean
 	@rm -f $(NAME)

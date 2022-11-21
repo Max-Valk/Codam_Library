@@ -6,11 +6,17 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/17 13:43:07 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/17 14:36:44 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/21 13:35:49 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+
+void	*ft_free(char *str)
+{
+	free (str);
+	return (NULL);
+}
 
 int	ft_strlen(char const *line)
 {
@@ -57,6 +63,8 @@ char	*ft_strdup(const char *s1)
 	size_t	i;
 
 	i = 0;
+	if (!s1)
+		return (NULL);
 	ptr = (char *)malloc(ft_strlen(s1) + 1);
 	if (!ptr)
 		return (NULL);

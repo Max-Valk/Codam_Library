@@ -6,12 +6,11 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/17 13:43:21 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/17 15:42:47 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/21 15:09:46 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <stdio.h>
 #include <limits.h>
 
 char	*ft_read_line(int fd, char *saved_str)
@@ -22,23 +21,19 @@ char	*ft_read_line(int fd, char *saved_str)
 	read_bytes = 1;
 	if (!saved_str)
 		saved_str = ft_strdup("");
+	if (!saved_str)
+		return (NULL);
 	buffer[0] = '\0';
 	while (read_bytes && !ft_strchr(buffer, '\n'))
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes == -1)
-		{
-			free (saved_str);
-			return (NULL);
-		}
+			return (ft_free(saved_str));
 		buffer[read_bytes] = '\0';
 		saved_str = ft_strjoin(saved_str, buffer);
 	}
 	if (!saved_str[0])
-	{
-		free (saved_str);
-		return (NULL);
-	}
+		return (ft_free(saved_str));
 	return (saved_str);
 }
 
@@ -88,30 +83,3 @@ char	*get_next_line(int fd)
 	}
 	return (line);
 }
-
-// int	main(void)
-// {
-// 	int fd = open("test.txt", O_RDONLY);
-// 	int fd2 = open("test2.txt", O_RDONLY);
-
-// 	int i = 1;
-// 	while (i <= 1)
-// 	{
-// 		char *line = get_next_line(fd);
-// 		printf("file %d: %s", fd, line);
-// 		char *line2 = get_next_line(fd2);
-// 		printf("file %i: %s", fd2, line2);
-// 		free (line);
-// 		free (line2);
-// 		i++;
-// 	}
-
-// 	close(fd);
-// 	close(fd2);
-// 	// char *line = get_next_line();
-// 	// printf("line:\t%s", line);
-// 	// free (line);
-// 	// free (list);
-// 	system("leaks -q a.out");
-// 	return (0);
-// }
