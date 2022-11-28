@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/04 16:45:56 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/21 17:20:15 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/11/28 16:18:53 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,72 +27,51 @@ char	*ft_read_line(int fd, char *saved_str)
 	{
 		read_bytes = read(fd, buffer, BUFFER_SIZE);
 		if (read_bytes == -1)
-		{
-			free (saved_str);
-			return (NULL);
-		}
+			return (ft_free(saved_str));
 		buffer[read_bytes] = '\0';
 		saved_str = ft_strjoin(saved_str, buffer);
 		if (!saved_str)
 			return (NULL);
 	}
-	if (!saved_str[0])
-	{
-		free (saved_str);
-		return (NULL);
-	}
+	if (saved_str[0] == '\0')
+		return (ft_free(saved_str));
 	return (saved_str);
 }
 
-char	*ft_trim_saved_str(char	*saved_str)
+char	*ft_trim_str(char *str, int saved)
 {
 	int		saved_i;
 	char	*trimmed_str;
 
 	saved_i = 0;
-	if (!saved_str)
+	if (!str)
 		return (NULL);
-	while (saved_str[saved_i])
+	while (str[saved_i])
 	{
-		if (saved_str[saved_i] == '\n')
+		if (str[saved_i] == '\n')
 		{
-			trimmed_str = ft_strdup(&saved_str[saved_i] + 1);
-			free (saved_str);
+			if (saved == 1)
+				trimmed_str = ft_strdup(&str[saved_i] + 1);
+			else
+			{
+				str[saved_i + 1] = '\0';
+				trimmed_str = ft_strdup(str);
+			}
+			free (str);
 			return (trimmed_str);
 		}
 		saved_i++;
 	}
-	free (saved_str);
-	return (NULL);
-}
-
-char	*ft_trim_line(char *line)
-{
-	char	*tmp;
-	int 	i;
-	
-	i = 0;
-	while (line[i] != '\0')
-	{
-		if (line[i] == '\n')
-		{
-			line[i + 1] = '\0';
-			tmp = ft_strdup(line);
-			free (line);
-			return (tmp);
-		}
-		i++;
-	}
-	return (line);
+	if (saved == 1)
+		return (ft_free(str));
+	return (str);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*saved_str;
 	char		*line;
-	int			line_i;
 
-	line_i = 0;
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	saved_str = ft_read_line(fd, saved_str);
@@ -100,30 +79,10 @@ char	*get_next_line(int fd)
 		return (NULL);
 	line = ft_strdup(saved_str);
 	if (!line)
-		return (NULL);
-	saved_str = ft_trim_saved_str(saved_str);
-	line = ft_trim_line(line);
+		return (ft_free(saved_str));
+	saved_str = ft_trim_str(saved_str, 1);
+	line = ft_trim_str(line, 0);
+	if (!line)
+		return (ft_free(saved_str));
 	return (line);
 }
-
-// int	main(void)
-// {
-// 	int fd = open("test.txt", O_RDONLY);
-
-// 	int i = 1;
-// 	while (i <= 1)
-// 	{
-// 		char *line = get_next_line(fd);
-// 		printf("line %i: %s", i, line);
-// 		free (line);
-// 		i++;
-// 	}
-
-// 	close(fd);
-// 	// char *line = get_next_line();
-// 	// printf("line:\t%s", line);
-// 	// free (line);
-// 	// free (list);
-// 	system("leaks -q a.out");
-// 	return (0);
-// }
