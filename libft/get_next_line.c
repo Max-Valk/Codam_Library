@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   get_next_line_bonus.c                              :+:    :+:            */
+/*   get_next_line.c                                    :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/17 13:43:21 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/29 17:36:34 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/12/06 13:37:43 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line_bonus.h"
+#include "get_next_line.h"
 #include <limits.h>
 
 char	*ft_read_line(int fd, char *saved_str)

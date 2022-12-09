@@ -5,8 +5,8 @@
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/11/07 13:46:18 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/12/07 14:01:05 by mvalk         ########   odam.nl         */
+/*   Created: 2022/11/17 13:43:07 by mvalk         #+#    #+#                 */
+/*   Updated: 2022/12/06 13:37:48 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*ft_strjoin(char *s1, const char *s2)
 	size_t	s2len;
 	size_t	i;
 
-	if (s1 == NULL)
+	if (!s1)
 		return (NULL);
 	s1len = ft_strlen(s1);
 	s2len = ft_strlen(s2);
@@ -59,7 +59,7 @@ char	*ft_strdup(const char *s1)
 	size_t	i;
 
 	i = 0;
-	if (s1 == NULL)
+	if (!s1)
 		return (NULL);
 	ptr = (char *)malloc(ft_strlen(s1) + 1);
 	if (!ptr)
@@ -75,18 +75,14 @@ char	*ft_strdup(const char *s1)
 
 char	*ft_strchr(const char *s, int c)
 {
-	int	i;
-
-	i = 0;
-	if (!s)
-		return (NULL);
-	while (s[i] != '\0')
+	while (*s)
 	{
-		if (s[i] == (unsigned char)c)
-			return ((char *)&s[i]);
-		i++;
+		if (*s == (unsigned char)c)
+			return ((char *)s);
+		s++;
 	}
 	if ((unsigned char)c == '\0')
-		return ((char *)&s[i]);
-	return (0);
+		return ((char *)s);
+	else
+		return (0);
 }

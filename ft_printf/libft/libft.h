@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 17:29:00 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/03 12:51:22 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/12/07 17:34:53 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ char	*ft_strtrim(char const *s1, char const *set);
 
 /*write functions*/
 
-void	ft_putchar_fd(char c, int fd);
+void	ft_putchar_fd(const char c, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
