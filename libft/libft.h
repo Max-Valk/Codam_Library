@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 17:29:00 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/11/03 12:51:22 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/12/09 16:15:32 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,5 +85,16 @@ void	ft_putnbr_fd(int n, int fd);
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 void	ft_striteri(char *s, void (*f)(unsigned int, char*));
 char	**ft_split(char const *s, char c);
+
+/*get_next_line_utils*/
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 100
+# endif
+
+/**returns a line read from a file descriptor
+returns NULL when there's nothing else to read,
+or an error occured.*/
+char	*get_next_line(int fd);
 
 #endif

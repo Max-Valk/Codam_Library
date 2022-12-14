@@ -6,14 +6,50 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/11/17 13:43:21 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/12/06 13:37:43 by mvalk         ########   odam.nl         */
+/*   Updated: 2022/12/09 16:20:38 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "libft.h"
 #include <limits.h>
+#include <fcntl.h>
+#include <stddef.h>
 
-char	*ft_read_line(int fd, char *saved_str)
+static void	*ft_free(char *str)
+{
+	free (str);
+	return (NULL);
+}
+
+static char	*ft_line_merge(char *s1, const char *s2)
+{
+	char	*ptr;
+	size_t	s1len;
+	size_t	s2len;
+	size_t	i;
+
+	if (!s1)
+		return (NULL);
+	s1len = ft_strlen(s1);
+	s2len = ft_strlen(s2);
+	ptr = (char *)malloc (s1len + s2len + 1);
+	if (!ptr)
+		return (ft_free(s1));
+	i = -1;
+	while (s1[++i] != '\0')
+		ptr[i] = s1[i];
+	i = -1;
+	while (s2[++i] != '\0')
+		ptr[s1len + i] = s2[i];
+	ptr[s1len + s2len] = '\0';
+	free (s1);
+	return (ptr);
+}
+
+/**reads from fd to buffer until \n or eof
+concatenates 'saved_str' and 'buffer' until \n or eof
+returns a pointer to the created string*/
+static char	*ft_read_line(int fd, char *saved_str)
 {
 	char		buffer[BUFFER_SIZE + 1];
 	int			read_bytes;
@@ -30,7 +66,7 @@ char	*ft_read_line(int fd, char *saved_str)
 		if (read_bytes == -1)
 			return (ft_free(saved_str));
 		buffer[read_bytes] = '\0';
-		saved_str = ft_strjoin(saved_str, buffer);
+		saved_str = ft_line_merge(saved_str, buffer);
 		if (!saved_str)
 			return (NULL);
 	}
@@ -39,7 +75,10 @@ char	*ft_read_line(int fd, char *saved_str)
 	return (saved_str);
 }
 
-char	*ft_trim_str(char	*str, int saved)
+/**trims the input 'str'
+returns a pointer to a copy of 'str' until the newline if saved = 0
+returns a pointer to a copy of 'str' from newline to \0 if saved = 1*/
+static char	*ft_trim_str(char	*str, int saved)
 {
 	int		saved_i;
 	char	*trimmed_str;

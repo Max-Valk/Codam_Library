@@ -6,14 +6,14 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/10 17:16:34 by mvalk         #+#    #+#                  #
-#    Updated: 2022/12/06 13:37:15 by mvalk         ########   odam.nl          #
+#    Updated: 2022/12/09 16:22:59 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 NAME := libft.a
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-HEADERFILES = libft.h get_next_line.h
+HEADERFILES = libft.h
 OBJ_DIR = obj
 
 # Colors
@@ -72,7 +72,6 @@ SRCFILES := ft_atoi.c \
 			ft_lstiter.c \
 			ft_lstmap.c \
 			get_next_line.c \
-			get_next_line_utils.c \
 
 OBJFILES = $(SRCFILES:%.c=$(OBJ_DIR)/%.o)
 
