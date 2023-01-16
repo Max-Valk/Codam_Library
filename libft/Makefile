@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/10 17:16:34 by mvalk         #+#    #+#                  #
-#    Updated: 2022/12/09 16:22:59 by mvalk         ########   odam.nl          #
+#    Updated: 2023/01/13 14:50:53 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -72,6 +72,8 @@ SRCFILES := ft_atoi.c \
 			ft_lstiter.c \
 			ft_lstmap.c \
 			get_next_line.c \
+			ft_printf.c \
+			ft_printf_utils.c
 
 OBJFILES = $(SRCFILES:%.c=$(OBJ_DIR)/%.o)
 

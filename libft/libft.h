@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2022/10/05 17:29:00 by mvalk         #+#    #+#                 */
-/*   Updated: 2022/12/09 16:15:32 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/01/13 14:50:22 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,9 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+# include <stdio.h>
+# include <stdarg.h>
+
 
 typedef struct s_list
 {
@@ -96,5 +99,15 @@ char	**ft_split(char const *s, char c);
 returns NULL when there's nothing else to read,
 or an error occured.*/
 char	*get_next_line(int fd);
+
+/*ft_printf*/
+
+int	ft_printstr(const char *str);
+int	ft_printnbr(int nbr);
+int	ft_printunsigned(unsigned int nbr);
+int	ft_print_ptr(unsigned long ptr);
+int	ft_printhex(unsigned long hex, const char hex_case);
+
+int	ft_printf(const char *format_str, ...);
 
 #endif
