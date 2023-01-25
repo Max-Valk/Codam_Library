@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 13:25:52 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/01/13 14:26:24 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/01/16 17:38:42 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,14 @@ void	ft_swap(stack **head)
 	if ((*head)->next == NULL || *head == NULL)
 		return ;
 	elem_2 = (*head)->next;
-	elem_3 = elem_2->next;
+	if (elem_2->next)
+	{
+		elem_3 = elem_2->next;
+		elem_3->prev = *head;
+	}
+	else
+		elem_3 = NULL;
 	elem_2->next = *head;
-	elem_3->prev = *head;
 	elem_2->prev = NULL;
 	*head = elem_2;
 	elem_2->next->next = elem_3;
@@ -34,16 +39,19 @@ void	ft_ss(stack **stack_a, stack **stack_b)
 {
 	ft_swap(stack_a);
 	ft_swap(stack_b);
+	ft_printf("ss\n");
 }
 
 void	ft_sa(stack **stack_a)
 {
 	ft_swap(stack_a);
+	ft_printf("sa\n");
 }
 
 void	ft_sb(stack **stack_b)
 {
 	ft_swap(stack_b);
+	ft_printf("sb\n");
 }
 
 /*

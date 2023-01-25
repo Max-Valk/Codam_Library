@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_stack_new.c                                     :+:    :+:            */
+/*   stack_building.c                                   :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/12 16:21:08 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/01/13 16:28:12 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/01/25 14:12:53 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ stack	*ft_stack_new(int num)
 	if (!new_stack)
 		return (NULL);
 	new_stack->data = num;
+	// new_stack->index = index;
 	return (new_stack);
 }
 
@@ -50,13 +51,12 @@ void ft_stackadd_back(stack **front, stack *new)
 
 void ft_stackadd_front(stack **front, stack *new)
 {
-	new->next = *front;
-	(*front)->prev = new;
-	*front = new;
+	if (*front)
+		(*front)->prev = new;
+	new->next = (*front);
 	new->prev = NULL;
-	
+	*front = new;
 }
-
 
 void	ft_delstack(stack *node)
 {
@@ -69,19 +69,51 @@ void	ft_delstack(stack *node)
 	free (node);
 }
 
-int	ft_stack_size(stack *start)
+int	ft_stack_size(stack **start)
 {
 	int size;
+	stack	*index;
+
+	index = *start;
+	size = 0;
+	while (index != NULL)
+	{
+		index = index->next;
+		size++;
+	}
+	return (size);
+}
+/*
+int ft_reverse_stack_size(stack *start)
+{
+	int	size;
 	
 	size = 0;
+	print_list(&start);
+	if (!start)
+		return (0);
 	while (start)
 	{
 		size++;
-		start = start->next;
+		start = start->prev;
 	}
 	return (size);
 }
 
+int	rotate_direction(stack **start)
+{
+	int direction = 0;
+	ft_printf("reverse_error");
+	int	size_to_head = ft_reverse_stack_size(*start);
+	int	size = ft_stack_size(**start);
+	
+
+	if (size_to_head >= size)
+		direction = 1;
+	else if (size > size_to_head)
+		direction = -1;
+	return (direction);
+}*/
 // int main(void)
 // {
 // 	stack *stack_1 = ft_stack_new(1);
