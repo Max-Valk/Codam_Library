@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/12 13:36:30 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/01/18 14:41:45 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/06 15:44:39 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ void	ft_push(stack **stack_dst, stack **stack_src)
 		return ;
 	src_next = ((*stack_src)->next);
 	ft_stackadd_front(stack_dst, *stack_src);
-	// ft_delstack(*stack_src);
 	if (src_next != NULL)
 		src_next->prev = NULL;
 	*stack_src = src_next;

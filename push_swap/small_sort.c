@@ -6,11 +6,18 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/19 14:32:47 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/01/23 17:31:46 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/06 15:40:35 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	second_is_biggest(stack **a, stack **b)
+{
+	ft_ra(a);
+	ft_pa(a, b);
+	ft_rra(a);
+}
 
 void	sort_2(stack **a)
 {
@@ -52,17 +59,12 @@ void	sort_4(stack **a, stack **b)
 {
 	stack	*last;
 
-	// ft_pb(a, b);
 	sort_3(a);
 	last = ft_stacklast(*a);
 	if ((*b)->data < (*a)->data)
 		ft_pa(a, b);
 	else if ((*b)->data > (*a)->data && (*b)->data < (*a)->next->data)
-	{
-		ft_ra(a);
-		ft_pa(a, b);
-		ft_rra(a);
-	}
+		second_is_biggest(a, b);
 	else if ((*b)->data > (*a)->data && (*b)->data < last->data)
 	{
 		ft_rra(a);
@@ -86,11 +88,7 @@ void	sort_5(stack **a, stack **b)
 	if ((*b)->data < (*a)->data)
 		ft_pa(a, b);
 	else if ((*b)->data > (*a)->data && (*b)->data < (*a)->next->data)
-	{
-		ft_ra(a);
-		ft_pa(a, b);
-		ft_rra(a);
-	}
+		second_is_biggest(a, b);
 	else if ((*b)->data > (*a)->data && (*b)->data < last_prev->data)
 	{
 		ft_ra(a);

@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/09 14:04:26 by mvalk         #+#    #+#                  #
-#    Updated: 2023/01/24 15:36:22 by mvalk         ########   odam.nl          #
+#    Updated: 2023/02/03 14:55:25 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,8 @@ SRCFILES = 	stack_building.c \
 			rotate.c \
 			reverse_rotate.c \
 			sort_10.c \
+			sort_100.c \
+			sort_500.c \
 
 		
 OBJFILES = $(SRCFILES:%.c=$(OBJ_DIR)/%.o)

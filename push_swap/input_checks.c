@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/16 17:09:07 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/01/24 17:10:05 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/06 15:33:19 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	check_input_type(char **argv, int arg_type)
 	while (argv[i] != NULL)
 	{
 		j = 0;
+		if (argv[i][0] == '-')
+			j++;
 		while (argv[i][j])
 		{
 			if (!ft_isdigit(argv[i][j]))
