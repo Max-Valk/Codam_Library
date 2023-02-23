@@ -6,17 +6,17 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/24 14:53:24 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/06 15:34:37 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/08 15:35:04 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
 
-void	sort_10(stack **a, stack **b)
+void	sort_20(t_stack **a, t_stack **b)
 {
 	int		mid_point;
-	stack	*lowest;
+	t_stack	*lowest;
 
 	while (ft_stack_size(*a) > 5)
 	{
@@ -35,7 +35,7 @@ void	sort_10(stack **a, stack **b)
 		}
 		ft_pb(a, b);
 	}
-	sort_size(a, b);
+	sort_small(a, b);
 	while (*b)
 		ft_pa(a, b);
 }

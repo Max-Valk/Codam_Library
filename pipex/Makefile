@@ -6,35 +6,20 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/09 14:04:26 by mvalk         #+#    #+#                  #
-#    Updated: 2023/02/13 14:25:55 by mvalk         ########   odam.nl          #
+#    Updated: 2023/02/22 14:28:00 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
 # Variable definitions
 
-NAME := push_swap
+NAME := pipex
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-HEADER = push_swap.h
+HEADER = pipex.h
 OBJ_DIR = obj
 SRCFILES = 	main.c \
-			stack_building.c \
-			input_checks.c \
-			sorting_test.c \
-			small_sort.c \
-			stack_management.c \
-			pushes.c \
-			swaps.c \
-			rotate.c \
-			reverse_rotate.c \
-			sort_20.c \
-			sort_100.c \
-			sort_500.c \
-			sort_big.c \
-			quicksort_array.c \
 			
 			
-
 		
 OBJFILES = $(SRCFILES:%.c=$(OBJ_DIR)/%.o)
 

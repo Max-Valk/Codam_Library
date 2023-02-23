@@ -6,16 +6,16 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/12 13:36:30 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/06 15:44:39 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/08 15:35:04 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
 
-void	ft_push(stack **stack_dst, stack **stack_src)
+static void	ft_push(t_stack **stack_dst, t_stack **stack_src)
 {
-	stack	*src_next;
+	t_stack	*src_next;
 
 	if (*stack_src == NULL)
 		return ;
@@ -26,13 +26,13 @@ void	ft_push(stack **stack_dst, stack **stack_src)
 	*stack_src = src_next;
 }
 
-void	ft_pa(stack **a, stack **b)
+void	ft_pa(t_stack **a, t_stack **b)
 {
 	ft_push(a, b);
 	ft_printf("pa\n");
 }
 
-void	ft_pb(stack **a, stack **b)
+void	ft_pb(t_stack **a, t_stack **b)
 {
 	ft_push(b, a);
 	ft_printf("pb\n");

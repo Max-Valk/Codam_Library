@@ -6,17 +6,17 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/13 16:50:56 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/01/25 15:22:22 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/08 15:35:04 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdint.h>
 
-void	ft_rotate(stack **head)
+static void	ft_rotate(t_stack **head)
 {
-	stack	*last;
-	stack	*head_next;
+	t_stack	*last;
+	t_stack	*head_next;
 
 	head_next = (*head)->next;
 	if (head_next)
@@ -30,19 +30,19 @@ void	ft_rotate(stack **head)
 	}
 }
 
-void	ft_ra(stack	**a)
+void	ft_ra(t_stack	**a)
 {
 	ft_rotate(a);
 	ft_printf("ra\n");
 }
 
-void	ft_rb(stack **b)
+void	ft_rb(t_stack **b)
 {
 	ft_rotate(b);
 	ft_printf("rb\n");
 }
 
-void	ft_rr(stack **a, stack **b)
+void	ft_rr(t_stack **a, t_stack **b)
 {
 	ft_rotate(a);
 	ft_rotate(b);

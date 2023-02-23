@@ -1,42 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   stack_management.c                                 :+:    :+:            */
+/*   pipex.h                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/01/24 13:46:17 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/08 16:08:45 by mvalk         ########   odam.nl         */
+/*   Created: 2023/02/22 14:26:05 by mvalk         #+#    #+#                 */
+/*   Updated: 2023/02/23 13:39:01 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "push_swap.h"
+#ifndef PIPEX_H
+# define PIPEX_H
 
-void	set_index(t_stack **a)
-{
-	t_stack	*tmp;
-	int		index;
+# include <stdio.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+# include <sys/wait.h>
 
-	tmp = *a;
-	index = 0;
-	while (tmp != NULL)
-	{
-		tmp->index = index;
-		tmp = tmp->next;
-		index++;
-	}
-}
+int	pipex(int argc, char *argv[], char *envp[]);
 
-int	ft_stack_size(t_stack *start)
-{
-	int	size;
-
-	size = 0;
-	while (start != NULL)
-	{
-		size++;
-		start = start->next;
-	}
-	return (size);
-}
+#endif

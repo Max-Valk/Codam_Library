@@ -6,25 +6,25 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/12 16:21:08 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/06 15:47:15 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/08 16:08:41 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
 
-stack	*ft_stack_new(int num)
+t_stack	*ft_stack_new(int num)
 {
-	stack	*new_stack;
+	t_stack	*new_stack;
 
-	new_stack = (stack *)ft_calloc(1, sizeof(stack));
+	new_stack = (t_stack *)ft_calloc(1, sizeof(t_stack));
 	if (!new_stack)
 		return (NULL);
 	new_stack->data = num;
 	return (new_stack);
 }
 
-stack	*ft_stacklast(stack *node)
+t_stack	*ft_stacklast(t_stack *node)
 {
 	if (node)
 		while (node->next)
@@ -32,10 +32,10 @@ stack	*ft_stacklast(stack *node)
 	return (node);
 }
 
-void ft_stackadd_back(stack **front, stack *new)
+void	ft_stackadd_back(t_stack **front, t_stack *new)
 {
-	stack	*last_stack;
-	
+	t_stack	*last_stack;
+
 	if (!new)
 		return ;
 	if (!*front)
@@ -48,7 +48,7 @@ void ft_stackadd_back(stack **front, stack *new)
 	new->prev = last_stack;
 }
 
-void ft_stackadd_front(stack **front, stack *new)
+void	ft_stackadd_front(t_stack **front, t_stack *new)
 {
 	if (*front)
 		(*front)->prev = new;
@@ -57,7 +57,7 @@ void ft_stackadd_front(stack **front, stack *new)
 	*front = new;
 }
 
-void	ft_delstack(stack *node)
+void	ft_delstack(t_stack *node)
 {
 	if (node->prev && node->next)
 	{
@@ -66,17 +66,4 @@ void	ft_delstack(stack *node)
 	}
 	node = NULL;
 	free (node);
-}
-
-int	ft_stack_size(stack *start)
-{
-	int size;
-	
-	size = 0;
-	while (start != NULL)
-	{
-		size++;
-		start = start->next;
-	}
-	return (size);
 }

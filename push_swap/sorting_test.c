@@ -6,24 +6,24 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/16 15:14:44 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/06 15:48:01 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/08 16:07:11 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-int	is_sorted(stack **a)
+int	is_sorted(t_stack **a)
 {
-	stack	*index;
+	t_stack	*index;
 	int		size;
-	
+
 	index = *a;
 	size = 0;
 	while (index)
 	{
 		if (index->next)
 		{
-			if (index->data	> index->next->data)
+			if (index->data > index->next->data)
 				return (0);
 		}
 		index = index->next;
@@ -33,15 +33,12 @@ int	is_sorted(stack **a)
 		return (1);
 	else
 		return (0);
-		
 }
 
-int	sort_size(stack **a, stack **b)
+int	sort_small(t_stack **a, t_stack **b)
 {
 	int	size;
 
-	if (is_sorted(a))
-		return (1);
 	size = ft_stack_size(*a);
 	if (size == 2)
 		sort_2(a);
@@ -63,11 +60,11 @@ int	sort_size(stack **a, stack **b)
 	return (1);
 }
 
-stack	*is_lowest(stack **a)
+t_stack	*is_lowest(t_stack **a)
 {
-	stack	*lowest;
-	stack	*index;
-	
+	t_stack	*lowest;
+	t_stack	*index;
+
 	index = *a;
 	lowest = *a;
 	while (index)
@@ -79,11 +76,11 @@ stack	*is_lowest(stack **a)
 	return (lowest);
 }
 
-stack	*is_biggest(stack **a)
+t_stack	*is_biggest(t_stack **a)
 {
-	stack	*biggest;
-	stack	*index;
-	
+	t_stack	*biggest;
+	t_stack	*index;
+
 	index = *a;
 	biggest = *a;
 	while (index)

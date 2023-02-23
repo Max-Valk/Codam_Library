@@ -6,17 +6,17 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 13:25:52 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/01/25 17:45:32 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/08 15:35:04 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <stdio.h>
 
-void	ft_swap(stack **head)
+static void	ft_swap(t_stack **head)
 {
-	stack	*elem_2;
-	stack	*elem_3;
+	t_stack	*elem_2;
+	t_stack	*elem_3;
 
 	if ((*head)->next == NULL || *head == NULL)
 		return ;
@@ -35,20 +35,20 @@ void	ft_swap(stack **head)
 	elem_2->next->prev = elem_2;
 }
 
-void	ft_ss(stack **stack_a, stack **stack_b)
+void	ft_ss(t_stack **stack_a, t_stack **stack_b)
 {
 	ft_swap(stack_a);
 	ft_swap(stack_b);
 	ft_printf("ss\n");
 }
 
-void	ft_sa(stack **stack_a)
+void	ft_sa(t_stack **stack_a)
 {
 	ft_swap(stack_a);
 	ft_printf("sa\n");
 }
 
-void	ft_sb(stack **stack_b)
+void	ft_sb(t_stack **stack_b)
 {
 	ft_swap(stack_b);
 	ft_printf("sb\n");

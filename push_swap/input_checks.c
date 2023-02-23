@@ -6,57 +6,28 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/16 17:09:07 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/06 15:33:19 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/02/14 16:32:34 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 #include <limits.h>
 
-void	error_exit(void)
+int	dupe_check(char **argv)
 {
-	ft_printf("Error\n");
-	exit(0);
-}
-
-int	check_input_value(stack **head)
-{
-	stack	*stack_data;
-	stack	*stack_checker;
-	
-	stack_data = *head;
-	while (stack_data != NULL)
-	{
-		stack_checker = stack_data->next;
-		while (stack_checker != NULL)
-		{
-			if (stack_data->data == stack_checker->data)
-				error_exit();
-			stack_checker = stack_checker->next;
-		}
-		stack_data = stack_data->next;
-	}
-	return (1);
-}
-
-int	check_input_type(char **argv, int arg_type)
-{
+	int	to_comp;
 	int	i;
 	int	j;
 
-	if (arg_type == 1)
-		i = 1;
-	else
-		i = 0;
-	while (argv[i] != NULL)
+	i = 1;
+	while (argv[i])
 	{
-		j = 0;
-		if (argv[i][0] == '-')
-			j++;
-		while (argv[i][j])
+		j = i + 1;
+		to_comp = ft_atoi(argv[i]);
+		while (argv[j])
 		{
-			if (!ft_isdigit(argv[i][j]))
-				error_exit();
+			if (to_comp == ft_atoi(argv[j]))
+				return (0);
 			j++;
 		}
 		i++;
@@ -64,21 +35,66 @@ int	check_input_type(char **argv, int arg_type)
 	return (1);
 }
 
-stack	*ft_make_list(stack **head, char **argv, int arg_type)
+int	check_input_type(char **argv, int argc)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	if (argc < 2)
+		return (0);
+	while (argv[i] != NULL)
+	{
+		j = 0;
+		if (argv[i][0] == '-')
+			j++;
+		if (argv[i][j] == '\0')
+			return (0);
+		while (argv[i][j])
+		{
+			if (!ft_isdigit(argv[i][j]))
+				return (0);
+			j++;
+		}
+		i++;
+	}
+	return (1);
+}
+
+void	*free_list(t_stack **head)
+{
+	t_stack	*tmp;
+	t_stack	*next;
+
+	tmp = *head;
+	next = NULL;
+	while (tmp)
+	{
+		next = tmp->next;
+		free (tmp);
+		tmp = next;
+	}
+	*head = NULL;
+	return (NULL);
+}
+
+t_stack	*ft_make_list(t_stack **head, char **argv)
 {
 	int		i;
 	long	data;
-	
-	if (arg_type == 1)
-		i = 1;
-	else
-		i = 0;
+	t_stack	*tmp_stack;
+
+	tmp_stack = NULL;
+	i = 1;
 	while (argv[i] != NULL)
 	{
 		data = ft_atoi(argv[i]);
 		if (data > INT_MAX || data < INT_MIN)
-			error_exit();
-		ft_stackadd_back(head, ft_stack_new(data));
+			return (free_list(head));
+		tmp_stack = ft_stack_new(data);
+		if (!tmp_stack)
+			return (free_list(head));
+		ft_stackadd_back(head, tmp_stack);
 		i++;
 	}
 	return (*head);
