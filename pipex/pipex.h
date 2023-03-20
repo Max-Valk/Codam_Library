@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/22 14:26:05 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/23 13:39:01 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/03/20 15:14:33 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,25 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
+# include <sys/errno.h>
+# include "libft/libft.h"
 
-int	pipex(int argc, char *argv[], char *envp[]);
+typedef	struct t_pipex
+{
+	char 	**argv;
+	char	**envp;
+	int		pipe_fd[2];
+	int		fd_in;
+	int		fd_out;
+}	t_pipex;
+
+
+//test
+int		pipex(t_pipex *var_struct);
+void	child_cmd_1(t_pipex	*var_struct);
+void	child_cmd_2(t_pipex	*var_struct);
+char	**parse_paths(char **envp);
+void	exec_command_paths(char **argv, char **envp, int cmdn);
+void	error_exit(char *function, int error_num);
 
 #endif

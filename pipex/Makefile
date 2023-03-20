@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/09 14:04:26 by mvalk         #+#    #+#                  #
-#    Updated: 2023/02/22 14:28:00 by mvalk         ########   odam.nl          #
+#    Updated: 2023/03/20 14:40:47 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,13 +14,13 @@
 
 NAME := pipex
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 HEADER = pipex.h
 OBJ_DIR = obj
 SRCFILES = 	main.c \
+			pipex.c \
 			
 			
-		
 OBJFILES = $(SRCFILES:%.c=$(OBJ_DIR)/%.o)
 
 # Color definitions

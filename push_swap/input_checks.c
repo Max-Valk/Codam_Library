@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/16 17:09:07 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/14 16:32:34 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/03/06 15:59:58 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,3 +99,12 @@ t_stack	*ft_make_list(t_stack **head, char **argv)
 	}
 	return (*head);
 }
+
+
+// - | -100 | -a100 | -100a
+// Is eerste char een -
+// Zo ja? Is_negative = true
+// Stel 2de char is geen getal of een min? Exit
+// Als het wel zo is door blijven loopen.
+// --100
+//
