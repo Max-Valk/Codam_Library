@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/22 14:26:05 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/03/20 15:14:33 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/03/22 17:03:15 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,7 @@ void	child_cmd_2(t_pipex	*var_struct);
 char	**parse_paths(char **envp);
 void	exec_command_paths(char **argv, char **envp, int cmdn);
 void	error_exit(char *function, int error_num);
+char	**parse_awk(char *cmd);
+char	*ft_line_merge(char *s1, const char *s2);
 
 #endif

@@ -6,57 +6,59 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/22 16:37:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/03/20 17:54:14 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/03/22 18:00:21 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	pipex(t_pipex *var_struct)
+int	pipex(t_pipex *pipex_info)
 {
 	pid_t	pid_1;
 	pid_t	pid_2;
 
-	if (pipe(var_struct->pipe_fd) == -1)
+	if (pipe(pipex_info->pipe_fd) == -1)
 		error_exit("pipe", errno);
 	pid_1 = fork();
-	pid_2 = fork();
-	if (pid_1 == -1 || pid_2 == -1)
+	if (pid_1 == -1)
 		error_exit("fork", errno);
 	if (pid_1 == 0)
-		child_cmd_1(var_struct);
+		child_cmd_1(pipex_info);
+	pid_2 = fork();
+	if (pid_2 == -1)
+		error_exit("fork", errno);
 	if (pid_2 == 0)
 	{
 		waitpid(pid_1, NULL, 0);
-		child_cmd_2(var_struct);	
+		child_cmd_2(pipex_info);
 	}
-	close(var_struct->pipe_fd[0]);
-	close(var_struct->pipe_fd[1]);
-	close(var_struct->fd_in);
-	close(var_struct->fd_out);
+	close(pipex_info->pipe_fd[0]);
+	close(pipex_info->pipe_fd[1]);
 	waitpid(pid_1, NULL, 0);
 	waitpid(pid_2, NULL, 0);
+	close(pipex_info->fd_in);
+	close(pipex_info->fd_out);
 	return(EXIT_SUCCESS);
 }
 
-void	child_cmd_1(t_pipex *var_struct)
+void	child_cmd_1(t_pipex *pipex_info)
 {
-	if (dup2(var_struct->pipe_fd[1], STDOUT_FILENO) < 0)
+	if (dup2(pipex_info->pipe_fd[1], STDOUT_FILENO) < 0)
 		error_exit("dup2", errno);
-	close(var_struct->pipe_fd[0]);
-	if (dup2(var_struct->fd_in, STDIN_FILENO) < 0)
+	close(pipex_info->pipe_fd[0]);
+	if (dup2(pipex_info->fd_in, STDIN_FILENO) < 0)
 		error_exit("dup2", errno);
-	exec_command_paths(var_struct->argv, var_struct->envp, 2);
+	exec_command_paths(pipex_info->argv, pipex_info->envp, 2);
 }
 
-void	child_cmd_2(t_pipex *var_struct)
+void	child_cmd_2(t_pipex *pipex_info)
 {
-	if (dup2(var_struct->pipe_fd[0], STDIN_FILENO) < 0)
+	if (dup2(pipex_info->pipe_fd[0], STDIN_FILENO) < 0)
 		error_exit("dup2", errno);
-	close(var_struct->pipe_fd[1]);
-	if (dup2(var_struct->fd_out, STDOUT_FILENO) < 0)
+	close(pipex_info->pipe_fd[1]);
+	if (dup2(pipex_info->fd_out, STDOUT_FILENO) < 0)
 		error_exit("dup2", errno);
-	exec_command_paths(var_struct->argv, var_struct->envp, 3);
+	exec_command_paths(pipex_info->argv, pipex_info->envp, 3);
 }
 
 void	exec_command_paths(char **argv, char **envp, int cmdn)
@@ -66,9 +68,12 @@ void	exec_command_paths(char **argv, char **envp, int cmdn)
 	char *full_cmd;
 	char *tmp;
 
-	cmd_args = ft_split(argv[cmdn], ' ');
+	if (ft_strncmp(argv[cmdn], "awk", 3) == 0)
+		cmd_args = parse_awk(argv[cmdn]);
+	else
+		cmd_args = ft_split(argv[cmdn], ' ');
 	if (!cmd_args)
-		error_exit("malloc", errno);
+		error_exit("cmd_split", errno);
 	if (argv[cmdn][0] == '/')
 		if (execve(cmd_args[0], cmd_args, envp) < 0)
 			error_exit("execve", errno);
@@ -82,12 +87,14 @@ void	exec_command_paths(char **argv, char **envp, int cmdn)
 		free (tmp);
 		if (!full_cmd)
 			error_exit("malloc", errno);
-		if (access(full_cmd, X_OK) == 0)
-			if (execve(full_cmd, cmd_args, envp) < 0)
-				error_exit("execve", errno);
+		if (access(full_cmd, X_OK) == 0 && execve(full_cmd, cmd_args, envp) < 0)
+			error_exit("execve", errno);
 		free (full_cmd);
 		cmd_paths++;
 	}
+	ft_printf("pipex: %s: command not found\n", argv[cmdn]);
+	// error_exit(argv[cmdn], errno);
+	// exit(127);
 }
 
 char	**parse_paths(char **envp)
@@ -103,6 +110,27 @@ char	**parse_paths(char **envp)
 	parsed_path = ft_split(path_line, ':');
 	free (path_line);
 	return (parsed_path);
+}
+
+char	**1
+parse_awk(char *cmd)
+{
+	char	**cmd_args;
+	size_t	start_apho;
+	size_t	end_apho;
+
+	start_apho = 0;
+	while (cmd[start_apho] != 39 && cmd[start_apho] != 34)
+		start_apho++;
+	end_apho = start_apho + 1;
+	while (cmd[end_apho] != 39 && cmd[start_apho] != 34)
+		end_apho++;
+	cmd_args = ft_calloc(sizeof(char **), 3);
+	if (!cmd_args)
+		return (NULL);
+	cmd_args[0] = "awk";
+	cmd_args[1] = ft_substr(cmd, start_apho + 1 , end_apho - start_apho - 1);
+	return (cmd_args);
 }
 
 void	error_exit(char *function, int error_num)
