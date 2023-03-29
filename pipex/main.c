@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/23 13:37:32 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/03/21 17:20:53 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/03/29 18:09:09 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,23 @@
 
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_pipex *var_struct;
+	t_pipex *pipex_info;
 
-	var_struct = ft_calloc(sizeof(t_pipex), 1);
-	var_struct->fd_in = open(argv[1], O_RDONLY);
-	var_struct->fd_out = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
-	var_struct->argv = argv;
-	var_struct->envp = envp;
 	if (argc == 5)
-		return (pipex(var_struct));
+	{
+		pipex_info = ft_calloc(sizeof(t_pipex), 1);
+		if (!pipex_info)
+			return(EXIT_FAILURE);
+		pipex_info->fd_in = open(argv[1], O_RDONLY);
+		pipex_info->fd_out = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
+		if (access(argv[4], W_OK) != 0)
+			error_exit(argv[4], errno);
+		pipex_info->argv = argv;
+		pipex_info->envp = envp;
+		return (pipex(pipex_info));
+	}
 	else
 		return (perror("Invalid argument count"), 1);
-	return (0);
 }
 
 
