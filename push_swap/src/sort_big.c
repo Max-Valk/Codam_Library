@@ -6,26 +6,26 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/08 15:43:49 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/03/16 17:11:37 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/05 15:30:36 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../inc/push_swap.h"
 
-int	sort_big(t_stack **a, t_stack **b, int stack_size)
+void	sort_big(t_stack **a, t_stack **b, int stack_size)
 {
 	int		*sorted;
 
 	sorted = stack_to_array(a);
 	if (!sorted)
-		return (0);
+		return ;
 	quicksort(sorted, 0, stack_size - 1);
 	set_true_index(a, sorted);
 	free (sorted);
 	if (stack_size <= 120)
-		return (sort_100(a, b, stack_size));
+		sort_100(a, b, stack_size);
 	else
-		return (sort_500(a, b, stack_size));
+		sort_500(a, b, stack_size);
 }
 
 void	set_true_index(t_stack **a, int *sorted_array)

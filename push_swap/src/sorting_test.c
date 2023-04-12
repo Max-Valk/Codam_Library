@@ -6,11 +6,11 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/16 15:14:44 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/08 16:07:11 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/12 16:03:52 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../inc/push_swap.h"
 
 int	is_sorted(t_stack **a)
 {
@@ -35,7 +35,7 @@ int	is_sorted(t_stack **a)
 		return (0);
 }
 
-int	sort_small(t_stack **a, t_stack **b)
+void	sort_small(t_stack **a, t_stack **b)
 {
 	int	size;
 
@@ -49,15 +49,8 @@ int	sort_small(t_stack **a, t_stack **b)
 		ft_pb(a, b);
 		sort_4(a, b);
 	}
-	else if (size == 5)
-	{
-		ft_pb(a, b);
-		ft_pb(a, b);
-		if ((*b)->data < (*b)->next->data)
-			ft_sb(b);
-		sort_5(a, b);
-	}
-	return (1);
+	else
+		sort_20(a, b);
 }
 
 t_stack	*is_lowest(t_stack **a)

@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/22 16:37:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/03/29 18:23:10 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/03/30 13:26:26 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ int	pipex(t_pipex *pipex_info)
 	waitpid(pid_2, NULL, 0);
 	close(pipex_info->fd_in);
 	close(pipex_info->fd_out);
+	system("leaks -q pipex");
 	return(EXIT_SUCCESS);
 }
 

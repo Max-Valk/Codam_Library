@@ -6,12 +6,11 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/24 13:46:17 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/08 16:08:45 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/05 15:30:46 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdio.h>
-#include "push_swap.h"
+#include "../inc/push_swap.h"
 
 void	set_index(t_stack **a)
 {

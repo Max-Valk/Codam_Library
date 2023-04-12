@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/22 14:26:05 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/03/23 15:43:31 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/03/30 13:21:52 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,14 @@
 # include "libft/libft.h"
 # include <string.h>
 
-typedef	struct t_pipex
+typedef struct t_pipex
 {
-	char 	**argv;
+	char	**argv;
 	char	**envp;
 	int		pipe_fd[2];
 	int		fd_in;
 	int		fd_out;
 }	t_pipex;
-
 
 //test
 int		pipex(t_pipex *var_struct);

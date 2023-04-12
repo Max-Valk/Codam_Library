@@ -6,12 +6,11 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/11 13:25:52 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/08 15:35:04 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/06 15:14:52 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
-#include <stdio.h>
+#include "../inc/push_swap.h"
 
 static void	ft_swap(t_stack **head)
 {

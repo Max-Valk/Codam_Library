@@ -6,11 +6,11 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/19 14:32:47 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/02/08 15:35:04 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/06 15:12:32 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../inc/push_swap.h"
 
 void	second_is_biggest(t_stack **a, t_stack **b)
 {
@@ -79,29 +79,29 @@ void	sort_4(t_stack **a, t_stack **b)
 	}
 }
 
-void	sort_5(t_stack **a, t_stack **b)
-{
-	t_stack	*last_prev;
+// void	sort_5(t_stack **a, t_stack **b)
+// {
+// 	t_stack	*last_prev;
 
-	sort_4(a, b);
-	last_prev = ft_stacklast(*a)->prev;
-	if ((*b)->data < (*a)->data)
-		ft_pa(a, b);
-	else if ((*b)->data > (*a)->data && (*b)->data < (*a)->next->data)
-		second_is_biggest(a, b);
-	else if ((*b)->data > (*a)->data && (*b)->data < last_prev->data)
-	{
-		ft_ra(a);
-		ft_ra(a);
-		ft_pa(a, b);
-		ft_rra(a);
-		ft_rra(a);
-	}
-	else
-	{
-		ft_rra(a);
-		ft_pa(a, b);
-		ft_ra(a);
-		ft_ra(a);
-	}
-}
+// 	sort_4(a, b);
+// 	last_prev = ft_stacklast(*a)->prev;
+// 	if ((*b)->data < (*a)->data)
+// 		ft_pa(a, b);
+// 	else if ((*b)->data > (*a)->data && (*b)->data < (*a)->next->data)
+// 		second_is_biggest(a, b);
+// 	else if ((*b)->data > (*a)->data && (*b)->data < last_prev->data)
+// 	{
+// 		ft_ra(a);
+// 		ft_ra(a);
+// 		ft_pa(a, b);
+// 		ft_rra(a);
+// 		ft_rra(a);
+// 	}
+// 	else
+// 	{
+// 		ft_rra(a);
+// 		ft_pa(a, b);
+// 		ft_ra(a);
+// 		ft_ra(a);
+// 	}
+// }

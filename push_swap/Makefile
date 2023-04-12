@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/09 14:04:26 by mvalk         #+#    #+#                  #
-#    Updated: 2023/02/13 14:25:55 by mvalk         ########   odam.nl          #
+#    Updated: 2023/04/06 15:28:18 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,28 +15,26 @@
 NAME := push_swap
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
-HEADER = push_swap.h
+HEADER = inc/push_swap.h
 OBJ_DIR = obj
 SRCFILES = 	main.c \
-			stack_building.c \
 			input_checks.c \
 			sorting_test.c \
 			small_sort.c \
-			stack_management.c \
-			pushes.c \
-			swaps.c \
-			rotate.c \
-			reverse_rotate.c \
 			sort_20.c \
 			sort_100.c \
 			sort_500.c \
 			sort_big.c \
 			quicksort_array.c \
-			
-			
+			stack_building.c \
+			stack_management.c \
+			pushes.c \
+			swaps.c \
+			rotate.c \
+			reverse_rotate.c
 
-		
-OBJFILES = $(SRCFILES:%.c=$(OBJ_DIR)/%.o)
+vpath %.c	src stack
+OBJFILES = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCFILES))
 
 # Color definitions
 
@@ -50,7 +48,7 @@ $(NAME): $(OBJFILES) $(HEADER)
 	@cd libft && $(MAKE)
 	$(CC) $(CFLAGS) $(OBJFILES) libft/libft.a -o $(NAME)
 	@echo "$(GREEN)compilation complete!$(COLOR_END)"
-	
+
 $(OBJ_DIR)/%.o: %.c $(HEADER)
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@

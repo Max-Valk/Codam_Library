@@ -6,62 +6,60 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/16 17:09:07 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/03/06 15:59:58 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/12 18:01:53 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../inc/push_swap.h"
 #include <limits.h>
 
-int	dupe_check(char **argv)
+int	dupe_check(char **param)
 {
 	int	to_comp;
-	int	i;
 	int	j;
+	int	i;
 
-	i = 1;
-	while (argv[i])
+	i = 0;
+	while (param[i])
 	{
 		j = i + 1;
-		to_comp = ft_atoi(argv[i]);
-		while (argv[j])
+		to_comp = ft_atoi(param[i]);
+		while (param[j])
 		{
-			if (to_comp == ft_atoi(argv[j]))
-				return (0);
+			if (to_comp == ft_atoi(param[j]))
+				return (1);
 			j++;
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
-int	check_input_type(char **argv, int argc)
+int	check_input_type(char **param)
 {
-	int	i;
 	int	j;
+	int	i;
 
-	i = 1;
-	if (argc < 2)
-		return (0);
-	while (argv[i] != NULL)
+	i = 0;
+	while (param[i] != NULL)
 	{
 		j = 0;
-		if (argv[i][0] == '-')
+		if (param[i][0] == '-')
 			j++;
-		if (argv[i][j] == '\0')
-			return (0);
-		while (argv[i][j])
+		if (param[i][j] == '\0')
+			return (1);
+		while (param[i][j])
 		{
-			if (!ft_isdigit(argv[i][j]))
-				return (0);
+			if (!ft_isdigit(param[i][j]))
+				return (1);
 			j++;
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
-void	*free_list(t_stack **head)
+void	free_list(t_stack **head)
 {
 	t_stack	*tmp;
 	t_stack	*next;
@@ -75,36 +73,28 @@ void	*free_list(t_stack **head)
 		tmp = next;
 	}
 	*head = NULL;
-	return (NULL);
 }
 
-t_stack	*ft_make_list(t_stack **head, char **argv)
+t_stack	*ft_make_list(char **input)
 {
 	int		i;
 	long	data;
+	t_stack	*head;
 	t_stack	*tmp_stack;
 
 	tmp_stack = NULL;
-	i = 1;
-	while (argv[i] != NULL)
+	head = NULL;
+	i = 0;
+	while (input[i] != NULL)
 	{
-		data = ft_atoi(argv[i]);
+		data = ft_atoi(input[i]);
 		if (data > INT_MAX || data < INT_MIN)
-			return (free_list(head));
+			return (free_list(&head), NULL);
 		tmp_stack = ft_stack_new(data);
 		if (!tmp_stack)
-			return (free_list(head));
-		ft_stackadd_back(head, tmp_stack);
+			return (free_list(&head), NULL);
+		ft_stackadd_back(&head, tmp_stack);
 		i++;
 	}
-	return (*head);
+	return (head);
 }
-
-
-// - | -100 | -a100 | -100a
-// Is eerste char een -
-// Zo ja? Is_negative = true
-// Stel 2de char is geen getal of een min? Exit
-// Als het wel zo is door blijven loopen.
-// --100
-//
