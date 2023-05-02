@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/09 14:04:26 by mvalk         #+#    #+#                  #
-#    Updated: 2023/03/20 14:40:47 by mvalk         ########   odam.nl          #
+#    Updated: 2023/05/02 12:02:50 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,13 +15,15 @@
 NAME := pipex
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra -g
-HEADER = pipex.h
+HEADER = inc/pipex.h
 OBJ_DIR = obj
 SRCFILES = 	main.c \
 			pipex.c \
+			utils.c \
 			
 			
-OBJFILES = $(SRCFILES:%.c=$(OBJ_DIR)/%.o)
+vpath %.c	src
+OBJFILES = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCFILES))
 
 # Color definitions
 
@@ -32,7 +34,7 @@ COLOR_END = \033[0m
 all: $(NAME)
 
 $(NAME): $(OBJFILES) $(HEADER)
-	@cd libft && $(MAKE)
+	@$(MAKE) -C libft
 	$(CC) $(CFLAGS) $(OBJFILES) libft/libft.a -o $(NAME)
 	@echo "$(GREEN)compilation complete!$(COLOR_END)"
 	

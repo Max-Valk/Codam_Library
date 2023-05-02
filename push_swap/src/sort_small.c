@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   sort_20.c                                          :+:    :+:            */
+/*   small_sort.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2023/01/24 14:53:24 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/04/12 13:22:44 by mvalk         ########   odam.nl         */
+/*   Created: 2023/01/19 14:32:47 by mvalk         #+#    #+#                 */
+/*   Updated: 2023/04/20 12:27:35 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 
-void	sort_20(t_stack **a, t_stack **b)
+void	sort_small(t_stack **a, t_stack **b, int stack_size)
 {
 	int		mid_point;
-	int		stack_size;
 	t_stack	*lowest;
 
-	stack_size = ft_stack_size(*a);
+	if (stack_size == 2)
+		return (sort_2(a));
 	while (stack_size > 3)
 	{
 		set_index(a);
@@ -37,6 +37,41 @@ void	sort_20(t_stack **a, t_stack **b)
 		ft_pb(a, b);
 		stack_size--;
 	}
-	sort_small(a, b);
+	sort_3(a);
 	push_b_back(a, b);
+}
+
+void	sort_2(t_stack **a)
+{
+	if ((*a)->data > (*a)->next->data)
+		ft_sa(a);
+}
+
+void	sort_3(t_stack **a)
+{
+	t_stack	*last;
+
+	last = ft_stacklast(*a);
+	if ((*a)->data > (*a)->next->data && (*a)->next->data < last->data)
+	{
+		if ((*a)->data > last->data)
+			ft_ra(a);
+		else
+			ft_sa(a);
+	}
+	else if ((*a)->data > (*a)->next->data && (*a)->next->data > last->data)
+	{
+		ft_sa(a);
+		ft_rra(a);
+	}
+	else if ((*a)->data < (*a)->next->data && (*a)->next->data > last->data)
+	{
+		if ((*a)->data < last->data)
+		{
+			ft_sa(a);
+			ft_ra(a);
+		}
+		else
+			ft_rra(a);
+	}
 }

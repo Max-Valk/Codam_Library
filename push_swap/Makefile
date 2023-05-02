@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2023/01/09 14:04:26 by mvalk         #+#    #+#                  #
-#    Updated: 2023/04/06 15:28:18 by mvalk         ########   odam.nl          #
+#    Updated: 2023/04/20 13:33:54 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,15 +17,13 @@ CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 HEADER = inc/push_swap.h
 OBJ_DIR = obj
-SRCFILES = 	main.c \
+SRCFILES = 	push_swap.c \
 			input_checks.c \
-			sorting_test.c \
-			small_sort.c \
-			sort_20.c \
-			sort_100.c \
-			sort_500.c \
+			sorting_utils.c \
+			sort_small.c \
+			sort_stack.c \
 			sort_big.c \
-			quicksort_array.c \
+			pre_sort.c \
 			stack_building.c \
 			stack_management.c \
 			pushes.c \

@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/24 13:46:17 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/04/05 15:30:46 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/19 16:15:18 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,20 @@ int	ft_stack_size(t_stack *start)
 		start = start->next;
 	}
 	return (size);
+}
+
+void	free_list(t_stack **head)
+{
+	t_stack	*tmp;
+	t_stack	*next;
+
+	tmp = *head;
+	next = NULL;
+	while (tmp)
+	{
+		next = tmp->next;
+		free (tmp);
+		tmp = next;
+	}
+	*head = NULL;
 }

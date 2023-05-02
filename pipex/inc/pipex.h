@@ -6,26 +6,24 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/22 14:26:05 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/03/30 13:21:52 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/02 11:59:07 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PIPEX_H
 # define PIPEX_H
 
-# include <stdio.h>
-# include <stdlib.h>
-# include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
 # include <sys/errno.h>
-# include "libft/libft.h"
-# include <string.h>
+# include "../libft/libft.h"
 
-typedef struct t_pipex
+typedef struct s_pipex
 {
 	char	**argv;
 	char	**envp;
+	char	**paths;
+	int		path_f;
 	int		pipe_fd[2];
 	int		fd_in;
 	int		fd_out;
@@ -33,12 +31,12 @@ typedef struct t_pipex
 
 //test
 int		pipex(t_pipex *var_struct);
+
 void	child_cmd_1(t_pipex	*var_struct);
 void	child_cmd_2(t_pipex	*var_struct);
-char	**parse_paths(char **envp);
-void	exec_command_paths(char **argv, char **envp, int cmdn);
+void	exec_command_paths(t_pipex *pipex_info, int cmdn);
+char	*cmd_path(char **envp, char *cmd, int path_f);
 void	error_exit(char *function, int error_num);
-char	**parse_awk(char *cmd);
-char	*ft_line_merge(char *s1, const char *s2);
+char	**parse_env(char **envp);
 
 #endif

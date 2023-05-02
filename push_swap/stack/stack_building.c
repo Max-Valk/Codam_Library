@@ -6,11 +6,12 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/12 16:21:08 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/04/05 15:30:43 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/19 14:13:04 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
+#include <limits.h>
 
 t_stack	*ft_stack_new(int num)
 {
@@ -56,13 +57,26 @@ void	ft_stackadd_front(t_stack **front, t_stack *new)
 	*front = new;
 }
 
-void	ft_delstack(t_stack *node)
+t_stack	*ft_make_list(char **input)
 {
-	if (node->prev && node->next)
+	int		i;
+	long	data;
+	t_stack	*head;
+	t_stack	*tmp_stack;
+
+	tmp_stack = NULL;
+	head = NULL;
+	i = 0;
+	while (input[i] != NULL)
 	{
-		node->prev->next = node->next;
-		node->next->prev = node->prev;
+		data = ft_atoi(input[i]);
+		if (data > INT_MAX || data < INT_MIN)
+			return (free_list(&head), NULL);
+		tmp_stack = ft_stack_new(data);
+		if (!tmp_stack)
+			return (free_list(&head), NULL);
+		ft_stackadd_back(&head, tmp_stack);
+		i++;
 	}
-	node = NULL;
-	free (node);
+	return (head);
 }

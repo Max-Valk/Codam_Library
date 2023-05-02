@@ -6,27 +6,27 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/16 17:09:07 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/04/12 18:01:53 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/20 13:33:36 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/push_swap.h"
 #include <limits.h>
 
-int	dupe_check(char **param)
+int	dupe_check(char **input)
 {
 	int	to_comp;
 	int	j;
 	int	i;
 
 	i = 0;
-	while (param[i])
+	while (input[i])
 	{
 		j = i + 1;
-		to_comp = ft_atoi(param[i]);
-		while (param[j])
+		to_comp = ft_atoi(input[i]);
+		while (input[j])
 		{
-			if (to_comp == ft_atoi(param[j]))
+			if (to_comp == ft_atoi(input[j]))
 				return (1);
 			j++;
 		}
@@ -35,22 +35,22 @@ int	dupe_check(char **param)
 	return (0);
 }
 
-int	check_input_type(char **param)
+int	check_input_type(char **input)
 {
 	int	j;
 	int	i;
 
 	i = 0;
-	while (param[i] != NULL)
+	while (input[i] != NULL)
 	{
 		j = 0;
-		if (param[i][0] == '-')
+		if (input[i][0] == '-')
 			j++;
-		if (param[i][j] == '\0')
+		if (input[i][j] == '\0')
 			return (1);
-		while (param[i][j])
+		while (input[i][j])
 		{
-			if (!ft_isdigit(param[i][j]))
+			if (!ft_isdigit(input[i][j]))
 				return (1);
 			j++;
 		}
@@ -59,42 +59,38 @@ int	check_input_type(char **param)
 	return (0);
 }
 
-void	free_list(t_stack **head)
+void	free_input(char **input)
 {
-	t_stack	*tmp;
-	t_stack	*next;
+	int	input_len;
 
-	tmp = *head;
-	next = NULL;
-	while (tmp)
+	input_len = 0;
+	while (input[input_len])
 	{
-		next = tmp->next;
-		free (tmp);
-		tmp = next;
+		free (input[input_len]);
+		input_len++;
 	}
-	*head = NULL;
+	free(input);
 }
 
-t_stack	*ft_make_list(char **input)
+int	is_sorted(t_stack **a)
 {
-	int		i;
-	long	data;
-	t_stack	*head;
-	t_stack	*tmp_stack;
+	t_stack	*index;
+	int		size;
 
-	tmp_stack = NULL;
-	head = NULL;
-	i = 0;
-	while (input[i] != NULL)
+	index = *a;
+	size = 0;
+	while (index)
 	{
-		data = ft_atoi(input[i]);
-		if (data > INT_MAX || data < INT_MIN)
-			return (free_list(&head), NULL);
-		tmp_stack = ft_stack_new(data);
-		if (!tmp_stack)
-			return (free_list(&head), NULL);
-		ft_stackadd_back(&head, tmp_stack);
-		i++;
+		if (index->next)
+		{
+			if (index->data > index->next->data)
+				return (0);
+		}
+		index = index->next;
+		size++;
 	}
-	return (head);
+	if (size == ft_stack_size(*a))
+		return (1);
+	else
+		return (0);
 }

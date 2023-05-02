@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   sort_500.c                                         :+:    :+:            */
+/*   sort_stack.c                                       :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/03 14:39:07 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/04/12 16:27:32 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/04/24 15:47:05 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,16 +23,16 @@ void	num_push(int pivot_num, int prev_pivot, t_stack **a, t_stack **b)
 	}
 }
 
-int	new_pivot(int live_stack_size, int stack_size)
+int	new_pivot(int live_stack_size, int stack_size, double factor)
 {
 	int	pivot;
 
-	pivot = live_stack_size * 0.8;
+	pivot = live_stack_size * factor;
 	pivot = stack_size - pivot;
 	return (pivot);
 }
 
-void	sort_500(t_stack **a, t_stack **b, int stack_size)
+void	sort_stack(t_stack **a, t_stack **b, int stack_size, double factor)
 {
 	int		pivot_num;
 	int		live_stack_size;
@@ -42,7 +42,7 @@ void	sort_500(t_stack **a, t_stack **b, int stack_size)
 	live_stack_size = stack_size;
 	while (live_stack_size >= 20)
 	{
-		pivot_num = new_pivot(live_stack_size, stack_size);
+		pivot_num = new_pivot(live_stack_size, stack_size, factor);
 		while (live_stack_size >= stack_size - pivot_num)
 		{
 			if ((*a)->true_index <= pivot_num)
@@ -58,5 +58,5 @@ void	sort_500(t_stack **a, t_stack **b, int stack_size)
 		}
 		prev_pivot = pivot_num;
 	}
-	sort_20(a, b);
+	sort_small(a, b, ft_stack_size(*a));
 }
