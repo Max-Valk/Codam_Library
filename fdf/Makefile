@@ -5,25 +5,21 @@
 #                                                      +:+                     #
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
-#    Created: 2023/01/09 14:04:26 by mvalk         #+#    #+#                  #
-#    Updated: 2023/05/04 14:29:41 by mvalk         ########   odam.nl          #
+#    Created: 2022/10/28 17:23:55 by mvalk         #+#    #+#                  #
+#    Updated: 2023/05/04 14:40:49 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
-# Variable definitions
-
-NAME := pipex
-CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
-HEADER = inc/pipex.h
+NAME = fakedef
+CC = gcc -g
+# CFLAGS = -Wall -Werror -Wextra
+MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit
+MLX_INC = MLX42/build/libmlx42.a -I MLX42/include/MLX42 -lglfw3
+HEADERFILES = fdf.h
 OBJ_DIR = obj
 SRCFILES = 	main.c \
-			pipex.c \
-			utils.c \
+			convert_file.c \
 			
-			
-vpath %.c	src
-OBJFILES = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCFILES))
 
 # Color definitions
 
@@ -31,16 +27,18 @@ GREEN = \033[0;92m
 CYAN = \033[0;96m
 COLOR_END = \033[0m
 
+vpath %.c
+OBJFILES = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCFILES))
+		
 all: $(NAME)
 
-$(NAME): $(OBJFILES) $(HEADER)
-	@$(MAKE) -C libft
-	$(CC) $(CFLAGS) $(OBJFILES) libft/libft.a -o $(NAME)
-	@echo "$(GREEN)compilation complete!$(COLOR_END)"
-	
-$(OBJ_DIR)/%.o: %.c $(HEADER)
-	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -c $< -o $@
+$(NAME): $(OBJFILES)
+	@$(MAKE) -C ./libft
+	$(CC) $(OBJFILES) libft/libft.a -o $(NAME) $(MLX_FLAGS) $(MLX_INC)
+
+$(OBJ_DIR)/%.o: %.c
+	@mkdir -p $(dir $@)
+	$(CC) $(MLX_FLAGS) $(MLX_INC) -c $< -o $@
 
 clean:
 	@rm -f $(OBJFILES)
