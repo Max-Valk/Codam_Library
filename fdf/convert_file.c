@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:58:46 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/05 15:01:05 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/09 19:59:06 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,14 @@ void	error_exit(char *function, int error_num)
 // 	return (input_map);
 // }
 
-void	*free_map_struct(u_int32_t end, t_point3d **map)
+void	*free_map_struct(u_int32_t y_end, t_point3d **map)
 {
 	u_int32_t	i;
+	// u_int32_t	j;
 
 	i = 0;
-	while (i < end)
+	// j = 0;
+	while (i < y_end)
 	{
 		free(map[i]);
 		i++;
@@ -85,58 +87,47 @@ void	*free_map_struct(u_int32_t end, t_point3d **map)
 	return (NULL);
 }
 
-t_input_map	*allocate_struct(u_int32_t rows, u_int32_t columns)
+t_input_map *allocate_struct(u_int32_t rows, u_int32_t columns)
 {
-	t_point3d	**map;
-	t_input_map	*input_map;
-
-	map = malloc(sizeof(t_point3d *) * rows);
-	if (map == NULL)
-		return (NULL);
-	for (u_int32_t i = 0; i < rows; i++)
-	{
-		map[i] = malloc(sizeof(t_point3d) * columns);
-		if (map[i] == NULL)
-		{
-			return (free_map_struct(i, map));
-			// for (u_int32_t j = 0; j < i; j++)
-			// 	free(map[j]);
-			// free(map);
-			// return (NULL);
-		}
-	}
-	input_map = malloc(sizeof(t_input_map));
+	t_input_map *input_map = malloc(sizeof(t_input_map));
 	if (!input_map)
-	{
-		return (free_map_struct(rows, map));
-		// for (u_int32_t i = 0; i < rows; i++)
-		// 	free(map[i]);
-		// free(map);
-		// return (NULL);
-	}
-	input_map->map = map;
+		return (NULL);
+	// Allocate memory for input_map->map
+	input_map->map = malloc(sizeof(t_point3d*) * (rows + 1));
+	for (int i = 0; i <= rows; i++)
+		input_map->map[i] = malloc(sizeof(t_point3d) * (columns + 1));
+	// Initialize input_map->row_count and input_map->col_count
 	input_map->row_count = rows;
 	input_map->col_count = columns;
+	
+	// Initialize input_map->map
+	for (int i = 0; i <= rows; i++)
+	{
+		for (int j = 0; j <= columns; j++)
+		{
+			input_map->map[i][j].x = 0;
+			input_map->map[i][j].y = 0;
+			input_map->map[i][j].z = 0;
+		}
+	}
+	
 	return (input_map);
 }
 
-t_point3d	*new_3d_point(int32_t x, int32_t y, int32_t z)
-{
-	t_point3d	*point;
 
-	point = malloc(sizeof(t_point3d));
-	if (!point)
-		return (NULL);
-	point->x = x;
-	point->y = y;
-	point->z = z;
+t_point3d	new_3d_point(int32_t x, int32_t y, int32_t z)
+{
+	t_point3d	point;
+
+	point.x = x;
+	point.y = y;
+	point.z = z;
 	return (point);
 }
 
 t_input_map	*file_to_2d_arr(u_int32_t row_count, int fd)
 {
 	t_input_map	*input_map;
-	t_point3d	*point;
 	char	**row;
 	char	*line;
 	int		col_i;
@@ -151,12 +142,11 @@ t_input_map	*file_to_2d_arr(u_int32_t row_count, int fd)
 		col_i = 0;
 		while (col_i < input_map->col_count)
 		{
-			point = new_3d_point(col_i, row_i, ft_atoi(row[col_i]));
-			if (!point)
-				return (NULL);
-			input_map->map[row_i][col_i] = *point;
+			input_map->map[row_i][col_i] = new_3d_point(col_i, row_i, ft_atoi(row[col_i]));
 			col_i++;
 		}
+		for (u_int32_t i = 0; i <= input_map->col_count; i++)
+			free (row[i]);
 		free (row);
 		free (line);
 		line = get_next_line(fd);
@@ -168,16 +158,16 @@ t_input_map	*file_to_2d_arr(u_int32_t row_count, int fd)
 
 void print_input_map(t_input_map *input_map)
 {
-    printf("row_count: %d\n", input_map->row_count);
-    printf("col_count: %d\n", input_map->col_count);
-    printf("map:\n");
+	printf("row_count: %d\n", input_map->row_count);
+	printf("col_count: %d\n", input_map->col_count);
+	printf("map:\n");
 	for (u_int32_t i = 0; i < input_map->row_count; i++){
-		printf("row: %d=", i);
+		// printf("row: %d=", i);
 		for (u_int32_t j = 0; j < input_map->col_count; j++){
 			printf("[x= %d y= %d z= %d]", input_map->map[i][j].x, input_map->map[i][j].y, input_map->map[i][j].z);
 		}
-        printf("\n");
-    }
+		printf("\n");
+	}
 }
 
 // int	**char_to_int(char** arr, int rows, int cols) 

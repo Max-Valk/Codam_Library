@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:54:56 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/05 14:59:48 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/09 19:13:52 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,9 @@ int32_t	main(int argc, char *argv[])
 		mapp = file_to_2d_arr(row_count, fdf_file);
 		if (mapp == NULL)
 			return (1);
+		// printf("kot\n");
 		print_input_map(mapp);
+		fdf(mapp);
 		free_map_struct(mapp->row_count, mapp->map);
 		free (mapp);
 	}

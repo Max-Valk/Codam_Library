@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/28 17:23:55 by mvalk         #+#    #+#                  #
-#    Updated: 2023/05/04 14:40:49 by mvalk         ########   odam.nl          #
+#    Updated: 2023/05/09 19:13:11 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ HEADERFILES = fdf.h
 OBJ_DIR = obj
 SRCFILES = 	main.c \
 			convert_file.c \
+			fdf_mlx_init.c \
 			
 
 # Color definitions
@@ -32,7 +33,7 @@ OBJFILES = $(patsubst %.c,$(OBJ_DIR)/%.o,$(SRCFILES))
 		
 all: $(NAME)
 
-$(NAME): $(OBJFILES)
+$(NAME): $(OBJFILES) $(HEADERFILES)
 	@$(MAKE) -C ./libft
 	$(CC) $(OBJFILES) libft/libft.a -o $(NAME) $(MLX_FLAGS) $(MLX_INC)
 
