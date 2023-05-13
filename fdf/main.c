@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:54:56 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/10 16:51:00 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/12 17:04:12 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,9 @@ void	lk()
 int32_t	main(int argc, char *argv[])
 {
 	int32_t	fdf_file;
+	t_point3d	start = {100, 100, 0};
+	t_point3d	end = {200, 150, 0};
+
 	// u_int32_t	row_count;
 	// t_input_map	*mapp;
 	t_fdf		*s_fdf;
@@ -64,5 +67,5 @@ int32_t	main(int argc, char *argv[])
 		free (s_fdf->map);
 		free (s_fdf);
 	}
-	return (0);
+	exit (0);
 }

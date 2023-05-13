@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:58:46 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/10 18:13:13 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/13 15:45:34 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ u_int32_t count_row(char *file)
 	return (count - 1);
 }
 
-u_int32_t	collumn_count(char **line)
+u_int32_t	column_count(char **line)
 {
 	u_int32_t	count;
 
@@ -90,26 +90,9 @@ void	*free_map_struct(u_int32_t y_end, t_point3d **map)
 t_point3d	**allocate_struct(u_int32_t rows, u_int32_t columns)
 {
 	t_point3d	**map;
-	// t_input_map *input_map = malloc(sizeof(t_input_map));
-	// if (!input_map)
-	// 	return (NULL);
-	// Allocate memory for input_map->map
 	map = ft_calloc(sizeof(t_point3d *), (rows + 1));
 	for (int i = 0; i < rows; i++)
 		map[i] = ft_calloc(sizeof(t_point3d), (columns + 1));
-	// Initialize row_count and col_count
-	
-	// Initialize input_map->map
-	// for (int i = 0; i <= rows; i++)
-	// {
-	// 	for (int j = 0; j <= columns; j++)
-	// 	{
-	// 		input_map->map[i][j].x = 0;
-	// 		input_map->map[i][j].y = 0;
-	// 		input_map->map[i][j].z = 0;
-	// 	}
-	// }
-	
 	return (map);
 }
 
@@ -131,21 +114,23 @@ void	file_to_2d_arr(t_fdf *s_fdf, int fd)
 	int		col_i;
 	int		row_i;
 
+	u_int32_t i;
 	line = get_next_line(fd);
 	row = ft_split(line, ' ');
-	s_fdf->col = collumn_count(row);
+	s_fdf->col = column_count(row);
 	s_fdf->map = allocate_struct(s_fdf->row, s_fdf->col);
 	row_i = 0;
 	while (row_i < s_fdf->row)
 	{
+		i = -1;
 		col_i = 0;
 		while (col_i < s_fdf->col)
 		{
 			// s_fdf->map[row_i][col_i] = new_3d_point(col_i * 50, row_i * 50, ft_atoi(row[col_i]) * 10);
-			s_fdf->map[row_i][col_i] = new_3d_point(col_i * (WIDTH / (s_fdf->col * 2)), row_i * (HEIGHT / (s_fdf->row * 2)), (ft_atoi(row[col_i]) * 10));
+			s_fdf->map[row_i][col_i] = new_3d_point(col_i * (WIDTH / (s_fdf->col * 2)), row_i * (HEIGHT / (s_fdf->row * 2)), (ft_atoi(row[col_i])));
 			col_i++;
 		}
-		for (u_int32_t i = 0; i < s_fdf->col; i++)
+		while (row[++i])
 			free (row[i]);
 		free (row);
 		free (line);

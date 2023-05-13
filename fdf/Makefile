@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/28 17:23:55 by mvalk         #+#    #+#                  #
-#    Updated: 2023/05/09 19:13:11 by mvalk         ########   odam.nl          #
+#    Updated: 2023/05/13 15:19:35 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,7 @@ OBJ_DIR = obj
 SRCFILES = 	main.c \
 			convert_file.c \
 			fdf_mlx_init.c \
+			rotate_points.c \
 			
 
 # Color definitions
@@ -37,7 +38,7 @@ $(NAME): $(OBJFILES) $(HEADERFILES)
 	@$(MAKE) -C ./libft
 	$(CC) $(OBJFILES) libft/libft.a -o $(NAME) $(MLX_FLAGS) $(MLX_INC)
 
-$(OBJ_DIR)/%.o: %.c
+$(OBJ_DIR)/%.o: %.c $(HEADERFILES)
 	@mkdir -p $(dir $@)
 	$(CC) $(MLX_FLAGS) $(MLX_INC) -c $< -o $@
 
