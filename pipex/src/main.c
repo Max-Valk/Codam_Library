@@ -6,16 +6,25 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/23 13:37:32 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/02 11:44:12 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/17 16:16:10 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
 
+void leaks(void)
+{
+	pid_t pid = getpid();
+	char *s;
+	asprintf(&s, "leaks -q %d > %d", pid, pid);
+	system(s);
+}
+
 int	main(int argc, char *argv[], char *envp[])
 {
 	t_pipex	*pipex_info;
 
+	atexit(&leaks);
 	if (argc == 5)
 	{
 		pipex_info = ft_calloc(sizeof(t_pipex), 1);

@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:58:46 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/13 15:45:34 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/16 19:39:46 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	file_to_2d_arr(t_fdf *s_fdf, int fd)
 		while (col_i < s_fdf->col)
 		{
 			// s_fdf->map[row_i][col_i] = new_3d_point(col_i * 50, row_i * 50, ft_atoi(row[col_i]) * 10);
-			s_fdf->map[row_i][col_i] = new_3d_point(col_i * (WIDTH / (s_fdf->col * 2)), row_i * (HEIGHT / (s_fdf->row * 2)), (ft_atoi(row[col_i])));
+			s_fdf->map[row_i][col_i] = new_3d_point(col_i * (WIDTH / (s_fdf->col * 2)), row_i * (HEIGHT / (s_fdf->row * 2)), ft_atoi(row[col_i]));
 			col_i++;
 		}
 		while (row[++i])

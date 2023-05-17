@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:54:56 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/12 17:04:12 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/16 14:19:32 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,8 @@ void	lk()
 int32_t	main(int argc, char *argv[])
 {
 	int32_t	fdf_file;
-	t_point3d	start = {100, 100, 0};
-	t_point3d	end = {200, 150, 0};
-
-	// u_int32_t	row_count;
-	// t_input_map	*mapp;
 	t_fdf		*s_fdf;
+
 	s_fdf = ft_calloc(1, sizeof(t_fdf));
 	if (!s_fdf)
 		return (1);
@@ -60,11 +56,15 @@ int32_t	main(int argc, char *argv[])
 		file_to_2d_arr(s_fdf, fdf_file);
 		if (s_fdf->map == NULL)
 			return (1);
+		s_fdf->line = ft_calloc(1, sizeof(t_line));
+		if (!s_fdf->line)
+			return (EXIT_FAILURE);
 		// printf("kot\n");
 		// print_input_map(s_fdf);
 		fdf(s_fdf);
 		free_map_struct(s_fdf->row, s_fdf->map);
 		free (s_fdf->map);
+		free(s_fdf->line);
 		free (s_fdf);
 	}
 	exit (0);

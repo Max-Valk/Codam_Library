@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/22 16:37:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/02 11:47:42 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/17 16:17:07 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	pipex(t_pipex *pipex_info)
 	waitpid(pid_1, NULL, 0);
 	waitpid(pid_2, &status, 0);
 	if (WIFEXITED(status))
-		exit(WEXITSTATUS(status));
+		exit(WEXITSTATUS(status));//this might be cause of leaks
 	close(pipex_info->fd_in);
 	close(pipex_info->fd_out);
 	return (EXIT_SUCCESS);
@@ -69,8 +69,8 @@ void	exec_command_paths(t_pipex *pipex_info, int cmdn)
 	cmd_args = ft_split(pipex_info->argv[cmdn], ' ');
 	cmd = cmd_path(pipex_info->paths, cmd_args[0], pipex_info->path_f);
 	if (cmd != NULL)
-		if (execve(cmd, cmd_args, pipex_info->envp) < 0)
-			error_exit("execve", errno);
+		if (execve(cmd, cmd_args, pipex_info->envp) < 0)// or this one also leaky
+			error_exit("execve", errno);// help me
 	ft_putstr_fd(pipex_info->argv[cmdn], 2);
 	ft_putendl_fd(": command not found", 2);
 	exit(127);

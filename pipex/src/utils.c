@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/01 17:44:24 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/02 11:47:48 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/17 16:17:28 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ char	*cmd_path(char **paths, char *cmd, int path_f)
 	char	*full_cmd;
 	char	*tmp;
 
-	if (ft_strchr(cmd, '/') || path_f == -1)
+	if (ft_strchr(cmd, '/') || path_f == -1)// leaks after this statement is triggerd and execve fails
 		return (cmd);
 	while (*paths)
 	{

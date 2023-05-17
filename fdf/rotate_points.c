@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/11 15:08:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/13 15:30:39 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/16 12:40:56 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,8 @@ t_point3d rotate_point_with_quaternion(t_point3d point, t_quaternion q)
 
 void	q_rotate(t_rotate *tmp, char axis, t_point3d center)
 {
-	// double	angle;
 	t_quaternion 	q;
-	// t_point3d	center;
 
-	// center = center_point(tmp);
 	for	(u_int32_t i = 0; i < tmp->row; i++)
 	{
 		for (u_int32_t j = 0; j < tmp->col; j++)
@@ -87,11 +84,11 @@ void	q_rotate(t_rotate *tmp, char axis, t_point3d center)
 			tmp->p.y -= center.y;
 			tmp->p.z -= center.z;
 			if (axis == 'x')
-				q = quaternion_from_axis_angle(tmp->angle, 1.0, 0, 0);
+				q = quaternion_from_axis_angle(tmp->angle_x, 1.0, 0, 0);
 			if (axis == 'y')
-				q = quaternion_from_axis_angle(tmp->angle, 0, 1.0, 0);
+				q = quaternion_from_axis_angle(tmp->angle_y, 0, 1.0, 0);
 			if (axis == 'z')
-				q = quaternion_from_axis_angle(tmp->angle, 0, 0, 1.0);
+				q = quaternion_from_axis_angle(tmp->angle_z, 0, 0, 1.0);
 			tmp->p = rotate_point_with_quaternion(tmp->p, q);
 			tmp->p.x += center.x;
 			tmp->p.y += center.y;

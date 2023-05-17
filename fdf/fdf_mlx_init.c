@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/08 13:27:27 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/13 15:49:45 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/05/16 20:33:55 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ t_rotate	*copy_map(t_fdf *s_fdf)
 			copy->map[i][j].x = s_fdf->map[i][j].x;
 			copy->map[i][j].y = s_fdf->map[i][j].y;
 			copy->map[i][j].z = s_fdf->map[i][j].z;
-			// printf("copy: %d, %d, %d\n", copy->map[i][j].x, copy->map[i][j].y, copy->map[i][j].z);
 			j++;
 		}
 		i++;
@@ -120,8 +119,8 @@ void draw_line(t_point3d start, t_point3d end, t_line *line)
 	line->y = start.y;
 	while (1)
 	{
-		if (line->x + image->width / 4  > 0 && line->y + image->height / 4 > 0 && line->x + image->width / 4 < WIDTH && line->y + image->height / 4 < HEIGHT)
-			mlx_put_pixel(image, line->x + image->width / 4, line->y + image->height / 4, color);
+		if (line->x + line->incr_x  > 0 && line->y + line->incr_y > 0 && line->x + line->incr_x < WIDTH && line->y + line->incr_y < HEIGHT)
+			mlx_put_pixel(image, line->x + line->incr_x, line->y + line->incr_y, color);
 		// if (line->x > 0 && line->y > 0 && line->x < WIDTH && line->y < HEIGHT)
 		// 	mlx_put_pixel(image, line->x , line->y , color);
 		if (line->x == end.x && line->y == end.y)
@@ -165,29 +164,14 @@ void	draw_frame(t_rotate *s_fdf, t_line *line)
 
 void	move_window(t_fdf *s_fdf, char direction)
 {
-	u_int32_t	i;
-	u_int32_t	j;
-
-	i = 0;
-	while (i < s_fdf->row)
-	{
-		j = 0;
-		while (j < s_fdf->col)
-		{
-			if (direction == 'W')
-				s_fdf->map[i][j].y -= image->width / 50;
-			if (direction == 'A')
-				s_fdf->map[i][j].x -= image->width / 50;
-			if (direction == 'S')
-				s_fdf->map[i][j].y += image->width / 50;
-			if (direction == 'D')
-				s_fdf->map[i][j].x += image->width / 50;
-			j++;
-		}
-		i++;
-	}
-	// draw_frame(s_fdf, s_fdf->line);
-	// fill_img(0 << 24 | 0 << 16 | 0 << 8 | 255);
+	if (direction == 'W')
+		s_fdf->line->incr_y -= image->height / 100;
+	if (direction == 'A')
+		s_fdf->line->incr_x -= image->width / 100;
+	if (direction == 'S')
+		s_fdf->line->incr_y += image->height / 100;
+	if (direction == 'D')
+		s_fdf->line->incr_x += image->width / 100;
 }
 
 void	move_scale(t_fdf *s_fdf, char direction)
@@ -202,21 +186,35 @@ void	move_scale(t_fdf *s_fdf, char direction)
 		while (j < s_fdf->col)
 		{
 			if (direction == 'I')
-				s_fdf->map[i][j].z += image->width / 100;
+				s_fdf->map[i][j].z += s_fdf->map[i][j].z / 10 + 1;
 			if (direction == 'K')
-				s_fdf->map[i][j].z -= image->width / 100;
+				s_fdf->map[i][j].z -= s_fdf->map[i][j].z / 10 + 1;
 			j++;
 		}
 		i++;
 	}
-	// draw_frame(s_fdf, s_fdf->line);
-	// fill_img(0 << 24 | 0 << 16 | 0 << 8 | 255);
+	put_2d_grid(s_fdf);
+}
+
+void	key_rotate(t_fdf *s_fdf, char axis, int32_t incr)
+{
+	t_point3d	center;
+	t_frame		*frame;
+
+	center = center_point(s_fdf);
+	frame = rotate_grid(s_fdf, center, axis, incr);
+	if (!frame)
+		return ;
+	draw_frame(frame, s_fdf->line);
+
+	free_map_struct(frame->row, frame->map);
+	free (frame->map);
+	free (frame);
 }
 
 void	ft_hook(void *param)
 {
 	t_fdf *s_fdf = (t_fdf *)param;
-	// mlx_t	*mlx = param;
 
 	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_ESCAPE))
 		mlx_close_window(s_fdf->mlx);
@@ -228,62 +226,72 @@ void	ft_hook(void *param)
 		move_window(s_fdf, 'S');
 	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_D))
 		move_window(s_fdf, 'D');
-	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_I))
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_PAGE_UP))
 		move_scale(s_fdf, 'I');
-	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_K))
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_PAGE_DOWN))
 		move_scale(s_fdf, 'K');
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_9))
+		key_rotate(s_fdf, 'z', 1);
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_7))
+		key_rotate(s_fdf, 'z', -1);
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_8))
+		key_rotate(s_fdf, 'x', 1);
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_5))
+		key_rotate(s_fdf, 'x', -1);
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_4))
+		key_rotate(s_fdf, 'y', -1);
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_6))
+		key_rotate(s_fdf, 'y', 1);
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_R))
+		key_rotate(s_fdf, 'R', 30);
+	
 }
 
-// void	key_hook(void *param)
-// {
-// 	t_fdf *fdf = param;
+t_frame	*rotate_grid(t_fdf *s_fdf, t_point3d center, char axis, int32_t incr)
+{
+	static	int	angles[] = {0, 0, 0};
+	t_frame	*frame;
 
-// 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_W))
-// 		move_window(fdf, 'W');
-// 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_A))
-// 		move_window(fdf, 'A');
-// 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_S))
-// 		move_window(fdf, 'S');
-// 	if (mlx_is_key_down(fdf->mlx, MLX_KEY_D))
-// 		move_window(fdf, 'D');
-// }
+	frame = copy_map(s_fdf);
+	if (!frame)
+		return (NULL);
+	if (axis == 'R')
+	{
+		angles[0] = 35;
+		angles[1] = 0;
+		angles[2] = 45;
+	}
+	if (axis == 'x')
+		angles[0] = (angles[0] + incr) % 360;
+	if (axis == 'y')
+		angles[1] = (angles[1] + incr) % 360;
+	if (axis == 'z')
+		angles[2] = (angles[2] + incr) % 360;
+	frame->angle_x = angles[0] * M_PI / 180;
+	frame->angle_y = angles[1] * M_PI / 180;
+	frame->angle_z = angles[2] * M_PI / 180;
+	q_rotate(frame, 'x', center);
+	q_rotate(frame, 'y', center);
+	q_rotate(frame, 'z', center);
+	return (frame);
+}
 
 void	put_2d_grid(void *param)
 {
 	t_fdf		*s_fdf = param;
-	static	int	angle2 = 30;
-	// t_line 		*line;
-	t_rotate	*rotate;
+	t_frame	*frame;
 	t_point3d	center;
-	u_int32_t	x;
-	u_int32_t	y;
 
-	// angle2 = 45.0 * M_PI / 180;
-	s_fdf->line = calloc(1, sizeof(t_line));
-	if (!s_fdf->line)
-		return ;
-	rotate = copy_map(s_fdf);
-	if (!rotate)
-		return ;
-	angle2 += 1;
-	angle2 = angle2 % 360;
-	rotate->angle = angle2 * M_PI / 180;
-	// rotate_map(rotate, 'z');
 	center = center_point(s_fdf);
-	// q_rotate(rotate, 'z', center);
-	// q_rotate(rotate, 'x', center);
-	q_rotate(rotate, 'y', center);
-	// rotate_map(rotate, 'x');
-	// rotate_map(rotate, 'y');
+	frame = rotate_grid(s_fdf, center, 'R', 45);
+	// frame = rotate_grid(s_fdf, center, 'z', 45);
+	if (!frame)
+		return ;
+	draw_frame(frame, s_fdf->line);
 
-	// t_point3d	start = {200, 200, 0};
-	// t_point3d	end = {150, 100, 0};
-	// draw_line(start, end, s_fdf->line);
-	draw_frame(rotate, s_fdf->line);
-	free (s_fdf->line);
-	free_map_struct(rotate->row, rotate->map);
-	free (rotate->map);
-	free (rotate);
+	free_map_struct(frame->row, frame->map);
+	free (frame->map);
+	free (frame);
 }
 
 int	fdf(t_fdf *s_fdf)
@@ -307,13 +315,15 @@ int	fdf(t_fdf *s_fdf)
 		puts(mlx_strerror(mlx_errno));
 		return (EXIT_FAILURE);
 	}
+	s_fdf->line->incr_x = image->width / 4;
+	s_fdf->line->incr_y = image->height / 4;
 	s_fdf->mlx = mlx;
-	mlx_loop_hook(mlx, put_2d_grid, s_fdf);
-	// put_2d_grid(s_fdf);
-	image->instances[0].x += 0;
-	image->instances[0].y += 0;
+	put_2d_grid(s_fdf);
+	// image->instances[0].x += 0;
+	// image->instances[0].y += 0;
 	// mlx_loop_hook(mlx, ft_hook, mlx);
 	mlx_loop_hook(mlx, ft_hook, s_fdf);
+	// mlx_loop_hook(mlx, put_2d_grid, s_fdf);
 
 	mlx_loop(mlx);
 	mlx_terminate(mlx);
