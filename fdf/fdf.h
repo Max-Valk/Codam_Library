@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/30 15:02:03 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/16 20:34:10 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/15 16:37:16 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,31 @@
 # define FDF_H
 # include <stdio.h>
 # include <stdlib.h>
+# include <string.h>
 # include "libft/libft.h"
 # include <fcntl.h>
 # include <errno.h>
 # include <math.h>
-# include "MLX42/include/MLX42/MLX42.h"
-// # include <MLX42.h>
+# include <MLX42.h>
 
-# define WIDTH 1500
-# define HEIGHT 1500
+# define WIDTH 1000
+# define HEIGHT 1000
 
 typedef struct s_point3d
 {
 	int32_t	x;
 	int32_t	y;
-	int32_t	z;
+	double	z;
+	int32_t	col;
 }	t_point3d;
+
+typedef struct s_quaternion
+{
+	double		w;
+	double		x;
+	double		y;
+	double		z;
+}				t_quaternion;
 
 typedef	struct s_line
 {
@@ -39,8 +48,8 @@ typedef	struct s_line
 	int32_t sy;
 	int32_t err;
 	int32_t e2;
-	u_int32_t x;
-	u_int32_t y;
+	int32_t x;
+	int32_t y;
 	int32_t	incr_x;
 	int32_t	incr_y;
 }	t_line;
@@ -48,7 +57,6 @@ typedef	struct s_line
 typedef struct s_rotate
 {
 	t_point3d	**map;
-	t_point3d	p;
 	t_point3d	center;
 	double		angle_x;
 	double		angle_y;
@@ -62,13 +70,16 @@ typedef struct s_rotate
 	double	x;
 	double	y;
 	double	z;
-}	t_rotate, t_frame;
+} t_frame;
 
 typedef	struct s_fdf
 {
+	mlx_image_t	*image;
 	mlx_t		*mlx;
 	t_line		*line;
+	t_frame		*frame;
 	t_point3d	**map;
+	t_point3d	center;
 	u_int32_t	col;
 	u_int32_t	row;
 }	t_fdf;
@@ -81,20 +92,44 @@ typedef	struct s_input_map
 	u_int32_t	col_count;
 }	t_input_map;
 
+
+t_frame	*first_frame(t_fdf *s_fdf);
+
+void		key_rotate(t_fdf *s_fdf, char axis, double incr);
 void 		print_input_map(t_fdf *input_map);
 u_int32_t	column_count(char **line);
 u_int32_t	count_row(char *file);
+// t_point3d	center_point(t_fdf *rotate);
 t_frame		*rotate_grid(t_fdf *s_fdf, t_point3d center, char axis, int32_t incr);
 
+
+// void		draw_frame(t_rotate *frame, t_line *line);
+void		draw_frame(t_fdf *s_fdf, t_frame *frame, t_line *line);
 void		file_to_2d_arr(t_fdf *s_fdf, int fd);
 t_point3d	**allocate_struct(u_int32_t rows, u_int32_t collumns);
-void		*free_map_struct(u_int32_t end, t_point3d **map);
+void		*free_map_struct(t_point3d **map);
 
-void		error_exit(char *function, int error_num);
+void	ft_hook(void *param);
+void	copy_map(t_fdf *s_fdf, t_frame *frame);
+void	error_exit(int err_num);
 void	put_2d_grid(void *param);
-void		draw_line(t_point3d start, t_point3d end, t_line *line);
+void		draw_line(t_fdf *s_fdf, t_point3d start, t_point3d end, t_line *line);
 int			fdf(t_fdf *s_fdf);
-void		q_rotate(t_rotate *tmp, char axis, t_point3d center);
-t_point3d	center_point(t_fdf *rotate);
+void		q_rotate(t_frame *frame, char axis, t_point3d center);
+t_point3d	center_point(t_fdf *s_fdf);
+
+void	rotate(t_fdf *s_fdf, char axis, double incr);
+void	gen_f(t_fdf *sf, void (*f)(t_fdf *, char, double), char key, double i);
+void	move_window(t_fdf *s_fdf, char direction, double incr);
+int32_t	init_window(t_fdf *s_fdf);
+void	free_frame(t_fdf *s_fdf);
+void	copy_map(t_fdf *s_fdf, t_frame *copy);
+void	fill_img(t_fdf *s_fdf, int32_t color);
+void	key_zoom(t_fdf *s_fdf, char dir, double incr);
+void	move_scale(t_fdf *s_fdf, char direction, double incr);
+int32_t	hex_to_color(char *hex);
+// t_point3d	new_3d_point(int32_t x, int32_t y, int32_t z, int32_t color);
+int32_t	calc_z(int32_t in);
+t_point3d	new_point(t_fdf	*s_fdf, char **row, u_int32_t c_i, u_int32_t r_i);
 
 #endif

@@ -6,45 +6,30 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/02/23 13:37:32 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/17 16:16:10 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/07 15:11:46 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/pipex.h"
 
-void leaks(void)
-{
-	pid_t pid = getpid();
-	char *s;
-	asprintf(&s, "leaks -q %d > %d", pid, pid);
-	system(s);
-}
-
 int	main(int argc, char *argv[], char *envp[])
 {
-	t_pipex	*pipex_info;
+	t_pipex	*s_pipex;
 
-	atexit(&leaks);
 	if (argc == 5)
 	{
-		pipex_info = ft_calloc(sizeof(t_pipex), 1);
-		if (!pipex_info)
+		s_pipex = ft_calloc(sizeof(t_pipex), 1);
+		if (!s_pipex)
 			return (EXIT_FAILURE);
-		pipex_info->argv = argv;
-		pipex_info->envp = envp;
-		pipex_info->path_f = 0;
-		pipex_info->paths = parse_env(pipex_info->envp);
-		if (!pipex_info->paths)
-			pipex_info->path_f = -1;
-		pipex_info->fd_in = open(argv[1], O_RDONLY);
-		if (access(pipex_info->argv[1], R_OK) != 0)
-			error_exit(pipex_info->argv[1], errno);
-		pipex_info->fd_out = open(argv[4], O_CREAT | O_RDWR | O_TRUNC, 0644);
-		if (access(pipex_info->argv[4], W_OK) != 0)
-			error_exit(pipex_info->argv[4], errno);
-		pipex(pipex_info);
-		return (free (pipex_info), 0);
+		s_pipex->argv = argv;
+		s_pipex->envp = envp;
+		s_pipex->path_f = 0;
+		s_pipex->paths = parse_env(s_pipex->envp);
+		if (!s_pipex->paths)
+			s_pipex->path_f = -1;
+		pipex(s_pipex);
+		return (free_pipex(s_pipex), EXIT_SUCCESS);
 	}
 	else
-		error_exit("invalid argument count", 1);
+		error_exit("invalid argument count", EINVAL);
 }

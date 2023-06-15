@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/10 17:16:34 by mvalk         #+#    #+#                  #
-#    Updated: 2023/01/13 14:50:53 by mvalk         ########   odam.nl          #
+#    Updated: 2023/06/07 12:10:06 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,23 +81,23 @@ all: $(NAME)
 
 $(NAME): $(OBJFILES)
 	@ar -crs $(NAME) $(OBJFILES)
-	@echo "$(GREEN)compilation complete!$(COLOR_END)"
+# @echo "$(GREEN)compilation complete!$(COLOR_END)"
 
 $(OBJ_DIR)/%.o: %.c $(HEADERFILES)
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) -c $< -o $@
-	@echo "$(BLUE)compiling $< $(COLOR_END)"
+# @echo "$(BLUE)compiling $< $(COLOR_END)"
 
 clean:
 	@rm -f $(OBJFILES)
 	@rm -rf $(OBJ_DIR)
-	@echo "$(CYAN)clean complete!$(COLOR_END)"
+# @echo "$(CYAN)clean complete!$(COLOR_END)"
 
 fclean: clean
 	@rm -f $(NAME)
-	@echo "$(MAGENTA)fclean complete!$(COLOR_END)"
+# @echo "$(MAGENTA)fclean complete!$(COLOR_END)"
 
 re: fclean all
-	@echo "$(RED)fclean and recompile complete!$(COLOR_END)"
+# @echo "$(RED)fclean and recompile complete!$(COLOR_END)"
 
 .PHONY: clean all fclean re bonus

@@ -6,35 +6,39 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/08 13:27:27 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/16 20:33:55 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/15 13:36:33 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
-#include <MLX42.h>
+// #include <MLX42.h>
 #include <math.h>
 
 static mlx_image_t *image;
-
-t_point3d	center_point(t_fdf *rotate)
+/*
+t_point3d	center_point(t_fdf *s_fdf)
 {
 	u_int32_t	i;
 	u_int32_t	j;
 	int32_t		max_z = 0;
 	int32_t		tmp_z = 0;
-
 	t_point3d	center;
+
+	center = ft_calloc(1, sizeof(t_point3d));
+	if (!center)
+		exit(EXIT_FAILURE);
 	i = 0;
-	center.x = rotate->map[rotate->row - 1][rotate->col - 1].x / 2;
-	center.y = rotate->map[rotate->row - 1][rotate->col - 1].y / 2;
-	while (i < rotate->row)
+	center.x = s_fdf->frame->map[s_fdf->row - 1][s_fdf->col - 1].x / 2;
+	center.y = s_fdf->frame->map[s_fdf->row - 1][s_fdf->col - 1].y / 2;
+	center.z = 0;
+	while (i < s_fdf->frame->row)
 	{
 		j = 0;
-		while (j < rotate->col)
+		while (j < s_fdf->frame->col)
 		{
-			tmp_z = abs(rotate->map[i][j].z);
+			tmp_z = abs(s_fdf->frame->map[i][j].z);
 			if (tmp_z > max_z)
-				max_z = rotate->map[i][j].z;
+				max_z = s_fdf->frame->map[i][j].z;
 			j++;
 		}
 		i++;
@@ -42,18 +46,18 @@ t_point3d	center_point(t_fdf *rotate)
 	center.z = max_z / 2;
 	// printf("center: %d, %d, %d\n", center.x, center.y, center.z);
 	return (center);
-}
+}*/
 
-t_rotate	*copy_map(t_fdf *s_fdf)
+void	copy_map(t_fdf *s_fdf, t_frame *copy)
 {
-	t_rotate	*copy;
+	// t_rotate	*copy;
 	u_int32_t	i;
 	u_int32_t	j;
 	
-	copy = calloc(sizeof(t_rotate), 1);
-	if (!copy)
-		return (NULL);
-	copy->map = allocate_struct(s_fdf->row, s_fdf->col);
+	// copy = calloc(sizeof(t_rotate), 1);
+	// if (!copy)
+	// 	return (NULL);
+	// copy->map = allocate_struct(s_fdf->row, s_fdf->col);
 	i = 0;
 	while (i < s_fdf->row)
 	{
@@ -73,7 +77,7 @@ t_rotate	*copy_map(t_fdf *s_fdf)
 	copy->p.x = 0;
 	copy->p.y = 0;
 	copy->p.z = 0;
-	return (copy);
+	// return (copy);
 }
 
 void	fill_img(int32_t color)
@@ -139,43 +143,43 @@ void draw_line(t_point3d start, t_point3d end, t_line *line)
 	}
 }
 
-void	draw_frame(t_rotate *s_fdf, t_line *line)
+void	draw_frame(t_rotate *frame, t_line *line)
 {
 	u_int32_t	x;
 	u_int32_t	y;
 
 	x = 0;
-	// print_input_map(s_fdf);
 	fill_img(0 << 24 | 0 << 16 | 0 << 8 | 100);
-	while (x < s_fdf->row)
+	while (x < frame->row)
 	{
 		y = 0;
-		while (y < s_fdf->col)
+		while (y < frame->col)
 		{
-			if (y < s_fdf->col - 1)
-				draw_line(s_fdf->map[x][y], s_fdf->map[x][y + 1], line);
-			if (x < s_fdf->row - 1)
-				draw_line(s_fdf->map[x][y], s_fdf->map[x + 1][y], line);
+			if (y < frame->col - 1)
+				draw_line(frame->map[x][y], frame->map[x][y + 1], line);
+			if (x < frame->row - 1)
+				draw_line(frame->map[x][y], frame->map[x + 1][y], line);
 			y++;
 		}
 		x++;
 	}
 }
 
-void	move_window(t_fdf *s_fdf, char direction)
-{
-	if (direction == 'W')
-		s_fdf->line->incr_y -= image->height / 100;
-	if (direction == 'A')
-		s_fdf->line->incr_x -= image->width / 100;
-	if (direction == 'S')
-		s_fdf->line->incr_y += image->height / 100;
-	if (direction == 'D')
-		s_fdf->line->incr_x += image->width / 100;
-}
+// void	move_window(t_fdf *s_fdf, char direction, int32_t incr)
+// {
+// 	if (direction == 'W')
+// 		s_fdf->line->incr_y -= incr;
+// 	if (direction == 'A')
+// 		s_fdf->line->incr_x -= incr;
+// 	if (direction == 'S')
+// 		s_fdf->line->incr_y += incr;
+// 	if (direction == 'D')
+// 		s_fdf->line->incr_x += incr;
+// }
 
 void	move_scale(t_fdf *s_fdf, char direction)
 {
+	// static double	scale;
 	u_int32_t	i;
 	u_int32_t	j;
 
@@ -212,6 +216,30 @@ void	key_rotate(t_fdf *s_fdf, char axis, int32_t incr)
 	free (frame);
 }
 
+// void	zoom(t_fdf *s_fdf, int32_t incr)
+// {
+// 	t_frame		*frame;
+	
+// }
+
+void	ft_rotate_hook(t_fdf *s_fdf)
+{
+	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_9))
+		key_rotate(s_fdf, 'z', 2);
+	else if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_7))
+		key_rotate(s_fdf, 'z', -2);
+	else if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_8))
+		key_rotate(s_fdf, 'x', 2);
+	else if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_5))
+		key_rotate(s_fdf, 'x', -2);
+	else if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_4))
+		key_rotate(s_fdf, 'y', -2);
+	else if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_6))
+		key_rotate(s_fdf, 'y', 2);
+	else if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_R))
+		key_rotate(s_fdf, 'R', 30);
+}
+
 void	ft_hook(void *param)
 {
 	t_fdf *s_fdf = (t_fdf *)param;
@@ -230,21 +258,7 @@ void	ft_hook(void *param)
 		move_scale(s_fdf, 'I');
 	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_PAGE_DOWN))
 		move_scale(s_fdf, 'K');
-	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_9))
-		key_rotate(s_fdf, 'z', 1);
-	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_7))
-		key_rotate(s_fdf, 'z', -1);
-	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_8))
-		key_rotate(s_fdf, 'x', 1);
-	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_5))
-		key_rotate(s_fdf, 'x', -1);
-	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_4))
-		key_rotate(s_fdf, 'y', -1);
-	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_KP_6))
-		key_rotate(s_fdf, 'y', 1);
-	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_R))
-		key_rotate(s_fdf, 'R', 30);
-	
+	ft_rotate_hook(s_fdf);
 }
 
 t_frame	*rotate_grid(t_fdf *s_fdf, t_point3d center, char axis, int32_t incr)
@@ -258,8 +272,8 @@ t_frame	*rotate_grid(t_fdf *s_fdf, t_point3d center, char axis, int32_t incr)
 	if (axis == 'R')
 	{
 		angles[0] = 35;
-		angles[1] = 0;
-		angles[2] = 45;
+		angles[1] = -45;
+		angles[2] = 0;
 	}
 	if (axis == 'x')
 		angles[0] = (angles[0] + incr) % 360;
@@ -283,7 +297,7 @@ void	put_2d_grid(void *param)
 	t_point3d	center;
 
 	center = center_point(s_fdf);
-	frame = rotate_grid(s_fdf, center, 'R', 45);
+	frame = rotate_grid(s_fdf, center, 'R', 0);
 	// frame = rotate_grid(s_fdf, center, 'z', 45);
 	if (!frame)
 		return ;

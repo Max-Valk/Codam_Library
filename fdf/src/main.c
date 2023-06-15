@@ -6,11 +6,11 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:54:56 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/05/16 14:19:32 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/15 16:39:10 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "fdf.h"
+#include "../fdf.h"
 
 // u_int32_t count_row(char *file)
 // {
@@ -35,19 +35,19 @@
 // 	return (count - 1);
 // }
 
-void	lk()
+void	lk(void)
 {
-	system("leaks -q fakedef");
+	system("leaks -q fdf");
 }
 
 int32_t	main(int argc, char *argv[])
 {
-	int32_t	fdf_file;
+	int32_t		fdf_file;
 	t_fdf		*s_fdf;
 
 	s_fdf = ft_calloc(1, sizeof(t_fdf));
 	if (!s_fdf)
-		return (1);
+		error_exit(errno);
 	atexit(lk);
 	if (argc == 2)
 	{
@@ -55,17 +55,12 @@ int32_t	main(int argc, char *argv[])
 		fdf_file = open(argv[1], O_RDONLY);
 		file_to_2d_arr(s_fdf, fdf_file);
 		if (s_fdf->map == NULL)
-			return (1);
+			error_exit(errno);
 		s_fdf->line = ft_calloc(1, sizeof(t_line));
 		if (!s_fdf->line)
-			return (EXIT_FAILURE);
-		// printf("kot\n");
-		// print_input_map(s_fdf);
-		fdf(s_fdf);
-		free_map_struct(s_fdf->row, s_fdf->map);
-		free (s_fdf->map);
-		free(s_fdf->line);
-		free (s_fdf);
+			error_exit(errno);
+		init_window(s_fdf);
+		exit(EXIT_SUCCESS);
 	}
-	exit (0);
+	error_exit(EINVAL);
 }
