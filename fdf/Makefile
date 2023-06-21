@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/28 17:23:55 by mvalk         #+#    #+#                  #
-#    Updated: 2023/06/15 15:41:39 by mvalk         ########   odam.nl          #
+#    Updated: 2023/06/21 14:37:50 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,11 +19,12 @@ OBJ_DIR = obj
 SRCFILES = 	main.c \
 			file_utils.c \
 			input_checks.c \
-			new_method.c \
+			mlx_init.c \
 			key_moves.c \
 			rotate_points.c \
 			fdf_utils.c \
 			generate_image.c \
+			image_utils.c \
 # fdf_mlx_init.c
 			
 

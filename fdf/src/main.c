@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:54:56 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/15 16:39:10 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/20 14:35:14 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,22 +45,25 @@ int32_t	main(int argc, char *argv[])
 	int32_t		fdf_file;
 	t_fdf		*s_fdf;
 
-	s_fdf = ft_calloc(1, sizeof(t_fdf));
-	if (!s_fdf)
-		error_exit(errno);
 	atexit(lk);
 	if (argc == 2)
 	{
-		s_fdf->row = count_row(argv[1]);
-		fdf_file = open(argv[1], O_RDONLY);
-		file_to_2d_arr(s_fdf, fdf_file);
-		if (s_fdf->map == NULL)
+		s_fdf = ft_calloc(1, sizeof(t_fdf));
+		if (!s_fdf)
 			error_exit(errno);
 		s_fdf->line = ft_calloc(1, sizeof(t_line));
 		if (!s_fdf->line)
 			error_exit(errno);
+		s_fdf->row = count_row(argv[1]);
+		fdf_file = open(argv[1], O_RDONLY);
+		if (fdf_file < 0)
+			error_exit(errno);
+		file_to_2d_arr(s_fdf, fdf_file);
+		if (s_fdf->map == NULL)
+			error_exit(errno);
 		init_window(s_fdf);
-		exit(EXIT_SUCCESS);
+		free_struct(s_fdf);
+		return (0);
 	}
 	error_exit(EINVAL);
 }

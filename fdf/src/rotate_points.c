@@ -6,51 +6,21 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/11 15:08:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/15 16:32:58 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/20 14:12:40 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
-// #include "/Users/mvalk/Desktop/Codam_Library/fdf/MLX42/include/MLX42/MLX42.h"
-// #include <math.h>
-
-// #include <math.h>
 #include <stdint.h>
 
-// typedef struct s_point3d
-// {
-//     int32_t x;
-//     int32_t y;
-//     int32_t z;
-// } t_point3d;
-
-// typedef struct s_quaternion
-// {
-// 	double		w;
-// 	double		x;
-// 	double		y;
-// 	double		z;
-// }				t_quaternion;
-
-t_quaternion	create_quaternion(double w, double x, double y, double z)
-{
-	t_quaternion	q;
-
-	q.w = w;
-	q.x = x;
-	q.y = y;
-	q.z = z;
-	return (q);
-}
-
-t_quaternion	quaternion_axis_agl(double agl, double x, double y, double z)
+static t_quaternion	quaternion_axis_agl(double w, double x, double y, double z)
 {
 	double			s;
 	double			c;
 	t_quaternion	q;
 
-	s = sin(agl / 2.0);
-	c = cos(agl / 2.0);
+	s = sin(w / 2.0);
+	c = cos(w / 2.0);
 	q.w = c;
 	q.x = x * s;
 	q.y = y * s;
@@ -58,7 +28,7 @@ t_quaternion	quaternion_axis_agl(double agl, double x, double y, double z)
 	return (q);
 }
 
-t_quaternion	quaternion_multiply(t_quaternion q1, t_quaternion q2)
+static t_quaternion	quaternion_multiply(t_quaternion q1, t_quaternion q2)
 {
 	t_quaternion	q;
 
@@ -69,7 +39,7 @@ t_quaternion	quaternion_multiply(t_quaternion q1, t_quaternion q2)
 	return (q);
 }
 
-t_quaternion	quaternion_conjugate(t_quaternion q)
+static t_quaternion	quaternion_conjugate(t_quaternion q)
 {
 	t_quaternion	qc;
 
@@ -80,7 +50,7 @@ t_quaternion	quaternion_conjugate(t_quaternion q)
 	return (qc);
 }
 
-t_point3d	rotate_point_with_quaternion(t_point3d point, t_quaternion q)
+static t_point3d	rotate_point_quaternion(t_point3d point, t_quaternion q)
 {
 	t_quaternion	p;
 	t_quaternion	qc;
@@ -100,34 +70,16 @@ t_point3d	rotate_point_with_quaternion(t_point3d point, t_quaternion q)
 	return (rotated_point);
 }
 
-void	q_rotate(t_frame *frame, char axis, t_point3d center)
+void	make_quaternions(t_frame *frame, u_int32_t i, u_int32_t j)
 {
-	t_quaternion		q;
-	u_int32_t			i;
-	u_int32_t			j;
+	t_quaternion	qx;
+	t_quaternion	qy;
+	t_quaternion	qz;
 
-	i = 0;
-	j = 0;
-	while (i < frame->row)
-	{
-		j = 0;
-		while (j < frame->col)
-		{
-			frame->map[i][j].x -= center.x;
-			frame->map[i][j].y -= center.y;
-			frame->map[i][j].z -= center.z;
-			if (axis == 'x')
-				q = quaternion_axis_agl(frame->angle_x, 1.0, 0, 0);
-			if (axis == 'y')
-				q = quaternion_axis_agl(frame->angle_y, 0, 1.0, 0);
-			if (axis == 'z')
-				q = quaternion_axis_agl(frame->angle_z, 0, 0, 1.0);
-			frame->map[i][j] = rotate_point_with_quaternion(frame->map[i][j], q);
-			frame->map[i][j].x += center.x;
-			frame->map[i][j].y += center.y;
-			frame->map[i][j].z += center.z;
-			j++;
-		}
-		i++;
-	}
+	qz = quaternion_axis_agl(frame->angle_z, 0, 0, 1.0);
+	qx = quaternion_axis_agl(frame->angle_x, 1.0, 0, 0);
+	qy = quaternion_axis_agl(frame->angle_y, 0, 1.0, 0);
+	frame->map[i][j] = rotate_point_quaternion(frame->map[i][j], qz);
+	frame->map[i][j] = rotate_point_quaternion(frame->map[i][j], qx);
+	frame->map[i][j] = rotate_point_quaternion(frame->map[i][j], qy);
 }

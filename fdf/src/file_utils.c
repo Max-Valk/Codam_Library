@@ -6,20 +6,20 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:58:46 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/15 16:37:11 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/21 14:59:21 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-u_int32_t	column_count(char **line)
+u_int32_t	column_count(char **row)
 {
 	u_int32_t	count;
 
-	if (!line)
+	if (!row)
 		return (0);
 	count = 0;
-	while (line[count] != NULL && line[count][0] != '\n')
+	while (row[count] != NULL && row[count][0] != '\n')
 		count++;
 	return (count);
 }
@@ -78,8 +78,7 @@ t_point3d	**allocate_struct(u_int32_t rows, u_int32_t columns)
 		map[i] = ft_calloc(sizeof(t_point3d), (columns + 1));
 		if (!map[i])
 		{
-			i = -1;
-			while (map[++i])
+			while (map[i--])
 				free(map[i]);
 			free(map);
 			error_exit(errno);
@@ -88,16 +87,26 @@ t_point3d	**allocate_struct(u_int32_t rows, u_int32_t columns)
 	return (map);
 }
 
-int32_t	calc_z(int32_t in)
+void	set_z(t_fdf *s_fdf)
 {
-	if (in == 0)
-		return (0);
-	if (in == 1)
-		return (1);
-	if (in == -1)
-		return (-1);
-	if (in < 0)
-		return (-(10 * log(-in)));
-	else
-		return (10 * log(in));
+	int32_t	i;
+	int32_t	j;
+	int32_t	mid;
+	int32_t	factor;
+
+	mid = s_fdf->map[s_fdf->row - 1][s_fdf->col - 1].y / 2;
+	mid += s_fdf->map[s_fdf->row - 1][s_fdf->col - 1].x / 2;
+	mid /= 2;
+	factor = mid / max_z(s_fdf);
+	i = 0;
+	while (i < s_fdf->row)
+	{
+		j = 0;
+		while (j < s_fdf->col)
+		{
+			s_fdf->map[i][j].z *= factor;
+			j++;
+		}
+		i++;
+	}
 }
