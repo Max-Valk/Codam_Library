@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/08 17:30:22 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/21 16:38:15 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/21 19:40:46 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,61 +63,45 @@ void	q_rotate(t_frame *frame, t_point3d center)
 	}
 }
 
-void	calc_print(t_fdf *s_fdf, int32_t x_degr, int32_t y_degr)
-{
-	if (s_fdf->frame->map[0][0].x > s_fdf->frame->map[0][s_fdf->frame->col - 1].x
-		&& ((y_degr < -90 && y_degr > -270) || (y_degr > 0 && y_degr < 90)))
-		s_fdf->frame->rev_y = true;
-	else
-		s_fdf->frame->rev_y = false;
-	// if (s_fdf->frame->map[0][0].y > s_fd4f->frame->map[s_fdf->frame->row - 1][0].y)
-	// 	s_fdf->frame->rev_y = true;
-	// else
-	// 	s_fdf->frame->rev_y = false;
-}
-
 void	rotate(t_fdf *s_fdf, char axis, double incr)
 {
-	static int	angles[] = {0, 0, 0};
+	static t_axis	angles = {0, 0, 0};
 
 	if (axis == 'F' || axis == 'R')
 	{
-		angles[0] = 0;
-		angles[1] = 0;
-		angles[2] = 0;
+		angles.X = 0;
+		angles.Y = 0;
+		angles.Z = 0;
 	}
 	if (axis == 'R')
 	{
-		angles[0] = 30;
-		angles[1] = -30;
+		angles.X = 30;
+		angles.Z = 45;
 	}
 	if (axis == 'x')
-		angles[0] = (angles[0] + (int32_t)incr) % 360;
+		angles.X = (angles.X + (int32_t)incr) % 360;
+	if (angles.X < 0)
+		angles.X += 360;
 	if (axis == 'y')
-		angles[1] = (angles[1] + (int32_t)incr) % 360;
+		angles.Y = (angles.Y + (int32_t)incr) % 360;
+	if (angles.Y < 0)
+		angles.Y += 360;
 	if (axis == 'z')
-		angles[2] = (angles[2] + (int32_t)incr) % 360;
-	// if ( (angles[0] < 0 && angles[0] > -180))//(angles[0] < 0 && angles[0] > -180) ||
-	// 	s_fdf->frame->rev_x = true;
-	// else
-	// 	s_fdf->frame->rev_x = false;
-	// if ( (angles[1] > 0 && angles[1] < 90))//(angles[1] > 0 && angles[1] < 180) ||
-	// 	s_fdf->frame->rev_y = true;
-	// else
-	// 	s_fdf->frame->rev_y = false;
-	// if (angles[2] > 90 && angles[2] < 270){
-	// 	s_fdf->frame->rev_x = true;
-	// 	s_fdf->frame->rev_y = true;
-	// }
-	// printf("max_z: %i\n", max_z(s_fdf));
-	printf("ang_x %i, ang_y %i, ang_z %i\n", angles[0], angles[1], angles[2]);
-	s_fdf->frame->angle_x = angles[0] * (M_PI / 180);
-	s_fdf->frame->angle_y = angles[1] * (M_PI / 180);
-	s_fdf->frame->angle_z = angles[2] * (M_PI / 180);
+		angles.Z = (angles.Z + (int32_t)incr) % 360;
+	if (angles.Z < 0)
+		angles.Z += 360;
+	if ((angles.X > 180))
+		s_fdf->frame->rev_x = true;
+	else
+		s_fdf->frame->rev_x = false;
+	if ((angles.Y > 90 && angles.Y < 270))
+		s_fdf->frame->rev_y = true;
+	else
+		s_fdf->frame->rev_y = false;
+	s_fdf->frame->angle_x = angles.X * (M_PI / 180);
+	s_fdf->frame->angle_y = angles.Y * (M_PI / 180);
+	s_fdf->frame->angle_z = angles.Z * (M_PI / 180);
 	q_rotate(s_fdf->frame, s_fdf->center);
-	calc_print(s_fdf, angles[0], angles[1]);
-	printf("coord topleft x= %i y= %i\n", s_fdf->frame->map[0][0].x, s_fdf->frame->map[0][0].y);
-	printf("rev_x %i, rev_y %i\n", s_fdf->frame->rev_x, s_fdf->frame->rev_y);
 }
 
 t_frame	*first_frame(t_fdf *s_fdf)

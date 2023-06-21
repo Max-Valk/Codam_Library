@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/30 15:02:03 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/21 14:53:48 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/21 17:43:19 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@
 
 # define WIDTH 1200
 # define HEIGHT 1200
+
+typedef struct e_axis
+{
+	int X;
+	int Y;
+	int Z;
+} t_axis;
 
 typedef struct s_point3d
 {
