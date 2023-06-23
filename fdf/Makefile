@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/28 17:23:55 by mvalk         #+#    #+#                  #
-#    Updated: 2023/06/21 14:37:50 by mvalk         ########   odam.nl          #
+#    Updated: 2023/06/23 13:32:14 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ OBJ_DIR = obj
 SRCFILES = 	main.c \
 			file_utils.c \
 			input_checks.c \
-			mlx_init.c \
+			init_fdf.c \
 			key_moves.c \
 			rotate_points.c \
 			fdf_utils.c \
@@ -31,6 +31,7 @@ SRCFILES = 	main.c \
 # Color definitions
 
 GREEN = \033[0;92m
+BLUE = \033[0;94m
 CYAN = \033[0;96m
 COLOR_END = \033[0m
 
@@ -41,11 +42,14 @@ all: $(NAME)
 
 $(NAME): $(OBJFILES) $(HEADERFILES)
 	@$(MAKE) -C ./libft
-	$(CC) $(OBJFILES) libft/libft.a -o $(NAME) $(MLX_FLAGS)  -I MLX42/include/MLX42
+	@$(CC) $(OBJFILES) libft/libft.a -o $(NAME) $(MLX_FLAGS)  -I MLX42/include/MLX42
+	@echo "$(GREEN)compilation complete!$(COLOR_END)"
 
 $(OBJ_DIR)/%.o: %.c $(HEADERFILES)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) -c $< -o $@ -I MLX42/include/MLX42 
+	@$(CC) $(CFLAGS) -c $< -o $@ -I MLX42/include/MLX42
+	@echo "$(BLUE)compiling $< $(COLOR_END)"
+	
 #$(MLX_FLAGS)
 
 clean:

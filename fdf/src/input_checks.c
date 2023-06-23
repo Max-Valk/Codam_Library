@@ -6,45 +6,49 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/15 14:45:16 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/21 14:57:18 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/23 15:46:44 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-u_int32_t	count_row(char *file)
+static bool	is_row_filled(char check)
+{
+	return (check != '\n' && check != '\0');
+}
+
+u_int32_t	count_row(int32_t fd)
 {
 	u_int32_t	count;
 	ssize_t		n_read;
 	char		check;
-	int			fd;
+	bool		is_nl_at_eof;
 
 	count = 0;
-	n_read = 1;
-	fd = open(file, O_RDONLY);
-	if (fd == -1)
-		error_exit(errno);
+	n_read = read(fd, &check, 1);
+	is_nl_at_eof = false;
 	while (n_read > 0)
 	{
-		n_read = read(fd, &check, 1);
-		if (n_read == -1)
-		{
-			close(fd);
-			error_exit(errno);
-		}
 		if (check == '\n')
-			count++;
+		{
+			if (is_nl_at_eof)
+				count++;
+			is_nl_at_eof = false;
+		}
+		else if (is_row_filled(check))
+			is_nl_at_eof = true;
+		n_read = read(fd, &check, 1);
 	}
 	close(fd);
-	return (count - 1);
+	return (count);
 }
 
 t_point3d	new_point(t_fdf	*s_fdf, char **row, u_int32_t c_i, u_int32_t r_i)
 {
 	t_point3d	point;
 
-	point.x = (c_i * (WIDTH / (s_fdf->col))) * 0.8;
-	point.y = (r_i * (HEIGHT / (s_fdf->col))) * 0.8;
+	point.x = (c_i * (WIDTH / (s_fdf->col))) * 0.6;
+	point.y = (r_i * (HEIGHT / (s_fdf->col))) * 0.6;
 	point.z = ft_atoi(row[c_i]);
 	point.col = hex_to_color(row[c_i]);
 	return (point);
@@ -69,12 +73,12 @@ void	file_to_2d_arr(t_fdf *s_fdf, int fd)
 			error_exit(EINVAL);
 		while (++c_i < s_fdf->col)
 			s_fdf->map[r_i][c_i] = new_point(s_fdf, row, c_i, r_i);
-		while (c_i-- > 0)
+		c_i = -1;
+		while (row[++c_i])
 			free (row[c_i]);
 		free (row);
 		free (line);
 		line = get_next_line(fd);
 		row = ft_split(line, ' ');
 	}
-	set_z(s_fdf);
 }

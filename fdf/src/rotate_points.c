@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/05/11 15:08:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/20 14:12:40 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/23 14:28:34 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,9 +76,9 @@ void	make_quaternions(t_frame *frame, u_int32_t i, u_int32_t j)
 	t_quaternion	qy;
 	t_quaternion	qz;
 
-	qz = quaternion_axis_agl(frame->angle_z, 0, 0, 1.0);
 	qx = quaternion_axis_agl(frame->angle_x, 1.0, 0, 0);
 	qy = quaternion_axis_agl(frame->angle_y, 0, 1.0, 0);
+	qz = quaternion_axis_agl(frame->angle_z, 0, 0, 1.0);
 	frame->map[i][j] = rotate_point_quaternion(frame->map[i][j], qz);
 	frame->map[i][j] = rotate_point_quaternion(frame->map[i][j], qx);
 	frame->map[i][j] = rotate_point_quaternion(frame->map[i][j], qy);

@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:58:46 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/21 14:59:21 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/23 15:12:07 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ t_point3d	**allocate_struct(u_int32_t rows, u_int32_t columns)
 	u_int32_t	i;
 
 	i = -1;
+	if (rows < 1 || columns < 1)
+		error_exit(EINVAL);
 	map = ft_calloc(sizeof(t_point3d *), (rows + 1));
 	if (!map)
 		error_exit(errno);
@@ -77,26 +79,21 @@ t_point3d	**allocate_struct(u_int32_t rows, u_int32_t columns)
 	{
 		map[i] = ft_calloc(sizeof(t_point3d), (columns + 1));
 		if (!map[i])
-		{
-			while (map[i--])
-				free(map[i]);
-			free(map);
 			error_exit(errno);
-		}
 	}
 	return (map);
 }
 
 void	set_z(t_fdf *s_fdf)
 {
-	int32_t	i;
-	int32_t	j;
-	int32_t	mid;
-	int32_t	factor;
+	u_int32_t	i;
+	u_int32_t	j;
+	int32_t		mid;
+	double		factor;
 
 	mid = s_fdf->map[s_fdf->row - 1][s_fdf->col - 1].y / 2;
 	mid += s_fdf->map[s_fdf->row - 1][s_fdf->col - 1].x / 2;
-	mid /= 2;
+	mid /= 3;
 	factor = mid / max_z(s_fdf);
 	i = 0;
 	while (i < s_fdf->row)

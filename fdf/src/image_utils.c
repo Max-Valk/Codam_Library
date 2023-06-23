@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/20 18:53:29 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/21 14:44:12 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/23 17:44:55 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,14 +27,16 @@ int32_t	max_z(t_fdf *s_fdf)
 		j = 0;
 		while (j < s_fdf->col)
 		{
-			tmp_z = abs(s_fdf->map[i][j].z);
+			tmp_z = fabs(s_fdf->map[i][j].z);
 			if (tmp_z > max_z)
 				max_z = s_fdf->map[i][j].z;
 			j++;
 		}
 		i++;
 	}
-	return (max_z);
+	if (max_z != 0)
+		return (max_z);
+	return (1);
 }
 
 int32_t	put_line(t_fdf *s_fdf, t_line *l, t_point3d end)

@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/13 16:06:45 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/20 18:50:12 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/23 15:27:36 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,9 +112,9 @@ void	ft_hook(void *param)
 	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_D))
 		gen_f(s_fdf, move_window, 'D', WIDTH / 100);
 	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_I))
-		gen_f(s_fdf, move_scale, 'I', 0.1);
+		gen_f(s_fdf, move_scale, 'I', 0.05);
 	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_K))
-		gen_f(s_fdf, move_scale, 'K', -0.1);
+		gen_f(s_fdf, move_scale, 'K', -0.05);
 	if (mlx_is_key_down(s_fdf->mlx, MLX_KEY_F))
 		gen_f(s_fdf, rotate, 'F', 0);
 	ft_rotate_hook(s_fdf);
