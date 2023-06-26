@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/04/03 14:58:46 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/23 15:12:07 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/26 15:43:38 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,13 +88,13 @@ void	set_z(t_fdf *s_fdf)
 {
 	u_int32_t	i;
 	u_int32_t	j;
-	int32_t		mid;
 	double		factor;
+	double		z_max;
 
-	mid = s_fdf->map[s_fdf->row - 1][s_fdf->col - 1].y / 2;
-	mid += s_fdf->map[s_fdf->row - 1][s_fdf->col - 1].x / 2;
-	mid /= 3;
-	factor = mid / max_z(s_fdf);
+	factor = 1;
+	z_max = max_z(s_fdf);
+	if (z_max > 0)
+		factor = (((HEIGHT + WIDTH) / 2) / z_max) * (z_max / 200);
 	i = 0;
 	while (i < s_fdf->row)
 	{

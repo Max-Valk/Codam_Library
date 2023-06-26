@@ -6,18 +6,18 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/06/20 18:53:29 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/23 17:44:55 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/26 15:33:01 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../fdf.h"
 
-int32_t	max_z(t_fdf *s_fdf)
+double	max_z(t_fdf *s_fdf)
 {
 	u_int32_t	i;
 	u_int32_t	j;
-	int32_t		max_z;
-	int32_t		tmp_z;
+	double		max_z;
+	double		tmp_z;
 
 	max_z = 0;
 	tmp_z = 0;
@@ -34,9 +34,7 @@ int32_t	max_z(t_fdf *s_fdf)
 		}
 		i++;
 	}
-	if (max_z != 0)
-		return (max_z);
-	return (1);
+	return (max_z);
 }
 
 int32_t	put_line(t_fdf *s_fdf, t_line *l, t_point3d end)

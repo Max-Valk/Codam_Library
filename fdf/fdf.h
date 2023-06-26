@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/03/30 15:02:03 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/06/23 15:44:15 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/06/26 15:45:52 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,10 @@
 
 typedef struct s_axis
 {
-	int			x;
-	int			y;
-	int			z;
-}				t_axis;
+	int32_t		x;
+	int32_t		y;
+	int32_t		z;
+}			t_axis;
 
 typedef struct s_point3d
 {
@@ -74,9 +74,6 @@ typedef struct s_frame
 	u_int32_t	j;
 	u_int32_t	col;
 	u_int32_t	row;
-	double		x;
-	double		y;
-	double		z;
 }				t_frame;
 
 typedef struct s_fdf
@@ -98,7 +95,7 @@ void		file_to_2d_arr(t_fdf *s_fdf, int fd);
 u_int32_t	column_count(char **row);
 u_int32_t	count_row(int32_t fd);
 t_point3d	new_point(t_fdf *s_fdf, char **row, u_int32_t c_i, u_int32_t r_i);
-int32_t		max_z(t_fdf *s_fdf);
+double		max_z(t_fdf *s_fdf);
 void		set_z(t_fdf *s_fdf);
 int32_t		hex_to_color(char *hex);
 
