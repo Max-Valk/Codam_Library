@@ -1,0 +1,3 @@
+[submodule "Minishell"]
+	path = Minishell
+	url = git@github.com:Minishell-Codam-42/Minishell.git
