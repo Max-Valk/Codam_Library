@@ -1,24 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_calloc.c                                        :+:    :+:            */
+/*   main.c                                             :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/14 14:25:26 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/07/27 17:16:11 by mvalk         ########   odam.nl         */
+/*   Created: 2023/07/24 15:24:09 by mvalk         #+#    #+#                 */
+/*   Updated: 2023/08/03 14:56:20 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
 
-void	*ft_calloc(size_t count, size_t size)
+int	main(int ac, char **av)
 {
-	void	*ptr;
-
-	ptr = malloc(count * size);
-	if (!ptr)
-		return (0);
-	ft_bzero(ptr, count * size);
-	return (ptr);
+	if (ac == 5 || ac == 6)
+	{
+		if (check_input_type(av))
+		{
+			printf("Error, invalid argument\n");
+			return (EINVAL);
+		}
+		if (init_philosophers(ac, av))
+			return (errno);
+		// printf("Correct input!\n");
+	}
+	else
+		printf("Error, invalid argument count\n");
+	return (0);
 }

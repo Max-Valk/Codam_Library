@@ -6,7 +6,7 @@
 #    By: mvalk <mvalk@student.codam.nl>               +#+                      #
 #                                                    +#+                       #
 #    Created: 2022/10/28 17:23:55 by mvalk         #+#    #+#                  #
-#    Updated: 2023/06/26 19:19:24 by mvalk         ########   odam.nl          #
+#    Updated: 2023/07/03 18:01:39 by mvalk         ########   odam.nl          #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,9 @@ NAME = fdf
 CC = gcc -g
 CFLAGS = -Wall -Wextra -Werror
 MLX42 = MLX42
+MLX_INC = $(MLX42)/include/MLX42
 MLX_LIB = $(MLX42)/build/libmlx42.a
-MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit $(MLX_LIB) -Iinclude -lglfw3
+MLX_FLAGS = -framework Cocoa -framework OpenGL -framework IOKit $(MLX_LIB) -lglfw3
 HEADERFILES = fdf.h
 OBJ_DIR = obj
 SRCFILES = 	main.c \
@@ -41,12 +42,12 @@ all: $(NAME)
 
 $(NAME): $(MLX_LIB) $(OBJFILES) $(HEADERFILES)
 	@$(MAKE) -C ./libft
-	@$(CC) $(OBJFILES) libft/libft.a -o $(NAME) $(MLX_FLAGS)  -I $(MLX42)/include/MLX42
+	@$(CC) $(OBJFILES) libft/libft.a -o $(NAME) $(MLX_FLAGS) -I $(MLX_INC)
 	@echo "$(GREEN)compilation complete!$(COLOR_END)"
 
 $(OBJ_DIR)/%.o: %.c $(HEADERFILES)
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) -c $< -o $@ -I $(MLX42)/include/MLX42
+	@$(CC) $(CFLAGS) -c $< -o $@ -I $(MLX_INC)
 	@echo "$(BLUE)compiling $< $(COLOR_END)"
 
 $(MLX_LIB):

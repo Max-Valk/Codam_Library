@@ -1,16 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        ::::::::            */
-/*   ft_calloc.c                                        :+:    :+:            */
+/*   utils.c                                            :+:    :+:            */
 /*                                                     +:+                    */
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
-/*   Created: 2022/10/14 14:25:26 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/07/27 17:16:11 by mvalk         ########   odam.nl         */
+/*   Created: 2023/07/27 17:16:18 by mvalk         #+#    #+#                 */
+/*   Updated: 2023/08/04 15:14:04 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "philo.h"
+
+size_t	gettime_dif(struct timeval start_time)
+{
+	struct  timeval current_time;
+
+	gettimeofday(&current_time, NULL);
+	return ((current_time.tv_sec * 1000 + current_time.tv_usec / 1000)
+		- (start_time.tv_sec * 1000 + start_time.tv_usec / 1000));
+}
 
 void	*ft_calloc(size_t count, size_t size)
 {
@@ -19,6 +28,6 @@ void	*ft_calloc(size_t count, size_t size)
 	ptr = malloc(count * size);
 	if (!ptr)
 		return (0);
-	ft_bzero(ptr, count * size);
+	memset(ptr, 0, count * size);
 	return (ptr);
 }

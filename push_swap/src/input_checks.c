@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/01/16 17:09:07 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/04/20 13:33:36 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/07/27 14:12:18 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	check_input_type(char **input)
 	{
 		j = 0;
 		if (input[i][0] == '-')
-			j++;
+			return (1);
 		if (input[i][j] == '\0')
 			return (1);
 		while (input[i][j])
