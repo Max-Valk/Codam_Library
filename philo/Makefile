@@ -8,6 +8,7 @@ SRCFILES = 	main \
 			process_input \
 			philo \
 			utils \
+			philo_actions \
 
 vpath %.c	src	src/utils
 _SRC = $(addsuffix .c, $(SRCFILES))
