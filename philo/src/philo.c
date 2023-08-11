@@ -6,13 +6,13 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 13:58:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/07 18:18:42 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/11 18:24:26 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ph_sleep(size_t naptime)
+void	ph_sleep(size_t naptime, t_philo *philo)
 {
 	struct	timeval start_time;
 	size_t	m_seconds;
@@ -23,36 +23,53 @@ void	ph_sleep(size_t naptime)
 	{
 		usleep(200);
 		m_seconds = gettime_dif(start_time);
+		if (philo != NULL)
+		{
+			if (ac_check_death(philo) == true)
+				return ;
+			if (ac_check_d(philo) == true)
+			{
+				ac_print(philo, died);
+				return ;
+			}
+		}	
 	}
 }
 
 void	*philosopher_thread(void *philo)
 {
-	// struct	timeval last_eaten;
 	t_philo	*data;
-	// size_t	m_seconds;
 
 	data = (t_philo *)philo;
-	// usleep(20 * data->philo_id);
-	// m_seconds = gettime_dif(last_eaten);
-	// ph_sleep(1 * data->philo_id);
 	if ((data->philo_id + 1) % 2 == 0)
 	{
 		ac_print(data, is_thinking);
-		ph_sleep(1);
+		ph_sleep(1, data);
+	}
+	if (data->s_params->philo_count % 2 != 0 && data->philo_id == data->s_params->philo_count - 1)
+	{
+		ac_print(data, is_thinking);
+		ph_sleep(data->s_params->time_to_eat - 1, data);
+		ac_check_d(data);
 	}
 	while (true)
 	{
+		if (ac_check_death(data) == true)
+			return (NULL);
 		if (ac_hungry(data) == true)
-		{
 			ac_eat(data);
-			ac_sleep(data);
-		}
+		else
+			return (NULL);
+		ac_sleep(data);
+		if (ac_check_death(data) == true)
+			return (NULL);
 		ac_print(data, is_thinking);
-		if (gettime_dif(data->last_eaten) > data->s_params->time_to_die)
+		if (ac_check_d(philo) == true)
+		{
+			ac_print(philo, died);
 			break ;
+		}
 	}
-	// printf("time elapsed in philo [%zu]: %zu m_secs\n", data->philo_id + 1, m_seconds);
 	return (NULL);
 }
 
@@ -60,21 +77,16 @@ bool	check_death(t_params *s_params)
 {
 	size_t	i;
 
-	ph_sleep(100);
+	ph_sleep(s_params->time_to_die - 1, NULL);
 	while (true)
 	{
 		i = 0;
 		while (i < s_params->philo_count)
 		{
-			printf("%zu deathtime in philo [%zu] for some reason\n", gettime_dif(s_params->philo_data[i].last_eaten), i);
-			if (gettime_dif(s_params->philo_data[i].last_eaten) > s_params->time_to_die)
-			{
-				ac_print(&s_params->philo_data[i], died);
-				s_params->printable = false;
+			if (ac_check_d(&s_params->philo_data[i]) == true)
 				return (true);
-			}
-			i++;
 		}
+		ph_sleep(1, NULL);
 	}
 	return (false);
 }
@@ -100,6 +112,7 @@ int32_t	philosophers(t_params *s_params)
 	s_params->philos = philos;
 	s_params->forks = forks;
 	s_params->philo_data = philo_params;
+	pthread_mutex_init(&s_params->death_c, NULL);
 	while (i < s_params->philo_count)
 	{
 		status = pthread_mutex_init(&forks[i], NULL);
@@ -114,7 +127,7 @@ int32_t	philosophers(t_params *s_params)
 	while (i < s_params->philo_count)
 	{
 		philo_params[i].s_params = s_params;
-		// philo_params[i].start_time = start_time;
+		philo_params[i].last_eaten = s_params->start_time;
 		philo_params[i].philo_id = i;
 		// printf("creating_philo %zu\n", i + 1);
 		pthread_create(&philos[i], NULL, philosopher_thread, &philo_params[i]);
@@ -144,7 +157,7 @@ int32_t	init_philosophers(int ac, char **av)
 	s_params->time_to_eat = ft_atoi(av[--ac]);
 	s_params->time_to_die = ft_atoi(av[--ac]);
 	s_params->philo_count = ft_atoi(av[--ac]);
-	s_params->printable = true;
+	s_params->is_dead = false;
 	// printf("%zu, %zu, %zu, %zu, %zu\n", philo_count, s_params->time_to_die, s_params->time_to_eat, s_params->time_to_sleep, s_params->max_eat);
 	philosophers(s_params);
 	return (0);
