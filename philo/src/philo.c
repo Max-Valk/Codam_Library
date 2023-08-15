@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 13:58:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/11 18:24:26 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/15 17:02:49 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,9 @@ void	*philosopher_thread(void *philo)
 		if (ac_check_death(data) == true)
 			return (NULL);
 		ac_print(data, is_thinking);
+		if (data->eat_limit == true && data->s_params->eat_count[data->philo_id]
+				>= data->s_params->max_eat)
+			return (NULL);
 		if (ac_check_d(philo) == true)
 		{
 			ac_print(philo, died);
@@ -83,7 +86,7 @@ bool	check_death(t_params *s_params)
 		i = 0;
 		while (i < s_params->philo_count)
 		{
-			if (ac_check_d(&s_params->philo_data[i]) == true)
+			if (ac_check_d(&s_params->philo_params[i]) == true)
 				return (true);
 		}
 		ph_sleep(1, NULL);
@@ -91,60 +94,49 @@ bool	check_death(t_params *s_params)
 	return (false);
 }
 
-int32_t	philosophers(t_params *s_params)
+int	philosophers(t_params *s_params)
 {
-	pthread_mutex_t	forks[s_params->philo_count];
-	pthread_t		philos[s_params->philo_count];
-	t_philo			philo_params[s_params->philo_count];
-	// size_t			eat_count[s_params->philo_count];
-	
-	struct timeval	start_time;
-	int				status;
 	size_t			i;
 
 	i = 0;
-	status = 0;
-	gettimeofday(&start_time, NULL);
-	// memset(eat_count, 0, s_params->philo_count * sizeof(size_t));
+	// init_params(s_params);
+	pthread_mutex_t	forks[s_params->philo_count];
+	pthread_t		philos[s_params->philo_count];
+	t_philo			philo_params[s_params->philo_count];
+	size_t			eat_count[s_params->philo_count];
+
+	memset(eat_count, 0, s_params->philo_count * sizeof(size_t));
 	memset(forks, 0, s_params->philo_count * sizeof(pthread_mutex_t));
 	memset(philos, 0, s_params->philo_count * sizeof(pthread_t));
 	memset(philo_params, 0, s_params->philo_count * sizeof(t_philo));
 	s_params->philos = philos;
 	s_params->forks = forks;
-	s_params->philo_data = philo_params;
+	s_params->philo_params = philo_params;
+	s_params->eat_count = eat_count;
 	pthread_mutex_init(&s_params->death_c, NULL);
-	while (i < s_params->philo_count)
-	{
-		status = pthread_mutex_init(&forks[i], NULL);
-		if (status != 0){
-			printf("fork L at %zu\n", i);
-			exit(EXIT_FAILURE);
-		}
-		i++;
-	}
-	i = 0;
+	init_forks(s_params);
 	gettimeofday(&s_params->start_time, NULL);
 	while (i < s_params->philo_count)
 	{
-		philo_params[i].s_params = s_params;
-		philo_params[i].last_eaten = s_params->start_time;
-		philo_params[i].philo_id = i;
-		// printf("creating_philo %zu\n", i + 1);
-		pthread_create(&philos[i], NULL, philosopher_thread, &philo_params[i]);
+		s_params->philo_params[i].s_params = s_params;
+		if (s_params->eat_limit == true)
+			s_params->philo_params[i].eat_limit = true;
+		s_params->philo_params[i].last_eaten = s_params->start_time;
+		s_params->philo_params[i].philo_id = i;
+		pthread_create(&s_params->philos[i], NULL, philosopher_thread, &s_params->philo_params[i]);
 		i++;
 	}
 	check_death(s_params);
 	i = 0;
 	while (i < s_params->philo_count)
 	{
-		if (!pthread_join(philos[i], NULL))
-			// printf("philo: %zu exited\n", i + 1);
+		pthread_join(s_params->philos[i], NULL);
 		i++;
 	}
-	return (0);
+	return (free(s_params), 0);
 }
 
-int32_t	init_philosophers(int ac, char **av)
+int	init_philosophers(int ac, char **av)
 {
 	t_params	*s_params;
 
@@ -152,13 +144,15 @@ int32_t	init_philosophers(int ac, char **av)
 	if (s_params == NULL)
 		return (1);
 	if (ac == 6)
+	{
 		s_params->max_eat = ft_atoi(av[--ac]);
+		s_params->eat_limit = true;
+	}
 	s_params->time_to_sleep = ft_atoi(av[--ac]);
 	s_params->time_to_eat = ft_atoi(av[--ac]);
 	s_params->time_to_die = ft_atoi(av[--ac]);
 	s_params->philo_count = ft_atoi(av[--ac]);
 	s_params->is_dead = false;
-	// printf("%zu, %zu, %zu, %zu, %zu\n", philo_count, s_params->time_to_die, s_params->time_to_eat, s_params->time_to_sleep, s_params->max_eat);
 	philosophers(s_params);
 	return (0);
 }

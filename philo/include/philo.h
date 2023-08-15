@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/24 15:24:37 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/11 17:39:49 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/15 16:57:59 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef struct s_philo	t_philo;
 
 typedef	struct s_params
 {
-	size_t			philo_count;
 	size_t			max_eat;
+	size_t			philo_count;
 	size_t			time_to_die;
 	size_t			time_to_sleep;
 	size_t			time_to_eat;
@@ -38,9 +38,9 @@ typedef	struct s_params
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	death_c;
 	bool			is_dead;
-	// bool			printable;
+	bool			eat_limit;
 	pthread_t		*philos;
-	t_philo			*philo_data;
+	t_philo			*philo_params;
 	size_t			*eat_count;
 }					t_params;
 
@@ -66,6 +66,7 @@ typedef struct s_philo
 	pthread_mutex_t	eat_c;
 	struct	timeval last_eaten;
 	size_t			philo_id;
+	bool			eat_limit;
 	t_params		*s_params;
 }				t_philo;
 
@@ -81,6 +82,8 @@ void	ph_sleep(size_t naptime, t_philo *philo);
 // void	ph_sleep(size_t naptime);
 int		check_input_type(char **input);
 int		init_philosophers(int ac, char **av);
+void	init_forks(t_params *s_params);
+void	init_params(t_params *s_params);
 
 //ACTIONS
 

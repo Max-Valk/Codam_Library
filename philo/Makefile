@@ -9,6 +9,7 @@ SRCFILES = 	main \
 			philo \
 			utils \
 			philo_actions \
+			init_philo \
 
 vpath %.c	src	src/utils
 _SRC = $(addsuffix .c, $(SRCFILES))
