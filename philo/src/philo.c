@@ -6,72 +6,39 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 13:58:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/15 17:02:49 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/29 16:10:13 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ph_sleep(size_t naptime, t_philo *philo)
+void	*philosopher_thread(void *data)
 {
-	struct	timeval start_time;
-	size_t	m_seconds;
+	t_philo	*philo;
 
-	m_seconds = 0;
-	gettimeofday(&start_time, NULL);
-	while (m_seconds < naptime)
+	philo = (t_philo *)data;
+	if ((philo->philo_id + 1) % 2 == 0)
 	{
-		usleep(200);
-		m_seconds = gettime_dif(start_time);
-		if (philo != NULL)
-		{
-			if (ac_check_death(philo) == true)
-				return ;
-			if (ac_check_d(philo) == true)
-			{
-				ac_print(philo, died);
-				return ;
-			}
-		}	
+		ac_print(philo, is_thinking);
+		ph_sleep(1, philo);
 	}
-}
-
-void	*philosopher_thread(void *philo)
-{
-	t_philo	*data;
-
-	data = (t_philo *)philo;
-	if ((data->philo_id + 1) % 2 == 0)
+	else if (philo->philo_id == philo->s_params->philo_count - 1)
 	{
-		ac_print(data, is_thinking);
-		ph_sleep(1, data);
-	}
-	if (data->s_params->philo_count % 2 != 0 && data->philo_id == data->s_params->philo_count - 1)
-	{
-		ac_print(data, is_thinking);
-		ph_sleep(data->s_params->time_to_eat - 1, data);
-		ac_check_d(data);
+		ac_print(philo, is_thinking);
+		ph_sleep(philo->s_params->time_to_eat - 1, philo);
 	}
 	while (true)
 	{
-		if (ac_check_death(data) == true)
+		if (ac_check_death(philo) || ac_check_eatc(philo))
 			return (NULL);
-		if (ac_hungry(data) == true)
-			ac_eat(data);
+		if (ac_hungry(philo) == true)
+			ac_eat(philo);
 		else
 			return (NULL);
-		ac_sleep(data);
-		if (ac_check_death(data) == true)
+		ac_sleep(philo);
+		if (ac_check_death(philo) == true)
 			return (NULL);
-		ac_print(data, is_thinking);
-		if (data->eat_limit == true && data->s_params->eat_count[data->philo_id]
-				>= data->s_params->max_eat)
-			return (NULL);
-		if (ac_check_d(philo) == true)
-		{
-			ac_print(philo, died);
-			break ;
-		}
+		ac_print(philo, is_thinking);
 	}
 	return (NULL);
 }
@@ -86,8 +53,9 @@ bool	check_death(t_params *s_params)
 		i = 0;
 		while (i < s_params->philo_count)
 		{
-			if (ac_check_d(&s_params->philo_params[i]) == true)
+			if (ac_check_stop(&s_params->philo_params[i]) == true)
 				return (true);
+			i++;
 		}
 		ph_sleep(1, NULL);
 	}
@@ -99,22 +67,6 @@ int	philosophers(t_params *s_params)
 	size_t			i;
 
 	i = 0;
-	// init_params(s_params);
-	pthread_mutex_t	forks[s_params->philo_count];
-	pthread_t		philos[s_params->philo_count];
-	t_philo			philo_params[s_params->philo_count];
-	size_t			eat_count[s_params->philo_count];
-
-	memset(eat_count, 0, s_params->philo_count * sizeof(size_t));
-	memset(forks, 0, s_params->philo_count * sizeof(pthread_mutex_t));
-	memset(philos, 0, s_params->philo_count * sizeof(pthread_t));
-	memset(philo_params, 0, s_params->philo_count * sizeof(t_philo));
-	s_params->philos = philos;
-	s_params->forks = forks;
-	s_params->philo_params = philo_params;
-	s_params->eat_count = eat_count;
-	pthread_mutex_init(&s_params->death_c, NULL);
-	init_forks(s_params);
 	gettimeofday(&s_params->start_time, NULL);
 	while (i < s_params->philo_count)
 	{
@@ -133,16 +85,11 @@ int	philosophers(t_params *s_params)
 		pthread_join(s_params->philos[i], NULL);
 		i++;
 	}
-	return (free(s_params), 0);
+	return (0);
 }
 
-int	init_philosophers(int ac, char **av)
+int	init_philosophers(int ac, char **av, t_params *s_params)
 {
-	t_params	*s_params;
-
-	s_params = ft_calloc(1, sizeof(t_params));
-	if (s_params == NULL)
-		return (1);
 	if (ac == 6)
 	{
 		s_params->max_eat = ft_atoi(av[--ac]);
@@ -153,6 +100,5 @@ int	init_philosophers(int ac, char **av)
 	s_params->time_to_die = ft_atoi(av[--ac]);
 	s_params->philo_count = ft_atoi(av[--ac]);
 	s_params->is_dead = false;
-	philosophers(s_params);
 	return (0);
 }

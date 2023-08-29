@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/24 15:24:37 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/15 16:57:59 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/29 16:08:16 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,18 +78,20 @@ int32_t		ft_atoi(const char *str);
 
 //FUNCTIONS
 
+int		philosophers(t_params *s_params);
 void	ph_sleep(size_t naptime, t_philo *philo);
 // void	ph_sleep(size_t naptime);
 int		check_input_type(char **input);
-int		init_philosophers(int ac, char **av);
+int		init_philosophers(int ac, char **av, t_params *s_params);
 void	init_forks(t_params *s_params);
 void	init_params(t_params *s_params);
 
 //ACTIONS
 
-bool	ac_check_d(t_philo *philo);
+bool	ac_check_eatc(t_philo *philo);
+bool	ac_check_stop(t_philo *philo);
 bool	ac_check_death(t_philo *philo);
-void	ac_print(t_philo *philo, t_print print);
+bool	ac_print(t_philo *philo, t_print print);
 void	ac_eat(t_philo *philo);
 void	ac_sleep(t_philo *philo);
 int		ac_hungry(t_philo *philo);

@@ -1,6 +1,6 @@
 NAME := philo
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -g
 HEADER = include/philo.h
 INCLUDE = -Iinclude
 OBJ_DIR = obj
