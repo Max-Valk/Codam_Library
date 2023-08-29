@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 13:49:33 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/29 18:38:33 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/29 18:53:33 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,8 @@ bool	ac_check_stop(t_philo *philo)
 		pthread_mutex_lock(&philo->s_params->death_c);
 		philo->s_params->is_dead = true;
 		// usleep(200);
-		ac_print(philo, died);
 		ph_sleep(1, NULL);
+		ac_print(philo, died);
 		pthread_mutex_unlock(&philo->s_params->death_c);
 		pthread_mutex_unlock(&philo->eat_c);
 		return (true);
