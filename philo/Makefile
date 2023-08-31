@@ -1,6 +1,6 @@
 NAME := philo
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -g
+CFLAGS = -Wall -Werror -Wextra -Ofast -pthread
 HEADER = include/philo.h
 INCLUDE = -Iinclude
 OBJ_DIR = obj
@@ -45,3 +45,4 @@ fclean: clean
 re: fclean all
 
 .PHONY: clean all fclean re 
+

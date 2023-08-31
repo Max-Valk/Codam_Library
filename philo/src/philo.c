@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 13:58:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/29 16:10:13 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/31 16:08:05 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	*philosopher_thread(void *data)
 	else if (philo->philo_id == philo->s_params->philo_count - 1)
 	{
 		ac_print(philo, is_thinking);
-		ph_sleep(philo->s_params->time_to_eat - 1, philo);
+		ph_sleep(philo->s_params->time_to_eat / 2, philo);
 	}
 	while (true)
 	{
@@ -36,8 +36,8 @@ void	*philosopher_thread(void *data)
 		else
 			return (NULL);
 		ac_sleep(philo);
-		if (ac_check_death(philo) == true)
-			return (NULL);
+		// if (ac_check_death(philo) == true)
+		// 	return (NULL);
 		ac_print(philo, is_thinking);
 	}
 	return (NULL);
@@ -73,6 +73,7 @@ int	philosophers(t_params *s_params)
 		s_params->philo_params[i].s_params = s_params;
 		if (s_params->eat_limit == true)
 			s_params->philo_params[i].eat_limit = true;
+		// gettimeofday(&s_params->philo_params[i].last_eaten, NULL);
 		s_params->philo_params[i].last_eaten = s_params->start_time;
 		s_params->philo_params[i].philo_id = i;
 		pthread_create(&s_params->philos[i], NULL, philosopher_thread, &s_params->philo_params[i]);

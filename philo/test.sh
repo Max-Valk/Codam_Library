@@ -31,9 +31,18 @@ for ((i = 1; i <= loop_count; i++)); do
     # Run the philosopher simulation and capture output
     output=$(run_philosophers $num_philosophers $time_to_die $time_to_eat $time_to_sleep $num_times_to_eat)
 
-    # Display output after philosopher's death statement
-    echo "Output after philosopher's death:"
-    echo "$output" | sed -n '/died/,$p'
+    # Check if the philosophers program stopped as expected
+    if echo "$output" | grep -q "The philosophers program stopped as expected."; then
+        echo "The philosophers program stopped as expected."
+    else
+        # echo "The philosophers program did not stop after a philosopher died."
+        echo "Output after philosopher's death:"
+        if echo "$output" | grep -q "died"; then
+            echo "$output" | sed -n '/died/,$p'
+        else
+            echo "$output" | tail -n 10
+        fi
+    fi
 
     echo "----------------"
 done

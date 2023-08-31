@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/24 15:24:37 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/29 16:08:16 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/30 17:20:32 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@
 
 typedef struct s_philo	t_philo;
 
+# define GREEN "\033[0;92m"
+# define RED "\033[0;31m"
+# define MAGENTA "\033[0;95m"
+# define CYAN "\033[0;96m"
+# define BLUE "\033[0;94m"
+# define COLOR_END "\033[0m"
+
+
 typedef	struct s_params
 {
 	size_t			max_eat;
@@ -35,11 +43,13 @@ typedef	struct s_params
 	size_t			time_to_sleep;
 	size_t			time_to_eat;
 	struct	timeval start_time;
-	pthread_mutex_t	*forks;
 	pthread_mutex_t	death_c;
+	pthread_mutex_t	print_c;
+	pthread_mutex_t	eat_c;
 	bool			is_dead;
 	bool			eat_limit;
 	pthread_t		*philos;
+	pthread_mutex_t	*forks;
 	t_philo			*philo_params;
 	size_t			*eat_count;
 }					t_params;
@@ -63,7 +73,6 @@ typedef	enum	e_print_statement
 
 typedef struct s_philo
 {
-	pthread_mutex_t	eat_c;
 	struct	timeval last_eaten;
 	size_t			philo_id;
 	bool			eat_limit;

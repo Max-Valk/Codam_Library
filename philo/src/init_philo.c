@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/15 16:37:18 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/29 15:54:24 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/30 17:21:59 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,5 +31,7 @@ void	init_params(t_params *s_params)
 	s_params->philos = ft_calloc(s_params->philo_count, sizeof(pthread_t));
 	s_params->philo_params = ft_calloc(s_params->philo_count, sizeof(t_philo));
 	pthread_mutex_init(&s_params->death_c, NULL);
+	pthread_mutex_init(&s_params->print_c, NULL);
+	pthread_mutex_init(&s_params->eat_c, NULL);
 	init_forks(s_params);
 }
