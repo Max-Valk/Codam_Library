@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 13:49:33 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/31 16:01:04 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/31 16:40:20 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,13 @@ bool	ac_check_stop(t_philo *philo)
 	}
 	if (gettime_dif(philo->last_eaten) > philo->s_params->time_to_die)
 	{
+		pthread_mutex_unlock(&philo->s_params->eat_c);
 		pthread_mutex_lock(&philo->s_params->death_c);
 		philo->s_params->is_dead = true;
 		// usleep(200);
 		ph_sleep(1, NULL);
 		ac_print(philo, died);
 		pthread_mutex_unlock(&philo->s_params->death_c);
-		pthread_mutex_unlock(&philo->s_params->eat_c);
 		return (true);
 	}
 	pthread_mutex_unlock(&philo->s_params->eat_c);
@@ -73,7 +73,7 @@ bool	ac_print(t_philo *philo, t_print print)
 	{
 		return (false);
 	}
-	// pthread_mutex_lock(&philo->s_params->print_c);
+	pthread_mutex_lock(&philo->s_params->print_c);
 	if (print == is_eating)
 		printf("%zu %zu is eating\n", gettime_dif(philo->s_params->start_time),
 			philo->philo_id);
@@ -87,12 +87,17 @@ bool	ac_print(t_philo *philo, t_print print)
 		printf("%zu %zu is thinking\n", gettime_dif(philo->s_params->start_time),
 			philo->philo_id);
 	// fflush(stdout);
-	// pthread_mutex_unlock(&philo->s_params->print_c);
+	// usleep(100);
+	pthread_mutex_unlock(&philo->s_params->print_c);
 	return (true);
 }
 
 void	ac_eat(t_philo *philo)
 {
+	pthread_mutex_lock(&philo->s_params->eat_c);
+	gettimeofday(&philo->last_eaten, NULL);
+	philo->s_params->eat_count[philo->philo_id]++;
+	pthread_mutex_unlock(&philo->s_params->eat_c);
 	if (ac_print(philo, is_eating) == false)
 	{
 		pthread_mutex_unlock(&philo->s_params->forks[philo->philo_id]);
@@ -100,10 +105,6 @@ void	ac_eat(t_philo *philo)
 			% philo->s_params->philo_count]);
 		return ;
 	}
-	gettimeofday(&philo->last_eaten, NULL);
-	pthread_mutex_lock(&philo->s_params->eat_c);
-	philo->s_params->eat_count[philo->philo_id]++;
-	pthread_mutex_unlock(&philo->s_params->eat_c);
 	ph_sleep(philo->s_params->time_to_eat, philo);
 	pthread_mutex_unlock(&philo->s_params->forks[philo->philo_id]);
 	pthread_mutex_unlock(&philo->s_params->forks[(philo->philo_id + 1)

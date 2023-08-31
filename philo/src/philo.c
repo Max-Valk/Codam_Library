@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 13:58:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/31 16:08:05 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/08/31 16:34:54 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*philosopher_thread(void *data)
 	if ((philo->philo_id + 1) % 2 == 0)
 	{
 		ac_print(philo, is_thinking);
-		ph_sleep(1, philo);
+		ph_sleep(philo->s_params->time_to_eat / 2, philo);
 	}
 	else if (philo->philo_id == philo->s_params->philo_count - 1)
 	{
