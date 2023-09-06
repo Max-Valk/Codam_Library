@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 13:49:33 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/31 16:40:20 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/09/05 17:14:32 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ bool	ac_check_stop(t_philo *philo)
 		pthread_mutex_unlock(&philo->s_params->eat_c);
 		pthread_mutex_lock(&philo->s_params->death_c);
 		philo->s_params->is_dead = true;
-		// usleep(200);
 		ph_sleep(1, NULL);
 		ac_print(philo, died);
 		pthread_mutex_unlock(&philo->s_params->death_c);
@@ -70,9 +69,7 @@ bool	ac_print(t_philo *philo, t_print print)
 		return (true);
 	}
 	if (ac_check_death(philo) == true)
-	{
 		return (false);
-	}
 	pthread_mutex_lock(&philo->s_params->print_c);
 	if (print == is_eating)
 		printf("%zu %zu is eating\n", gettime_dif(philo->s_params->start_time),
@@ -86,8 +83,6 @@ bool	ac_print(t_philo *philo, t_print print)
 	else if (print == is_thinking)
 		printf("%zu %zu is thinking\n", gettime_dif(philo->s_params->start_time),
 			philo->philo_id);
-	// fflush(stdout);
-	// usleep(100);
 	pthread_mutex_unlock(&philo->s_params->print_c);
 	return (true);
 }
@@ -162,16 +157,4 @@ int	ac_hungry(t_philo *philo)
 // 		}
 // 		ph_sleep(1, philo);
 // 	}
-// }
-
-// i = 0;
-// lock()
-// i++;
-// local = i;
-// if (local == 1) {
-// unlock();
-// ...
-// }
-// else {
-// unlock();
 // }
