@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 14:05:26 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/08/03 14:56:45 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/09/07 15:28:55 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,5 +65,3 @@ int	check_input_type(char **input)
 	}
 	return (0);
 }
-
-

@@ -6,26 +6,26 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 13:58:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/09/05 17:11:45 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/09/07 18:26:12 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	*philosopher_thread(void *data)
+void	*ph_thread(void *data)
 {
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
 	if ((philo->philo_id + 1) % 2 == 0)
 	{
-		ac_print(philo, is_thinking);
-		ph_sleep(philo->s_params->time_to_eat / 2, philo);
+		ac_print(philo, IS_THINKING);
+		ph_sleep(philo->s_data->time_to_eat / 2, philo);
 	}
-	else if (philo->philo_id == philo->s_params->philo_count - 1)
+	else if (philo->philo_id == philo->s_data->philo_count - 1)
 	{
-		ac_print(philo, is_thinking);
-		ph_sleep(philo->s_params->time_to_eat / 2, philo);
+		ac_print(philo, IS_THINKING);
+		ph_sleep(philo->s_data->time_to_eat / 2, philo);
 	}
 	while (true)
 	{
@@ -36,24 +36,22 @@ void	*philosopher_thread(void *data)
 		else
 			return (NULL);
 		ac_sleep(philo);
-		// if (ac_check_death(philo) == true)
-		// 	return (NULL);
-		ac_print(philo, is_thinking);
+		ac_print(philo, IS_THINKING);
 	}
 	return (NULL);
 }
 
-bool	check_death(t_params *s_params)
+bool	check_death(t_params *s_data)
 {
 	size_t	i;
 
-	ph_sleep(s_params->time_to_die - 1, NULL);
+	ph_sleep(s_data->time_to_die - 1, NULL);
 	while (true)
 	{
 		i = 0;
-		while (i < s_params->philo_count)
+		while (i < s_data->philo_count)
 		{
-			if (ac_check_stop(&s_params->philo_params[i]) == true)
+			if (check_stop(&s_data->ph_par[i]) == true)
 				return (true);
 			i++;
 		}
@@ -62,44 +60,50 @@ bool	check_death(t_params *s_params)
 	return (false);
 }
 
-int	philosophers(t_params *s_params)
+int	philosophers(t_params *s_data)
 {
 	size_t			i;
 
 	i = 0;
-	gettimeofday(&s_params->start_time, NULL);
-	while (i < s_params->philo_count)
+	gettimeofday(&s_data->start_time, NULL);
+	while (i < s_data->philo_count)
 	{
-		s_params->philo_params[i].s_params = s_params;
-		if (s_params->eat_limit == true)
-			s_params->philo_params[i].eat_limit = true;
-		// gettimeofday(&s_params->philo_params[i].last_eaten, NULL);
-		s_params->philo_params[i].last_eaten = s_params->start_time;
-		s_params->philo_params[i].philo_id = i;
-		pthread_create(&s_params->philos[i], NULL, philosopher_thread, &s_params->philo_params[i]);
+		s_data->ph_par[i].s_data = s_data;
+		if (s_data->eat_limit == true)
+			s_data->ph_par[i].eat_limit = true;
+		s_data->ph_par[i].last_eaten = s_data->start_time;
+		s_data->ph_par[i].philo_id = i;
+		pthread_create(&s_data->philos[i], NULL, ph_thread, &s_data->ph_par[i]);
 		i++;
 	}
-	check_death(s_params);
+	check_death(s_data);
 	i = 0;
-	while (i < s_params->philo_count)
+	while (i < s_data->philo_count)
 	{
-		pthread_join(s_params->philos[i], NULL);
+		pthread_join(s_data->philos[i], NULL);
 		i++;
 	}
 	return (0);
 }
 
-int	init_philosophers(int ac, char **av, t_params *s_params)
+int	init_philosophers(int ac, char **av, t_params *s_data)
 {
 	if (ac == 6)
 	{
-		s_params->max_eat = ft_atoi(av[--ac]);
-		s_params->eat_limit = true;
+		s_data->max_eat = ft_atoi(av[--ac]);
+		s_data->eat_limit = true;
+		if (s_data->max_eat < 1)
+			return (-1);
 	}
-	s_params->time_to_sleep = ft_atoi(av[--ac]);
-	s_params->time_to_eat = ft_atoi(av[--ac]);
-	s_params->time_to_die = ft_atoi(av[--ac]);
-	s_params->philo_count = ft_atoi(av[--ac]);
-	s_params->is_dead = false;
+	s_data->time_to_sleep = ft_atoi(av[--ac]);
+	s_data->time_to_eat = ft_atoi(av[--ac]);
+	s_data->time_to_die = ft_atoi(av[--ac]);
+	s_data->philo_count = ft_atoi(av[--ac]);
+	if (s_data->time_to_sleep < 1 || s_data->time_to_die < 1)
+		return (-1);
+	if (s_data->max_eat > INT32_MAX || s_data->time_to_sleep > INT32_MAX
+		|| s_data->time_to_die > INT32_MAX)
+		return (-1);
+	s_data->is_dead = false;
 	return (0);
 }

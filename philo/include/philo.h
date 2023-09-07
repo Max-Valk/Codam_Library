@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/24 15:24:37 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/09/05 16:59:16 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/09/07 17:59:30 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ typedef struct s_philo	t_philo;
 # define COLOR_END "\033[0m"
 
 
-typedef	struct s_params
+typedef	struct s_data
 {
 	size_t			max_eat;
 	size_t			philo_count;
@@ -50,33 +50,22 @@ typedef	struct s_params
 	bool			eat_limit;
 	pthread_t		*philos;
 	pthread_mutex_t	*forks;
-	t_philo			*philo_params;
+	t_philo			*ph_par;
 	size_t			*eat_count;
 }					t_params;
 
-typedef	enum e_forks_held
-{
-	no_fork,
-	left_fork,
-	both_forks
-}			t_forks_held;
-
-typedef	enum	e_print_statement
-{
-	taken_fork,
-	is_eating,
-	is_sleeping,
-	is_thinking,
-	is_start,
-	died
-}	t_print;
+#define TAKEN_FORK "has taken a fork"
+#define IS_EATING "is eating"
+#define IS_SLEEPING "is sleeping"
+#define IS_THINKING "is thinking"
+#define DIED "died"
 
 typedef struct s_philo
 {
 	struct	timeval last_eaten;
 	size_t			philo_id;
 	bool			eat_limit;
-	t_params		*s_params;
+	t_params		*s_data;
 }				t_philo;
 
 //UTILS
@@ -87,20 +76,22 @@ int32_t		ft_atoi(const char *str);
 
 //FUNCTIONS
 
-int		philosophers(t_params *s_params);
+int		philosophers(t_params *s_data);
 void	ph_sleep(size_t naptime, t_philo *philo);
 // void	ph_sleep(size_t naptime);
 int		check_input_type(char **input);
-int		init_philosophers(int ac, char **av, t_params *s_params);
-void	init_forks(t_params *s_params);
-void	init_params(t_params *s_params);
+int		init_philosophers(int ac, char **av, t_params *s_data);
+void	init_forks(t_params *s_data);
+int		init_params(t_params *s_data);
 
 //ACTIONS
 
+bool	check_stop(t_philo *philo);
 bool	ac_check_eatc(t_philo *philo);
-bool	ac_check_stop(t_philo *philo);
 bool	ac_check_death(t_philo *philo);
-bool	ac_print(t_philo *philo, t_print print);
+bool	ac_print(t_philo *philo, const char *action);
+
+// bool	ac_print(t_philo *philo, t_print print);
 void	ac_eat(t_philo *philo);
 void	ac_sleep(t_philo *philo);
 int		ac_hungry(t_philo *philo);
