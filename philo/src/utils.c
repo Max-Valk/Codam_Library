@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 17:16:18 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/09/07 18:00:00 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/09/08 14:32:52 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ void	ph_sleep(size_t naptime, t_philo *philo)
 bool	check_stop(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->s_data->eat_c);
-	if (philo->eat_limit == true && philo->s_data->eat_count[philo->philo_id]
-		>= philo->s_data->max_eat)
+	if (philo->eat_limit == true
+		&& philo->s_data->eat_count[philo->philo_id] >= philo->s_data->max_eat)
 	{
 		pthread_mutex_unlock(&philo->s_data->eat_c);
 		return (true);
@@ -66,6 +66,19 @@ bool	check_stop(t_philo *philo)
 		philo->s_data->is_dead = true;
 		ac_print(philo, DIED);
 		pthread_mutex_unlock(&philo->s_data->death_c);
+		pthread_mutex_unlock(&philo->s_data->eat_c);
+		return (true);
+	}
+	pthread_mutex_unlock(&philo->s_data->eat_c);
+	return (false);
+}
+
+bool	ac_check_eatc(t_philo *philo)
+{
+	pthread_mutex_lock(&philo->s_data->eat_c);
+	if (philo->eat_limit == true
+		&& philo->s_data->eat_count[philo->philo_id] >= philo->s_data->max_eat)
+	{
 		pthread_mutex_unlock(&philo->s_data->eat_c);
 		return (true);
 	}

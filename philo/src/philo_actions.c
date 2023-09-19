@@ -6,24 +6,11 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 13:49:33 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/09/07 18:25:36 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/09/08 13:58:50 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-bool	ac_check_eatc(t_philo *philo)
-{
-	pthread_mutex_lock(&philo->s_data->eat_c);
-	if (philo->eat_limit == true && philo->s_data->eat_count[philo->philo_id]
-		>= philo->s_data->max_eat)
-	{
-		pthread_mutex_unlock(&philo->s_data->eat_c);
-		return (true);
-	}
-	pthread_mutex_unlock(&philo->s_data->eat_c);
-	return (false);
-}
 
 bool	ac_check_death(t_philo *philo)
 {
