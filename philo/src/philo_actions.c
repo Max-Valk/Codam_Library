@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 13:49:33 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/09/08 13:58:50 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/09 14:37:56 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,16 @@ bool	ac_check_death(t_philo *philo)
 
 bool	ac_print(t_philo *philo, const char *action)
 {
-	if (action != DIED)
+	pthread_mutex_lock(&philo->s_data->print_c);
+	if (ac_check_death(philo) != true)
 	{
-		pthread_mutex_lock(&philo->s_data->print_c);
-		if (ac_check_death(philo) == true)
-		{
-			pthread_mutex_unlock(&philo->s_data->print_c);
-			return (false);
-		}
+		printf("%zu %zu %s\n", gettime_dif(philo->s_data->start_time),
+			philo->philo_id, action);
+		pthread_mutex_unlock(&philo->s_data->print_c);
+		return (true);
 	}
-	printf("%zu %zu %s\n", gettime_dif(philo->s_data->start_time),
-		philo->philo_id, action);
 	pthread_mutex_unlock(&philo->s_data->print_c);
-	return (true);
+	return (false);
 }
 
 void	ac_eat(t_philo *philo)
@@ -81,11 +78,6 @@ int	ac_hungry(t_philo *philo)
 	pthread_mutex_lock(&philo->s_data->forks[(philo->philo_id + 1)
 		% philo->s_data->philo_count]);
 	if (ac_print(philo, TAKEN_FORK) == false)
-	{
-		pthread_mutex_unlock(&philo->s_data->forks[philo->philo_id]);
-		pthread_mutex_unlock(&philo->s_data->forks[(philo->philo_id + 1)
-			% philo->s_data->philo_count]);
 		return (false);
-	}
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 13:58:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/09/07 18:26:12 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/09 15:12:31 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,6 @@ void	*ph_thread(void *data)
 		ac_print(philo, IS_THINKING);
 		ph_sleep(philo->s_data->time_to_eat / 2, philo);
 	}
-	else if (philo->philo_id == philo->s_data->philo_count - 1)
-	{
-		ac_print(philo, IS_THINKING);
-		ph_sleep(philo->s_data->time_to_eat / 2, philo);
-	}
 	while (true)
 	{
 		if (ac_check_death(philo) || ac_check_eatc(philo))
@@ -36,7 +31,8 @@ void	*ph_thread(void *data)
 		else
 			return (NULL);
 		ac_sleep(philo);
-		ac_print(philo, IS_THINKING);
+		if (ac_print(philo, IS_THINKING) == false)
+			return (NULL);
 	}
 	return (NULL);
 }
@@ -45,7 +41,7 @@ bool	check_death(t_params *s_data)
 {
 	size_t	i;
 
-	ph_sleep(s_data->time_to_die - 1, NULL);
+	ph_sleep(s_data->time_to_die / 2, NULL);
 	while (true)
 	{
 		i = 0;
@@ -101,8 +97,8 @@ int	init_philosophers(int ac, char **av, t_params *s_data)
 	s_data->philo_count = ft_atoi(av[--ac]);
 	if (s_data->time_to_sleep < 1 || s_data->time_to_die < 1)
 		return (-1);
-	if (s_data->max_eat > INT32_MAX || s_data->time_to_sleep > INT32_MAX
-		|| s_data->time_to_die > INT32_MAX)
+	if (s_data->max_eat > __INT_MAX__ || s_data->time_to_sleep > __INT_MAX__
+		|| s_data->time_to_die > __INT_MAX__)
 		return (-1);
 	s_data->is_dead = false;
 	return (0);

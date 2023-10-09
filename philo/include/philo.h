@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/24 15:24:37 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/09/08 14:14:25 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/09 15:15:01 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ typedef struct s_philo
 
 size_t					gettime_dif(struct timeval start_time);
 void					*ft_calloc(size_t count, size_t size);
-int32_t					ft_atoi(const char *str);
+int						ft_atoi(const char *str);
 
 // FUNCTIONS
 
@@ -83,7 +83,6 @@ bool					ac_check_eatc(t_philo *philo);
 bool					ac_check_death(t_philo *philo);
 bool					ac_print(t_philo *philo, const char *action);
 
-// bool	ac_print(t_philo *philo, t_print print);
 void					ac_eat(t_philo *philo);
 void					ac_sleep(t_philo *philo);
 int						ac_hungry(t_philo *philo);

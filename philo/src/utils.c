@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 17:16:18 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/09/08 14:32:52 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/09 14:59:54 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,12 @@ void	*ft_calloc(size_t count, size_t size)
 void	ph_sleep(size_t naptime, t_philo *philo)
 {
 	struct timeval	start_time;
-	size_t			m_seconds;
 
-	m_seconds = 0;
+	(void)philo;
 	gettimeofday(&start_time, NULL);
-	while (m_seconds < naptime)
+	while (gettime_dif(start_time) < naptime)
 	{
-		usleep(200);
-		m_seconds = gettime_dif(start_time);
+		usleep(300);
 		if (philo != NULL)
 		{
 			if (ac_check_death(philo) == true)
@@ -62,11 +60,14 @@ bool	check_stop(t_philo *philo)
 	}
 	if (gettime_dif(philo->last_eaten) > philo->s_data->time_to_die)
 	{
+		pthread_mutex_unlock(&philo->s_data->eat_c);
 		pthread_mutex_lock(&philo->s_data->death_c);
 		philo->s_data->is_dead = true;
-		ac_print(philo, DIED);
 		pthread_mutex_unlock(&philo->s_data->death_c);
-		pthread_mutex_unlock(&philo->s_data->eat_c);
+		pthread_mutex_lock(&philo->s_data->print_c);
+		printf("%zu %zu %s\n", gettime_dif(philo->s_data->start_time),
+			philo->philo_id, DIED);
+		pthread_mutex_unlock(&philo->s_data->print_c);
 		return (true);
 	}
 	pthread_mutex_unlock(&philo->s_data->eat_c);

@@ -2,7 +2,7 @@ NAME := philo
 CC = gcc
 CFLAGS = -Wall -Werror -Wextra
 HEADER = include/philo.h
-INCLUDE = -Iinclude
+INCLUDE = -Iinclude -pthread
 OBJ_DIR = obj
 SRCFILES = 	main \
 			process_input \
