@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/27 13:58:57 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/10/09 15:12:31 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/10 14:49:18 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,8 @@ int	philosophers(t_params *s_data)
 		pthread_join(s_data->philos[i], NULL);
 		i++;
 	}
-	return (0);
+	return (free(s_data->eat_count), free(s_data->forks),
+		free(s_data->philos), free(s_data->ph_par), 0);
 }
 
 int	init_philosophers(int ac, char **av, t_params *s_data)

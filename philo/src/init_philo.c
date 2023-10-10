@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/15 16:37:18 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/09/08 14:09:04 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/09 15:41:00 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ int	init_params(t_params *s_data)
 	if (!s_data->ph_par)
 		return (free(s_data->eat_count), free(s_data->forks),
 			free(s_data->philos), -1);
-	pthread_mutex_init(&s_data->death_c, NULL);
 	pthread_mutex_init(&s_data->death_c, NULL);
 	pthread_mutex_init(&s_data->print_c, NULL);
 	pthread_mutex_init(&s_data->eat_c, NULL);

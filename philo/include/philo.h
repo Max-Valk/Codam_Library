@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/24 15:24:37 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/10/09 15:15:01 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/09 15:42:55 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct s_philo	t_philo;
 
 typedef struct s_data
 {
+	bool				is_dead;
+	bool				eat_limit;
 	size_t				max_eat;
 	size_t				philo_count;
 	size_t				time_to_die;
@@ -44,10 +46,8 @@ typedef struct s_data
 	pthread_mutex_t		death_c;
 	pthread_mutex_t		print_c;
 	pthread_mutex_t		eat_c;
-	bool				is_dead;
-	bool				eat_limit;
-	pthread_t			*philos;
 	pthread_mutex_t		*forks;
+	pthread_t			*philos;
 	t_philo				*ph_par;
 	size_t				*eat_count;
 }						t_params;

@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/24 15:24:09 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/10/09 14:05:19 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/10 14:36:53 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int ac, char **av)
 {
 	t_params	s_data;
 
+	// atexit(&lk);
 	if (ac == 5 || ac == 6)
 	{
 		if (check_input_type(av))

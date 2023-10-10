@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 13:49:33 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/10/09 14:37:56 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/10 14:37:58 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,19 @@ int	ac_hungry(t_philo *philo)
 		pthread_mutex_unlock(&philo->s_data->forks[philo->philo_id]);
 		return (false);
 	}
+	if (philo->s_data->philo_count == 1)
+	{
+		ph_sleep(philo->s_data->time_to_die / 2, philo);
+		return (false);
+	}
 	pthread_mutex_lock(&philo->s_data->forks[(philo->philo_id + 1)
 		% philo->s_data->philo_count]);
 	if (ac_print(philo, TAKEN_FORK) == false)
+	{
+		pthread_mutex_unlock(&philo->s_data->forks[philo->philo_id]);
+		pthread_mutex_unlock(&philo->s_data->forks[(philo->philo_id + 1)
+		% philo->s_data->philo_count]);
 		return (false);
+	}
 	return (true);
 }
