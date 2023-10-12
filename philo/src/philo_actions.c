@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/03 13:49:33 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/10/10 14:37:58 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/12 14:55:10 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ bool	ac_print(t_philo *philo, const char *action)
 	if (ac_check_death(philo) != true)
 	{
 		printf("%zu %zu %s\n", gettime_dif(philo->s_data->start_time),
-			philo->philo_id, action);
+			philo->philo_id + 1, action);
 		pthread_mutex_unlock(&philo->s_data->print_c);
 		return (true);
 	}
@@ -46,15 +46,13 @@ void	ac_eat(t_philo *philo)
 	pthread_mutex_unlock(&philo->s_data->eat_c);
 	if (ac_print(philo, IS_EATING) == false)
 	{
-		pthread_mutex_unlock(&philo->s_data->forks[philo->philo_id]);
-		pthread_mutex_unlock(&philo->s_data->forks[(philo->philo_id + 1)
-			% philo->s_data->philo_count]);
+		lock_wrap(philo, unlock, right);
+		lock_wrap(philo, unlock, left);
 		return ;
 	}
 	ph_sleep(philo->s_data->time_to_eat, philo);
-	pthread_mutex_unlock(&philo->s_data->forks[philo->philo_id]);
-	pthread_mutex_unlock(&philo->s_data->forks[(philo->philo_id + 1)
-		% philo->s_data->philo_count]);
+	lock_wrap(philo, unlock, right);
+	lock_wrap(philo, unlock, left);
 }
 
 void	ac_sleep(t_philo *philo)
@@ -69,25 +67,15 @@ void	ac_sleep(t_philo *philo)
 
 int	ac_hungry(t_philo *philo)
 {
-	pthread_mutex_lock(&philo->s_data->forks[philo->philo_id]);
+
+	lock_wrap(philo, lock, left);
 	if (ac_print(philo, TAKEN_FORK) == false)
-	{
-		pthread_mutex_unlock(&philo->s_data->forks[philo->philo_id]);
-		return (false);
-	}
+		return (lock_wrap(philo, unlock, left), false);
 	if (philo->s_data->philo_count == 1)
-	{
-		ph_sleep(philo->s_data->time_to_die / 2, philo);
-		return (false);
-	}
-	pthread_mutex_lock(&philo->s_data->forks[(philo->philo_id + 1)
-		% philo->s_data->philo_count]);
+		return (ph_sleep(philo->s_data->time_to_die / 2, philo), lock_wrap(philo, unlock, left), false);
+	lock_wrap(philo, lock, right);
 	if (ac_print(philo, TAKEN_FORK) == false)
-	{
-		pthread_mutex_unlock(&philo->s_data->forks[philo->philo_id]);
-		pthread_mutex_unlock(&philo->s_data->forks[(philo->philo_id + 1)
-		% philo->s_data->philo_count]);
-		return (false);
-	}
+		return (lock_wrap(philo, unlock, right),
+			lock_wrap(philo, unlock, left), false);
 	return (true);
 }

@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/07/24 15:24:37 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/10/09 15:42:55 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/12 15:01:13 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,19 @@ typedef struct s_philo	t_philo;
 # define IS_THINKING "is thinking"
 # define DIED "died"
 
+typedef enum e_lock_wrap
+{
+	lock,
+	unlock
+}	t_lock;
+
+typedef enum e_fork_wrap
+{
+	left,
+	right
+}	t_fork;
+
+
 typedef struct s_data
 {
 	bool				is_dead;
@@ -46,6 +59,7 @@ typedef struct s_data
 	pthread_mutex_t		death_c;
 	pthread_mutex_t		print_c;
 	pthread_mutex_t		eat_c;
+	pthread_mutex_t		start_signal;
 	pthread_mutex_t		*forks;
 	pthread_t			*philos;
 	t_philo				*ph_par;
@@ -65,6 +79,7 @@ typedef struct s_philo
 size_t					gettime_dif(struct timeval start_time);
 void					*ft_calloc(size_t count, size_t size);
 int						ft_atoi(const char *str);
+int						lock_wrap(t_philo *philo, t_lock e_lock, t_fork side);
 
 // FUNCTIONS
 
@@ -86,5 +101,6 @@ bool					ac_print(t_philo *philo, const char *action);
 void					ac_eat(t_philo *philo);
 void					ac_sleep(t_philo *philo);
 int						ac_hungry(t_philo *philo);
+int						ac_hungry_un(t_philo *philo);
 
 #endif

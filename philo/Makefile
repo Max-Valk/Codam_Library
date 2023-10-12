@@ -1,7 +1,7 @@
 NAME := philo
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra -fsanitize=address
-#  -fsanitize=thread
+CFLAGS = -Wall -Werror -Wextra 
+#    -fsanitize=thread
 HEADER = include/philo.h
 INCLUDE = -Iinclude -pthread
 OBJ_DIR = obj

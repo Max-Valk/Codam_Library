@@ -6,7 +6,7 @@
 /*   By: mvalk <mvalk@student.codam.nl>               +#+                     */
 /*                                                   +#+                      */
 /*   Created: 2023/08/15 16:37:18 by mvalk         #+#    #+#                 */
-/*   Updated: 2023/10/09 15:41:00 by mvalk         ########   odam.nl         */
+/*   Updated: 2023/10/12 14:49:00 by mvalk         ########   odam.nl         */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,29 @@ int	init_params(t_params *s_data)
 	pthread_mutex_init(&s_data->death_c, NULL);
 	pthread_mutex_init(&s_data->print_c, NULL);
 	pthread_mutex_init(&s_data->eat_c, NULL);
+	pthread_mutex_init(&s_data->start_signal, NULL);
 	init_forks(s_data);
+	return (0);
+}
+
+int	init_philosophers(int ac, char **av, t_params *s_data)
+{
+	if (ac == 6)
+	{
+		s_data->max_eat = ft_atoi(av[--ac]);
+		s_data->eat_limit = true;
+		if (s_data->max_eat < 1)
+			return (-1);
+	}
+	s_data->time_to_sleep = ft_atoi(av[--ac]);
+	s_data->time_to_eat = ft_atoi(av[--ac]);
+	s_data->time_to_die = ft_atoi(av[--ac]);
+	s_data->philo_count = ft_atoi(av[--ac]);
+	if (s_data->time_to_sleep < 1 || s_data->time_to_die < 1)
+		return (-1);
+	if (s_data->max_eat > __INT_MAX__ || s_data->time_to_sleep > __INT_MAX__
+		|| s_data->time_to_die > __INT_MAX__)
+		return (-1);
+	s_data->is_dead = false;
 	return (0);
 }
